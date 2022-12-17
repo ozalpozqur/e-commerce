@@ -4,6 +4,8 @@ import { useLoaderData } from 'react-router-dom';
 import { useEffect } from 'react';
 import useProductStore from '../store/product';
 
+// TODO: ana sayfaya girilmiyor authsuz
+
 export default function Home() {
 	const product = useLoaderData();
 	const { setProducts } = useProductStore();
