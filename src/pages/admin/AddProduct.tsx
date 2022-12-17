@@ -8,10 +8,12 @@ import * as Yup from 'yup';
 import ProductService from '../../services/ProductService';
 import { toast } from 'react-toastify';
 import useProductStore from '../../store/product';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import DropZone from '../../components/ui/DropZone';
 import { MdDelete } from 'react-icons/all';
 import { TailSpin } from 'react-loader-spinner';
+import { isMobile } from 'react-device-detect';
+import { cn } from '../../helpers';
 
 const addProductSchema = Yup.object().shape({
 	name: Yup.string().required('This field is required'),
@@ -60,15 +62,20 @@ export default function AddProduct() {
 	}
 	function onSelectImage(files: File[]) {
 		const [file] = files;
-		console.log(file);
 		setImagePreview(URL.createObjectURL(file));
-		console.log('change');
 		formik.setFieldValue('image', file);
 	}
 
 	function resetForm() {
 		formik.resetForm();
 		setImagePreview(null);
+	}
+
+	function onSelectedImageInMobile(e: ChangeEvent<HTMLInputElement>) {
+		if (!e.target.files) return;
+		const [file] = e.target.files;
+		setImagePreview(URL.createObjectURL(file));
+		formik.setFieldValue('image', file);
 	}
 
 	return (
@@ -132,22 +139,43 @@ export default function AddProduct() {
 								</p>
 
 								{imagePreview ? (
-									<div className="flex gap-2 sm:col-span-2">
-										<picture className="group border-gray-300 min-w-[150px] max-w-full flex items-center justify-center relative h-40 w-fit border p-1 rounded-md">
+									<div className="grid mt-1 grid-cols-2 sm:flex flex gap-2 sm:col-span-2">
+										<picture className="group border-gray-300 w-full sm:w-fit sm:min-w-[150px] flex items-center justify-center relative h-40 border p-1 rounded-md">
 											<img
 												draggable={false}
-												className="max-h-full w-full rounded"
+												className="max-h-full w-full rounded object-cover"
 												src={imagePreview}
 												alt="selected cover image"
 											/>
 										</picture>
 										<button
 											onClick={removeCoverImage}
-											className="bg-white gap-2 px-4 py-2 self-end rounded bg-indigo-600 flex items-center justify-center text-white right-0.5"
+											className="bg-white gap-2 whitespace-nowrap px-4 py-2 self-end rounded bg-indigo-600 flex items-center justify-center text-white right-0.5"
 										>
 											<MdDelete size={20} />
 											Remove Cover
 										</button>
+									</div>
+								) : isMobile ? (
+									<div>
+										<label
+											className={cn(
+												'block border px-3 py-2 text-gray-400 focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm border-gray-300 rounded-md',
+												formik.errors.image && formik.touched.image ? 'border-red-600' : ''
+											)}
+										>
+											<input
+												onChange={onSelectedImageInMobile}
+												type="file"
+												name="image"
+												className="hidden"
+												accept="image/*"
+											/>
+											Select cover photo
+										</label>
+										{formik.errors.image && formik.touched.image ? (
+											<small className="text-red-600">{formik.errors.image}</small>
+										) : undefined}
 									</div>
 								) : (
 									<DropZone
