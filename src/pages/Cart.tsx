@@ -3,6 +3,7 @@ import useCartStore from '../store/cart';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Product } from '../types/altogic';
+import { cn } from '../helpers';
 
 export default function Cart() {
 	const { items, totalAmount } = useCartStore();
@@ -11,13 +12,16 @@ export default function Cart() {
 			<div className="max-w-2xl mx-auto pt-16 pb-24 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
 				<h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">Shopping Cart</h1>
 				<form className="mt-12 lg:grid lg:grid-cols-12 lg:gap-x-12 lg:items-start xl:gap-x-16">
-					<section aria-labelledby="cart-heading" className="lg:col-span-7">
+					<section
+						aria-labelledby="cart-heading"
+						className={cn(items.length > 0 ? 'lg:col-span-7' : 'lg:col-span-12')}
+					>
 						<h2 id="cart-heading" className="sr-only">
 							Items in your shopping cart
 						</h2>
 
 						{items.length === 0 ? (
-							<div className="text-center text-xl flex flex-col gap-4 items-center justify-center">
+							<div className="text-center text-xl flex flex-col gap-4 items-center justify-center col-span-12">
 								<p>You do not have any products in your cart.</p>
 								<Link className="border transition hover:bg-gray-100 px-4 py-2" to="/">
 									Go back to home
