@@ -60,7 +60,9 @@ export default function AddProduct() {
 	}
 	function onSelectImage(files: File[]) {
 		const [file] = files;
+		console.log(file);
 		setImagePreview(URL.createObjectURL(file));
+		console.log('change');
 		formik.setFieldValue('image', file);
 	}
 
