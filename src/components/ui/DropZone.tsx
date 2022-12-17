@@ -16,9 +16,9 @@ const DropZone = forwardRef(
 		{ className, label, onSelected, multiple, showError = false, errorMessage, accept, ...props }: Props,
 		ref: ForwardedRef<HTMLInputElement>
 	) => {
-		const onDrop = useCallback((acceptedFiles: File[]) => {
+		function onDrop(acceptedFiles: File[]) {
 			onSelected?.(acceptedFiles);
-		}, []);
+		}
 
 		const { getRootProps, getInputProps, isDragActive } = useDropzone({
 			onDrop,
