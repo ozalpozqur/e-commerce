@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react';
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { cn } from '../helpers';
@@ -13,33 +13,38 @@ const navigation = {
 	]
 };
 
+const rightNavigationForGuest = [
+	{
+		name: 'Login',
+		href: '/auth/login'
+	},
+	{
+		name: 'Create Account',
+		href: '/auth/register'
+	}
+];
+const rightNavigationForAuth = [
+	{
+		name: 'Profile',
+		href: '/profile'
+	},
+	{
+		name: 'Logout',
+		href: '/auth/logout'
+	}
+];
+
 export default function Header() {
 	const [open, setOpen] = useState(false);
 	const { pathname } = useLocation();
 	const { items } = useCartStore();
 	const { user } = useAuthStore();
 
-	const rightNavigationForGuest = [
-		{
-			name: 'Login',
-			href: '/auth/login'
-		},
-		{
-			name: 'Create Account',
-			href: '/auth/register'
+	useEffect(() => {
+		if (user?.isAdmin) {
+			rightNavigationForAuth.unshift({ name: 'Admin Panel', href: '/admin' });
 		}
-	];
-	const rightNavigationForAuth = [
-		user?.isAdmin && { name: 'Admin Panel', href: '/admin' },
-		{
-			name: 'Profile',
-			href: '/profile'
-		},
-		{
-			name: 'Logout',
-			href: '/auth/logout'
-		}
-	];
+	}, [user]);
 
 	return (
 		<div className="bg-white">
