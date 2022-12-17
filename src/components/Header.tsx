@@ -41,10 +41,10 @@ export default function Header() {
 	const { user } = useAuthStore();
 
 	useEffect(() => {
-		if (user?.isAdmin) {
+		if (user?.isAdmin && !rightNavigationForAuth.find(item => item.href === '/admin')) {
 			rightNavigationForAuth.unshift({ name: 'Admin Panel', href: '/admin' });
 		}
-	}, [user]);
+	}, []);
 
 	return (
 		<div className="bg-white">
