@@ -60,7 +60,6 @@ export default function AddProduct() {
 	}
 	function onSelectImage(files: File[]) {
 		const [file] = files;
-		console.log(file);
 		setImagePreview(URL.createObjectURL(file));
 		formik.setFieldValue('image', file);
 	}
@@ -150,6 +149,7 @@ export default function AddProduct() {
 									</div>
 								) : (
 									<DropZone
+										multiple={false}
 										showError={!!formik.errors.image && !!formik.touched.image}
 										errorMessage={formik.errors.image}
 										accept="image/*"

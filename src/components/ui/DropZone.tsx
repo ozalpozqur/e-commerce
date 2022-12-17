@@ -9,10 +9,11 @@ export interface Props extends ComponentPropsWithRef<'input'> {
 	label?: string;
 	className?: string;
 	accept?: string;
+	multiple?: boolean;
 }
 const DropZone = forwardRef(
 	(
-		{ className, label, onSelected, showError = false, errorMessage, accept, ...props }: Props,
+		{ className, label, onSelected, multiple, showError = false, errorMessage, accept, ...props }: Props,
 		ref: ForwardedRef<HTMLInputElement>
 	) => {
 		const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -21,6 +22,7 @@ const DropZone = forwardRef(
 
 		const { getRootProps, getInputProps, isDragActive } = useDropzone({
 			onDrop,
+			multiple: multiple,
 			...(accept && { accept: { [accept]: [] } })
 		});
 
