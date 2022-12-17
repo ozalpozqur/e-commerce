@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html, body, #root {
+        height: 100%;
+    }
+    html {
+        font-family: 'Roboto', sans-serif;
+    }
+    select:has(>option:nth-child(1):checked) {
+        @apply text-transparent;
+    }
+}
+@layer components {
+    .no-spinner {
+        -moz-appearance: textfield;
+    }
+
+    .no-spinner::-webkit-outer-spin-button,
+    .no-spinner::-webkit-inner-spin-button {
+        margin: 0;
+        -webkit-appearance: none;
+    }
+}

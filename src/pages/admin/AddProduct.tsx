@@ -1,0 +1,194 @@
+import AdminLayout from '../../layouts/AdminLayout';
+import useCategoryStore from '../../store/category';
+import { useFormik } from 'formik';
+import Input from '../../components/ui/Input';
+import Textarea from '../../components/ui/Textarea';
+import SelectBox from '../../components/ui/SelectBox';
+import * as Yup from 'yup';
+import ProductService from '../../services/ProductService';
+import { toast } from 'react-toastify';
+import useProductStore from '../../store/product';
+import { useState } from 'react';
+import DropZone from '../../components/ui/DropZone';
+import { MdDelete } from 'react-icons/all';
+import { TailSpin } from 'react-loader-spinner';
+
+const addProductSchema = Yup.object().shape({
+	name: Yup.string().required('This field is required'),
+	qtyInStock: Yup.number().required('This field is required'),
+	category: Yup.string().required('This field is required'),
+	description: Yup.string().required('This field is required'),
+	price: Yup.number().required('This field is required'),
+	image: Yup.mixed().required('Product cover is required')
+});
+export default function AddProduct() {
+	const { categories } = useCategoryStore();
+	const { addProduct } = useProductStore();
+	const [imagePreview, setImagePreview] = useState<string | null>(null);
+	const [loading, setLoading] = useState(false);
+	const formik = useFormik({
+		initialValues: {
+			name: '',
+			qtyInStock: '',
+			category: '',
+			description: '',
+			price: '',
+			image: null
+		},
+		validationSchema: addProductSchema,
+		onSubmit: async ({ image, ...rest }) => {
+			setLoading(true);
+			try {
+				// @ts-ignore
+				const product = await ProductService.addProduct(rest, image);
+				addProduct(product);
+				toast.success('Product added successfully');
+				formik.resetForm();
+				setImagePreview(null);
+			} catch (error) {
+				console.error(error);
+				toast.error('Something went wrong please try again', {});
+			} finally {
+				setLoading(false);
+			}
+		}
+	});
+
+	function removeCoverImage() {
+		setImagePreview(null);
+		formik.setFieldValue('image', null);
+	}
+	function onSelectImage(files: File[]) {
+		const [file] = files;
+		console.log(file);
+		setImagePreview(URL.createObjectURL(file));
+		formik.setFieldValue('image', file);
+	}
+
+	function resetForm() {
+		formik.resetForm();
+		setImagePreview(null);
+	}
+
+	return (
+		<AdminLayout title="Add Product">
+			<form className="space-y-8 divide-y divide-gray-200 px-4 md:px-0" onSubmit={formik.handleSubmit}>
+				<div className="space-y-8 divide-y divide-gray-200 sm:space-y-5">
+					<div>
+						<div className="mt-6 sm:mt-5 space-y-6 sm:space-y-5">
+							<Input
+								showError={!!formik.errors.name && !!formik.touched.name}
+								errorMessage={formik.errors.name}
+								onChange={formik.handleChange}
+								value={formik.values.name}
+								name="name"
+								label="Product name"
+								className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5"
+							/>
+							<Input
+								showError={!!formik.errors.qtyInStock && !!formik.touched.qtyInStock}
+								errorMessage={formik.errors.qtyInStock}
+								onChange={formik.handleChange}
+								value={formik.values.qtyInStock}
+								name="qtyInStock"
+								label="Product in stock"
+								type="number"
+								className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5 sm:border-t sm:border-gray-200"
+							/>
+							<Input
+								showError={!!formik.errors.price && !!formik.touched.price}
+								errorMessage={formik.errors.price}
+								onChange={formik.handleChange}
+								value={formik.values.price}
+								name="price"
+								type="number"
+								label="Product price"
+								className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5 sm:border-t sm:border-gray-200"
+							/>
+							<SelectBox
+								showError={!!formik.errors.category && !!formik.touched.category}
+								errorMessage={formik.errors.category}
+								onChange={formik.handleChange}
+								value={formik.values.category}
+								name="category"
+								label="Product category"
+								className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5"
+								fields={categories.map(category => ({ id: category._id, value: category.name }))}
+							/>
+							<Textarea
+								showError={!!formik.errors.description && !!formik.touched.description}
+								errorMessage={formik.errors.description}
+								onChange={formik.handleChange}
+								value={formik.values.description}
+								name="description"
+								rows={6}
+								label="Product description"
+								className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5"
+							/>
+							<div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+								<p className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+									Product cover
+								</p>
+
+								{imagePreview ? (
+									<div className="flex gap-2 sm:col-span-2">
+										<picture className="group border-gray-300 min-w-[150px] max-w-full flex items-center justify-center relative h-40 w-fit border p-1 rounded-md">
+											<img
+												draggable={false}
+												className="max-h-full w-full rounded"
+												src={imagePreview}
+												alt="selected cover image"
+											/>
+										</picture>
+										<button
+											onClick={removeCoverImage}
+											className="bg-white gap-2 px-4 py-2 self-end rounded bg-indigo-600 flex items-center justify-center text-white right-0.5"
+										>
+											<MdDelete size={20} />
+											Remove Cover
+										</button>
+									</div>
+								) : (
+									<DropZone
+										showError={!!formik.errors.image && !!formik.touched.image}
+										errorMessage={formik.errors.image}
+										accept="image/*"
+										name="image"
+										onSelected={onSelectImage}
+										className="sm:mt-0 sm:col-span-2 block mt-1"
+									/>
+								)}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div className="pt-5">
+					<div className="flex justify-end">
+						<button
+							type="button"
+							onClick={resetForm}
+							className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+						>
+							Clear
+						</button>
+						<button
+							disabled={loading}
+							type="submit"
+							className="ml-3 inline-flex disabled:opacity-70 disabled:cursor-not-allowed relative justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+						>
+							Add Product
+							<TailSpin
+								wrapperClass="absolute inset-0 flex items-center bg-black/30 justify-center"
+								color="#fff"
+								ariaLabel="tail-spin-loading"
+								height="80%"
+								radius="1"
+								visible={loading}
+							/>
+						</button>
+					</div>
+				</div>
+			</form>
+		</AdminLayout>
+	);
+}
