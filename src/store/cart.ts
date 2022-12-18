@@ -2,13 +2,13 @@ import create from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { Product } from '../types/altogic';
 
-interface CartItem extends Product {
+export interface CartItem extends Product {
 	quantityInCart: number;
 }
 interface CartState {
 	items: CartItem[];
 	totalAmount: number;
-	addToCart: (product: Product) => void;
+	addToCart: (product: Product, quantity: number) => void;
 	removeProduct: (product: Product) => void;
 }
 
@@ -18,7 +18,7 @@ const useCartStore = create<CartState>()(
 			set => ({
 				items: [],
 				totalAmount: 0,
-				addToCart(product) {
+				addToCart(product, quantity = 1) {
 					set(prev => {
 						const found = prev.items.find(item => item._id === product._id);
 						let items;
@@ -26,7 +26,7 @@ const useCartStore = create<CartState>()(
 							found.quantityInCart++;
 							items = prev.items;
 						} else {
-							items = [...prev.items, { ...product, quantityInCart: 1 }];
+							items = [...prev.items, { ...product, quantityInCart: quantity }];
 						}
 						set({ totalAmount: calculateTotalPrice(items) });
 						return { items };

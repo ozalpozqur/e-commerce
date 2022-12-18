@@ -1,9 +1,8 @@
 import { AiOutlineClose } from 'react-icons/all';
-import useCartStore from '../store/cart';
+import useCartStore, { CartItem } from '../store/cart';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Product } from '../types/altogic';
-import { cn } from '../helpers';
+import moneyFormat, { cn } from '../helpers';
 
 export default function Cart() {
 	const { items, totalAmount } = useCartStore();
@@ -30,7 +29,7 @@ export default function Cart() {
 						) : (
 							<ul role="list" className="border-t border-b border-gray-200 divide-y divide-gray-200">
 								{items.map(item => (
-									<CartItem key={item._id} product={item} />
+									<CartProductItem key={item._id} product={item} />
 								))}
 							</ul>
 						)}
@@ -48,7 +47,7 @@ export default function Cart() {
 							<dl className="mt-6 space-y-4">
 								<div className="border-gray-200 pt-4 flex items-center justify-between">
 									<dt className="text-base font-medium text-gray-900">Order total</dt>
-									<dd className="text-base font-medium text-gray-900">${totalAmount}</dd>
+									<dd className="text-base font-medium text-gray-900">{moneyFormat(totalAmount)}</dd>
 								</div>
 							</dl>
 
@@ -68,7 +67,7 @@ export default function Cart() {
 	);
 }
 
-function CartItem({ product }: { product: Product }) {
+function CartProductItem({ product }: { product: CartItem }) {
 	const { removeProduct } = useCartStore();
 	function removeItem() {
 		removeProduct(product);
@@ -100,7 +99,9 @@ function CartItem({ product }: { product: Product }) {
 						<div className="text-gray-600">
 							<h4>{product.description}</h4>
 						</div>
-						<p className="mt-1 text-sm font-medium text-gray-900">{product.price}</p>
+						<p className="mt-1 text-sm font-medium text-gray-900">
+							{moneyFormat(product.price)} x {product.quantityInCart}
+						</p>
 					</div>
 
 					<div className="mt-4 sm:mt-0 sm:pr-9">

@@ -26,8 +26,14 @@ export const router = createBrowserRouter([
 				element: <Home />
 			},
 			{
-				path: '/product/:slug',
-				element: <ProductDetail />
+				path: '/product/:id',
+				element: <ProductDetail />,
+				async loader({ params: { id } }) {
+					if (!id) return;
+					const product = await ProductService.getProductById(id);
+					if (!product) throw new Response('Not Found', { status: 404 });
+					return product;
+				}
 			},
 			{
 				path: '/cart',

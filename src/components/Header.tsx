@@ -44,7 +44,7 @@ export default function Header() {
 		if (user?.isAdmin && !rightNavigationForAuth.find(item => item.href === '/admin')) {
 			rightNavigationForAuth.unshift({ name: 'Admin Panel', href: '/admin' });
 		}
-	}, []);
+	}, [user]);
 
 	return (
 		<div className="bg-white">

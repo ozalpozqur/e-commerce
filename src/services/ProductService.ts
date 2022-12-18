@@ -17,6 +17,14 @@ export default class ProductService {
 		return data as Product[];
 	}
 
+	static async getProductById(_id: string) {
+		const { data, errors } = await altogic.db.model('products').object(_id).get();
+
+		if (errors) throw errors;
+
+		return data as Product;
+	}
+
 	static async addProduct(product: AddProduct, image: File) {
 		const { errors: uploadErrors, data } = await ProductService.uploadCoverImage(image);
 
