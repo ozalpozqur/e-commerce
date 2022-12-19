@@ -7,9 +7,8 @@ import ProductDetail from '../pages/ProductDetail';
 import Error from '../pages/Error';
 import Profile from '../pages/user/Profile';
 import AddProduct from '../pages/admin/AddProduct';
-import Panel from '../pages/admin/Panel';
-import CategoryService from '../services/CategoryService';
-import Default from '../pages/admin/Default';
+import Stats from '../pages/admin/Stats';
+import Admin from '../pages/admin';
 import ProductService from '../services/ProductService';
 import Cart from '../pages/Cart';
 import Logout from '../pages/auth/Logout';
@@ -17,15 +16,25 @@ import ChangeUserInfo from '../pages/user/ChangeUserInfo';
 import UserAddress from '../pages/user/UserAddress';
 import ShopLayout from '../layouts/ShopLayout';
 import Checkout from '../pages/Checkout';
+import AddCategory from '../pages/admin/AddCategory';
+import InitialApp from '../pages/InitialApp';
+import CategoryService from '../services/CategoryService';
+import Category from '../pages/Category';
 
 export const router = createBrowserRouter([
 	{
 		path: '/',
+		element: <InitialApp />,
+		async loader() {
+			const products = ProductService.getProducts();
+			const categories = CategoryService.getCategories();
+			return {
+				products: await products,
+				categories: await categories
+			};
+		},
 		children: [
 			{
-				async loader() {
-					return ProductService.getProducts();
-				},
 				index: true,
 				element: (
 					<ShopLayout>
@@ -45,6 +54,18 @@ export const router = createBrowserRouter([
 					const product = await ProductService.getProductById(id);
 					if (!product) throw new Response('Not Found', { status: 404 });
 					return product;
+				}
+			},
+			{
+				path: '/category/:slug',
+				element: (
+					<ShopLayout>
+						<Category />
+					</ShopLayout>
+				),
+				async loader({ params: { slug } }) {
+					if (!slug) return;
+					return await ProductService.getProductsByCategory(slug);
 				}
 			},
 			{
@@ -115,20 +136,21 @@ export const router = createBrowserRouter([
 				path: '/admin',
 				element: (
 					<AdminOnly>
-						<Default />
+						<Admin />
 					</AdminOnly>
 				),
-				async loader() {
-					return CategoryService.getCategories();
-				},
 				children: [
 					{
 						index: true,
-						element: <Panel />
+						element: <Stats />
 					},
 					{
 						path: 'add-product',
 						element: <AddProduct />
+					},
+					{
+						path: 'add-category',
+						element: <AddCategory />
 					}
 				]
 			}

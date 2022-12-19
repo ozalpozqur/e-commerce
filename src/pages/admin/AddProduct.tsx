@@ -11,7 +11,6 @@ import useProductStore from '../../store/product';
 import { ChangeEvent, useState } from 'react';
 import DropZone from '../../components/ui/DropZone';
 import { MdDelete } from 'react-icons/all';
-import { TailSpin } from 'react-loader-spinner';
 import { isMobile } from 'react-device-detect';
 import { cn } from '../../helpers';
 import Button from '../../components/ui/Button';
@@ -85,45 +84,55 @@ export default function AddProduct() {
 				<div className="space-y-8 divide-y divide-gray-200 sm:space-y-5">
 					<div>
 						<div className="mt-6 sm:mt-5 space-y-6 sm:space-y-5">
-							<Input
-								showError={!!formik.errors.name && !!formik.touched.name}
-								errorMessage={formik.errors.name}
-								onChange={formik.handleChange}
-								value={formik.values.name}
-								name="name"
-								label="Product name"
-								className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5"
-							/>
-							<Input
-								showError={!!formik.errors.qtyInStock && !!formik.touched.qtyInStock}
-								errorMessage={formik.errors.qtyInStock}
-								onChange={formik.handleChange}
-								value={formik.values.qtyInStock}
-								name="qtyInStock"
-								label="Product in stock"
-								type="number"
-								className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5 sm:border-t sm:border-gray-200"
-							/>
-							<Input
-								showError={!!formik.errors.price && !!formik.touched.price}
-								errorMessage={formik.errors.price}
-								onChange={formik.handleChange}
-								value={formik.values.price}
-								name="price"
-								type="number"
-								label="Product price"
-								className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5 sm:border-t sm:border-gray-200"
-							/>
-							<SelectBox
-								showError={!!formik.errors.category && !!formik.touched.category}
-								errorMessage={formik.errors.category}
-								onChange={formik.handleChange}
-								value={formik.values.category}
-								name="category"
-								label="Product category"
-								className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5"
-								fields={categories.map(category => ({ id: category._id, value: category.name }))}
-							/>
+							<div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
+								<p className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Product name</p>
+								<Input
+									showError={!!formik.errors.name && !!formik.touched.name}
+									errorMessage={formik.errors.name}
+									onChange={formik.handleChange}
+									value={formik.values.name}
+									name="name"
+								/>
+							</div>
+							<div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5 sm:border-t sm:border-gray-200">
+								<p className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+									Product in stock
+								</p>
+								<Input
+									showError={!!formik.errors.qtyInStock && !!formik.touched.qtyInStock}
+									errorMessage={formik.errors.qtyInStock}
+									onChange={formik.handleChange}
+									value={formik.values.qtyInStock}
+									name="qtyInStock"
+									type="number"
+								/>
+							</div>
+							<div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5 sm:border-t sm:border-gray-200">
+								<p className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+									Product price
+								</p>
+								<Input
+									showError={!!formik.errors.price && !!formik.touched.price}
+									errorMessage={formik.errors.price}
+									onChange={formik.handleChange}
+									value={formik.values.price}
+									name="price"
+									type="number"
+								/>
+							</div>
+							<div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5 sm:border-t sm:border-gray-200">
+								<p className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+									Product category
+								</p>
+								<SelectBox
+									showError={!!formik.errors.category && !!formik.touched.category}
+									errorMessage={formik.errors.category}
+									onChange={formik.handleChange}
+									value={formik.values.category}
+									name="category"
+									fields={categories.map(category => ({ id: category._id, value: category.name }))}
+								/>
+							</div>
 							<Textarea
 								showError={!!formik.errors.description && !!formik.touched.description}
 								errorMessage={formik.errors.description}

@@ -5,46 +5,47 @@ import { cn } from '../helpers';
 import { Link, useLocation } from 'react-router-dom';
 import useCartStore from '../store/cart';
 import useAuthStore from '../store/auth';
-
-const navigation = {
-	pages: [
-		{ name: 'Company', href: '#' },
-		{ name: 'Stores', href: '#' }
-	]
-};
-
-const rightNavigationForGuest = [
-	{
-		name: 'Login',
-		href: '/auth/login'
-	},
-	{
-		name: 'Create Account',
-		href: '/auth/register'
-	}
-];
-const rightNavigationForAuth = [
-	{
-		name: 'Profile',
-		href: '/profile'
-	},
-	{
-		name: 'Logout',
-		href: '/auth/logout'
-	}
-];
+import useCategoryStore from '../store/category';
 
 export default function Header() {
 	const [open, setOpen] = useState(false);
 	const { pathname } = useLocation();
 	const { items } = useCartStore();
 	const { user } = useAuthStore();
+	const { categories } = useCategoryStore();
 
-	useEffect(() => {
-		if (user?.isAdmin && !rightNavigationForAuth.find(item => item.href === '/admin')) {
-			rightNavigationForAuth.unshift({ name: 'Admin Panel', href: '/admin' });
+	const navigation = {
+		pages: categories.map(category => ({
+			...category,
+			href: `/category/${category.slug}`
+		}))
+	};
+	const rightNavigationForGuest = [
+		{
+			name: 'Login',
+			href: '/auth/login'
+		},
+		{
+			name: 'Create Account',
+			href: '/auth/register'
 		}
-	}, [user]);
+	];
+	const rightNavigationForAuth = [
+		{
+			name: 'Profile',
+			href: '/profile'
+		},
+		{
+			name: 'Logout',
+			href: '/auth/logout'
+		}
+	];
+	if (user?.isAdmin) {
+		rightNavigationForAuth.unshift({
+			name: 'Admin Dashboard',
+			href: '/admin'
+		});
+	}
 
 	return (
 		<div className="bg-white">
@@ -84,6 +85,7 @@ export default function Header() {
 									</button>
 								</div>
 
+								{/* mobile left */}
 								<div className="space-y-6 border-t border-gray-200 py-6 px-4">
 									{navigation.pages.map((page, index) => (
 										<div key={index} className="flow-root">
@@ -94,6 +96,7 @@ export default function Header() {
 									))}
 								</div>
 
+								{/* Mobile right nav */}
 								<div className="space-y-6 border-t border-gray-200 py-6 px-4">
 									{(user ? rightNavigationForAuth : rightNavigationForGuest).map((nav, index) => (
 										<div key={index} className="flow-root">
@@ -130,25 +133,25 @@ export default function Header() {
 
 							<div className="ml-4 flex lg:ml-0">
 								<Link to="/">
-									<span className="sr-only">Your Company</span>
 									<span className="font-bold">SHOP</span>
 								</Link>
 							</div>
 
 							<Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch">
-								<div className="flex h-full space-x-8">
+								<div className="flex h-full gap-x-8 max-[1280px]:max-w-[500px] mr-4 overflow-x-auto">
 									{navigation.pages.map(page => (
-										<a
+										<Link
 											key={page.name}
-											href={page.href}
+											to={page.href}
 											className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
 										>
 											{page.name}
-										</a>
+										</Link>
 									))}
 								</div>
 							</Popover.Group>
 
+							{/* desktop right */}
 							<div className="ml-auto flex items-center">
 								<div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
 									{(user ? rightNavigationForAuth : rightNavigationForGuest).map((nav, index) => (

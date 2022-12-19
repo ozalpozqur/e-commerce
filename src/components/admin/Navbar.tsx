@@ -8,9 +8,13 @@ import { Link, useLocation } from 'react-router-dom';
 const navigation = [
 	{ name: 'Dashboard', href: '/admin' },
 	{ name: 'Add Product', href: '/admin/add-product' },
+	{ name: 'Add Category', href: '/admin/add-category' },
 	{ name: 'Go To Shop', href: '/' }
 ];
-const userNavigation = [{ name: 'Your Profile', href: '/profile' }];
+const userNavigation = [
+	{ name: 'Profile', href: '/profile' },
+	{ name: 'Logout', href: '/auth/logout' }
+];
 export default function () {
 	const { user } = useAuthStore();
 	const { pathname } = useLocation();
@@ -21,7 +25,9 @@ export default function () {
 					<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 						<div className="flex h-16 items-center justify-between">
 							<div className="flex items-center">
-								<div className="flex-shrink-0 text-white font-bold tracking-widest">ADMIN</div>
+								<div className="flex-shrink-0 text-white font-bold tracking-widest">
+									ADMIN DASHBOARD
+								</div>
 								<div className="hidden md:block">
 									<div className="ml-10 flex items-baseline gap-4">
 										{navigation.map(item => (

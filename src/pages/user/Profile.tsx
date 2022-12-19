@@ -1,6 +1,5 @@
 import { UserCircleIcon } from '@heroicons/react/24/outline';
 import { cn } from '../../helpers';
-import Header from '../../components/Header';
 import { HiOutlineLocationMarker } from 'react-icons/all';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
@@ -13,7 +12,7 @@ export default function Profile() {
 	const { pathname } = useLocation();
 	return (
 		<div className="h-full">
-			<main className="container mx-auto pb-10 lg:py-12 lg:px-8">
+			<main className="container mx-auto pb-10 lg:py-12 lg:px-4">
 				<div className="lg:grid lg:grid-cols-12 lg:gap-x-5">
 					<aside className="py-6 px-2 sm:px-6 lg:py-0 lg:px-0 lg:col-span-3">
 						<nav className="space-y-1">

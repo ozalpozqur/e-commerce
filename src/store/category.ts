@@ -5,6 +5,7 @@ import { Category } from '../types/altogic';
 interface CategoryState {
 	categories: Category[];
 	setCategories: (categories: Category[]) => void;
+	addCategory: (category: Category) => void;
 }
 
 const useCategoryStore = create<CategoryState>()(
@@ -13,6 +14,9 @@ const useCategoryStore = create<CategoryState>()(
 			categories: [],
 			setCategories(categories) {
 				set({ categories });
+			},
+			addCategory(category) {
+				set(prev => ({ categories: [...prev.categories, category] }));
 			}
 		}),
 		{

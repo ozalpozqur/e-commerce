@@ -17,6 +17,19 @@ export default class ProductService {
 		return data as Product[];
 	}
 
+	static async getProductsByCategory(slug: string) {
+		const { data, errors } = await altogic.db
+			.model('products')
+			.sort('createdAt', 'desc')
+			.filter(`category.slug == '${slug}'`)
+			.lookup({ field: 'category' })
+			.get();
+
+		if (errors) throw errors;
+
+		return data as Product[];
+	}
+
 	static async getProductById(_id: string) {
 		const { data, errors } = await altogic.db.model('products').object(_id).get();
 
