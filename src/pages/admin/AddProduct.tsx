@@ -14,6 +14,7 @@ import { MdDelete } from 'react-icons/all';
 import { TailSpin } from 'react-loader-spinner';
 import { isMobile } from 'react-device-detect';
 import { cn } from '../../helpers';
+import Button from '../../components/ui/Button';
 
 const addProductSchema = Yup.object().shape({
 	name: Yup.string().required('This field is required'),
@@ -193,29 +194,13 @@ export default function AddProduct() {
 					</div>
 				</div>
 				<div className="pt-5">
-					<div className="flex justify-end">
-						<button
-							type="button"
-							onClick={resetForm}
-							className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-						>
+					<div className="flex justify-end gap-2">
+						<Button type="button" onClick={resetForm} variant="secondary">
 							Clear
-						</button>
-						<button
-							disabled={loading}
-							type="submit"
-							className="ml-3 inline-flex disabled:opacity-70 disabled:cursor-not-allowed relative justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-						>
+						</Button>
+						<Button loading={loading} type="submit">
 							Add Product
-							<TailSpin
-								wrapperClass="absolute inset-0 flex items-center bg-black/30 justify-center"
-								color="#fff"
-								ariaLabel="tail-spin-loading"
-								height="80%"
-								radius="1"
-								visible={loading}
-							/>
-						</button>
+						</Button>
 					</div>
 				</div>
 			</form>

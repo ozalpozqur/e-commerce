@@ -5,7 +5,7 @@ import Login from '../pages/auth/Login';
 import Register from '../pages/auth/Register';
 import ProductDetail from '../pages/ProductDetail';
 import Error from '../pages/Error';
-import Profile from '../pages/Profile';
+import Profile from '../pages/user/Profile';
 import AddProduct from '../pages/admin/AddProduct';
 import Panel from '../pages/admin/Panel';
 import CategoryService from '../services/CategoryService';
@@ -13,6 +13,9 @@ import Default from '../pages/admin/Default';
 import ProductService from '../services/ProductService';
 import Cart from '../pages/Cart';
 import Logout from '../pages/auth/Logout';
+import ChangeUserInfo from '../pages/user/ChangeUserInfo';
+import UserAddress from '../pages/user/UserAddress';
+import ShopLayout from '../layouts/ShopLayout';
 
 export const router = createBrowserRouter([
 	{
@@ -23,11 +26,19 @@ export const router = createBrowserRouter([
 					return ProductService.getProducts();
 				},
 				index: true,
-				element: <Home />
+				element: (
+					<ShopLayout>
+						<Home />
+					</ShopLayout>
+				)
 			},
 			{
 				path: '/product/:id',
-				element: <ProductDetail />,
+				element: (
+					<ShopLayout>
+						<ProductDetail />
+					</ShopLayout>
+				),
 				async loader({ params: { id } }) {
 					if (!id) return;
 					const product = await ProductService.getProductById(id);
@@ -39,7 +50,9 @@ export const router = createBrowserRouter([
 				path: '/cart',
 				element: (
 					<AuthOnly>
-						<Cart />
+						<ShopLayout>
+							<Cart />
+						</ShopLayout>
 					</AuthOnly>
 				)
 			},
@@ -71,9 +84,21 @@ export const router = createBrowserRouter([
 				path: '/profile',
 				element: (
 					<AuthOnly>
-						<Profile />
+						<ShopLayout>
+							<Profile />
+						</ShopLayout>
 					</AuthOnly>
-				)
+				),
+				children: [
+					{
+						index: true,
+						element: <ChangeUserInfo />
+					},
+					{
+						path: 'address',
+						element: <UserAddress />
+					}
+				]
 			},
 			{
 				path: '/admin',

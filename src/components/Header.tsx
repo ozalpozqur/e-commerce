@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from 'react';
-import { Dialog, Popover, Tab, Transition } from '@headlessui/react';
+import { Dialog, Popover, Transition } from '@headlessui/react';
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { cn } from '../helpers';
 import { Link, useLocation } from 'react-router-dom';
@@ -48,7 +48,6 @@ export default function Header() {
 
 	return (
 		<div className="bg-white">
-			{/* Mobile menu */}
 			<Transition.Root show={open} as={Fragment}>
 				<Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
 					<Transition.Child
@@ -117,7 +116,7 @@ export default function Header() {
 			</Transition.Root>
 
 			<header className="relative bg-white">
-				<nav aria-label="Top" className="mx-auto container px-4">
+				<nav aria-label="Top" className="mx-auto container sm:px-4">
 					<div className="border-b border-gray-200">
 						<div className="flex h-16 items-center">
 							<button
@@ -129,7 +128,6 @@ export default function Header() {
 								<Bars3Icon className="h-6 w-6" aria-hidden="true" />
 							</button>
 
-							{/* Logo */}
 							<div className="ml-4 flex lg:ml-0">
 								<Link to="/">
 									<span className="sr-only">Your Company</span>
@@ -137,7 +135,6 @@ export default function Header() {
 								</Link>
 							</div>
 
-							{/* Flyout menus */}
 							<Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch">
 								<div className="flex h-full space-x-8">
 									{navigation.pages.map(page => (
@@ -177,8 +174,8 @@ export default function Header() {
 								</div>
 
 								{/* Cart */}
-								<div className="ml-4 flow-root lg:ml-6">
-									<Link to="/cart" className="group -m-2 flex items-center p-2">
+								<div className="flow-root lg:ml-6">
+									<Link to="/cart" className="group flex items-center p-2">
 										<ShoppingBagIcon
 											className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
 											aria-hidden="true"

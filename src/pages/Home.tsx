@@ -3,6 +3,7 @@ import ShopLayout from '../layouts/ShopLayout';
 import { useLoaderData } from 'react-router-dom';
 import { useEffect } from 'react';
 import useProductStore from '../store/product';
+import Button from '../components/ui/Button';
 
 // TODO: ana sayfaya girilmiyor authsuz
 
@@ -16,10 +17,8 @@ export default function Home() {
 	}, []);
 
 	return (
-		<ShopLayout>
-			<div className="p-4">
-				<ProductList />
-			</div>
-		</ShopLayout>
+		<div className="p-4">
+			<ProductList />
+		</div>
 	);
 }

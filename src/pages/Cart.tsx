@@ -3,6 +3,7 @@ import useCartStore, { CartItem } from '../store/cart';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import moneyFormat, { cn } from '../helpers';
+import Button from '../components/ui/Button';
 
 export default function Cart() {
 	const { items, totalAmount } = useCartStore();
@@ -52,12 +53,9 @@ export default function Cart() {
 							</dl>
 
 							<div className="mt-6">
-								<button
-									type="submit"
-									className="w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
-								>
+								<Button as="link" href="/checkout" full>
 									Checkout
-								</button>
+								</Button>
 							</div>
 						</section>
 					) : undefined}
