@@ -16,6 +16,7 @@ import Logout from '../pages/auth/Logout';
 import ChangeUserInfo from '../pages/user/ChangeUserInfo';
 import UserAddress from '../pages/user/UserAddress';
 import ShopLayout from '../layouts/ShopLayout';
+import Checkout from '../pages/Checkout';
 
 export const router = createBrowserRouter([
 	{
@@ -52,6 +53,16 @@ export const router = createBrowserRouter([
 					<AuthOnly>
 						<ShopLayout>
 							<Cart />
+						</ShopLayout>
+					</AuthOnly>
+				)
+			},
+			{
+				path: '/checkout',
+				element: (
+					<AuthOnly>
+						<ShopLayout>
+							<Checkout />
 						</ShopLayout>
 					</AuthOnly>
 				)
