@@ -4,12 +4,13 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import moneyFormat, { cn } from '../helpers';
 import Button from '../components/ui/Button';
+import { Player } from '@lottiefiles/react-lottie-player';
 
 export default function Cart() {
 	const { items, totalAmount } = useCartStore();
 	return (
 		<div className="bg-white">
-			<div className="max-w-2xl mx-auto pt-16 pb-24 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+			<div className="container mx-auto pt-5 pb-24 px-4 sm:px-6 lg:px-4">
 				<h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">Shopping Cart</h1>
 				<form className="mt-12 lg:grid lg:grid-cols-12 lg:gap-x-12 lg:items-start xl:gap-x-16">
 					<section
@@ -22,10 +23,18 @@ export default function Cart() {
 
 						{items.length === 0 ? (
 							<div className="text-center text-xl flex flex-col gap-4 items-center justify-center col-span-12">
-								<p>You do not have any products in your cart.</p>
-								<Link className="border transition hover:bg-gray-100 px-4 py-2" to="/">
-									Go back to home
-								</Link>
+								<div className="text-center space-y-4 p-4 text-xl">
+									<Player
+										autoplay
+										loop
+										src="/empty-cart.json"
+										style={{ height: '300px', width: '300px' }}
+									/>
+									<p className="text-3xl">Your cart is empty</p>
+								</div>
+								<Button variant="white" as="link" href="/">
+									Back to home
+								</Button>
 							</div>
 						) : (
 							<ul role="list" className="border-t border-b border-gray-200 divide-y divide-gray-200">
