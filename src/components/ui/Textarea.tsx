@@ -1,15 +1,15 @@
 import { ComponentPropsWithRef, ForwardedRef, forwardRef, useId } from 'react';
 import { cn } from '../../helpers';
 
-export interface InputProps extends ComponentPropsWithRef<'textarea'> {
+export interface TextAreaProps extends ComponentPropsWithRef<'textarea'> {
 	showError?: boolean;
 	errorMessage?: string;
 	label?: string;
 	className?: string;
 }
-const Input = forwardRef(
+const TextArea = forwardRef(
 	(
-		{ className, rows, cols, label, showError = false, errorMessage, ...props }: InputProps,
+		{ className, rows, cols, label, showError = false, errorMessage, ...props }: TextAreaProps,
 		ref: ForwardedRef<HTMLTextAreaElement>
 	) => {
 		const id = useId();
@@ -40,4 +40,4 @@ const Input = forwardRef(
 	}
 );
 
-export default Input;
+export default TextArea;

@@ -3,6 +3,7 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import UserService from '../../services/UserService';
 import { toast } from 'react-toastify';
 import useAuthStore from '../../store/auth';
+import Input from '../../components/ui/Input';
 
 export default function ChangeUserInfo() {
 	const { user, setUser } = useAuthStore();
@@ -46,20 +47,11 @@ export default function ChangeUserInfo() {
 
 					<div className="flex gap-4 flex-col md:flex-row">
 						<div className="flex-1">
-							<div className="col-span-12 sm:col-span-6">
+							<div className="col-span-12 sm:col-span-6 flex flex-col gap-1">
 								<label htmlFor="name" className="block text-sm font-medium text-gray-700">
 									Name
 								</label>
-								<input
-									type="text"
-									name="name"
-									id="name"
-									value={name}
-									required
-									onChange={e => setName(e.target.value)}
-									autoComplete="given-name"
-									className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
-								/>
+								<Input value={name} required onChange={e => setName(e.target.value)} />
 							</div>
 						</div>
 						<div className="flex flex-col lg:flex-row">
@@ -73,6 +65,7 @@ export default function ChangeUserInfo() {
 											className="flex-shrink-0 inline-block rounded-full overflow-hidden h-12 w-12"
 											aria-hidden="true"
 										>
+											s
 											<img
 												className="rounded-full h-full w-full"
 												src={user?.profilePicture}
@@ -94,7 +87,7 @@ export default function ChangeUserInfo() {
 									</div>
 								</div>
 
-								<div className="hidden relative rounded-full overflow-hidden lg:block">
+								<div className="hidden border shadow relative rounded-full overflow-hidden lg:block">
 									<img
 										className="relative rounded-full w-40 h-40"
 										src={user?.profilePicture}

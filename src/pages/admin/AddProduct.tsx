@@ -130,6 +130,7 @@ export default function AddProduct() {
 									onChange={formik.handleChange}
 									value={formik.values.category}
 									name="category"
+									className="w-full"
 									fields={categories.map(category => ({ id: category._id, value: category.name }))}
 								/>
 							</div>

@@ -1,7 +1,7 @@
 import { ComponentPropsWithRef, ForwardedRef, forwardRef, useId } from 'react';
 import { cn } from '../../helpers';
 
-export interface InputProps extends ComponentPropsWithRef<'select'> {
+export interface SelectBoxProps extends ComponentPropsWithRef<'select'> {
 	showError?: boolean;
 	errorMessage?: string;
 	fields: {
@@ -11,9 +11,9 @@ export interface InputProps extends ComponentPropsWithRef<'select'> {
 	label?: string;
 	className?: string;
 }
-const Input = forwardRef(
+const SelectBox = forwardRef(
 	(
-		{ fields, value, className, label, showError = false, errorMessage, ...props }: InputProps,
+		{ fields, value, className, label, showError = false, errorMessage, ...props }: SelectBoxProps,
 		ref: ForwardedRef<HTMLSelectElement>
 	) => {
 		const id = useId();
@@ -24,7 +24,7 @@ const Input = forwardRef(
 					id={id}
 					value={value}
 					className={cn(
-						'max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md',
+						'block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:text-sm border-gray-300 rounded-md',
 						showError ? 'border-red-600' : ''
 					)}
 					{...props}
@@ -42,4 +42,4 @@ const Input = forwardRef(
 	}
 );
 
-export default Input;
+export default SelectBox;
