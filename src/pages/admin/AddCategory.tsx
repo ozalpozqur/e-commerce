@@ -74,7 +74,7 @@ export default function AddCategory() {
 				</div>
 				<div className="pt-5">
 					<div className="flex justify-end gap-2">
-						<Button type="button" onClick={() => formik.resetForm} variant="secondary">
+						<Button type="button" onClick={() => formik.resetForm()} variant="secondary">
 							Clear
 						</Button>
 						<Button loading={loading} type="submit">
