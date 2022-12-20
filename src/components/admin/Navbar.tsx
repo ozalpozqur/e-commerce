@@ -7,8 +7,8 @@ import { Link, useLocation } from 'react-router-dom';
 
 const navigation = [
 	{ name: 'Dashboard', href: '/admin' },
-	{ name: 'Add Product', href: '/admin/add-product' },
-	{ name: 'Add Category', href: '/admin/add-category' },
+	{ name: 'Products', href: '/admin/products' },
+	{ name: 'Categories', href: '/admin/categories' },
 	{ name: 'Go To Shop', href: '/' }
 ];
 const userNavigation = [

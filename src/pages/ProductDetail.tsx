@@ -26,8 +26,8 @@ export default function () {
 
 	return (
 		<section className="container mx-auto">
-			<div className="relative max-w-screen-xl px-4 py-8 mx-auto">
-				<div className="grid items-start grid-cols-1 gap-8 md:grid-cols-2">
+			<div className="relative px-4 py-8 mx-auto">
+				<div className="grid items-start grid-cols-1 gap-4 md:gap-8 md:grid-cols-2">
 					<div className="grid grid-cols-1 gap-4 md:grid-cols-1">
 						<img
 							alt={product.name}
@@ -36,7 +36,7 @@ export default function () {
 						/>
 					</div>
 					<div className="sticky top-0">
-						<div className="flex justify-between mt-8">
+						<div className="flex justify-between">
 							<div className="max-w-[35ch]">
 								<h1 className="text-2xl font-bold">{product.name}</h1>
 							</div>
@@ -44,18 +44,15 @@ export default function () {
 							<p className="text-lg font-bold">{moneyFormat(product.price)}</p>
 						</div>
 
-						<details className="group relative mt-4 [&_summary::-webkit-details-marker]:hidden">
-							<summary className="block">
-								<div>
-									<div className="prose max-w-none group-open:hidden">
-										<p>{product.description}</p>
-									</div>
-								</div>
-							</summary>
-						</details>
+						<div className="mt-4">
+							<div className="font-bold text-lg text-gray-800">Description</div>
+							<div className="prose">
+								<p>{product.description}</p>
+							</div>
+						</div>
 
-						<div className="mt-8">
-							<div className="flex mt-8 gap-2">
+						<div className="mt-4">
+							<div className="flex gap-2">
 								<div>
 									<label htmlFor="quantity" className="sr-only">
 										Qty

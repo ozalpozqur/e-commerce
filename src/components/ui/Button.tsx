@@ -12,7 +12,8 @@ const buttonProps = variantProps({
 		variant: {
 			primary: 'text-white bg-indigo-700 enabled:hover:bg-indigo-800 focus:ring-indigo-500',
 			secondary: 'text-indigo-700 bg-indigo-100 enabled:hover:bg-indigo-200 focus:ring-indigo-400',
-			white: 'text-gray-700 bg-white border border-gray-300 enabled:hover:bg-gray-50 focus:ring-gray-400'
+			white: 'text-gray-700 bg-white border border-gray-300 enabled:hover:bg-gray-50 focus:ring-gray-400',
+			danger: 'text-white bg-red-600 enabled:hover:bg-red-700 focus:ring-red-500'
 		},
 		rounded: {
 			full: 'rounded-full',

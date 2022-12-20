@@ -43,9 +43,10 @@ export default class ProductService {
 
 		if (uploadErrors) throw uploadErrors;
 
-		const { data: dataFromDB, errors } = (await altogic.db
-			.model('products')
-			.create({ ...product, coverURL: data.publicPath })) as {
+		const { data: dataFromDB, errors } = (await altogic.endpoint.post('/products', {
+			...product,
+			coverURL: data.publicPath
+		})) as {
 			data: Product;
 			errors: APIError;
 		};

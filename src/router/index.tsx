@@ -20,6 +20,8 @@ import AddCategory from '../pages/admin/AddCategory';
 import InitialApp from '../pages/InitialApp';
 import CategoryService from '../services/CategoryService';
 import Category from '../pages/Category';
+import Categories from '../pages/admin/Categories';
+import Products from '../pages/admin/Products';
 
 export const router = createBrowserRouter([
 	{
@@ -145,12 +147,20 @@ export const router = createBrowserRouter([
 						element: <Stats />
 					},
 					{
-						path: 'add-product',
+						path: 'products/new',
 						element: <AddProduct />
 					},
 					{
-						path: 'add-category',
+						path: 'categories',
+						element: <Categories />
+					},
+					{
+						path: 'categories/new',
 						element: <AddCategory />
+					},
+					{
+						path: 'products',
+						element: <Products />
 					}
 				]
 			}
