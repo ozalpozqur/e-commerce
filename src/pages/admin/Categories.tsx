@@ -14,7 +14,7 @@ export default function Categories() {
 	];
 	const rows = categories.map(category => ({
 		name: category.name,
-		createdAt: format(new Date(category.createdAt), 'PPP'),
+		createdAt: format(new Date(category.createdAt), 'P'),
 		action: (
 			<div className="flex gap-2">
 				<Button as="link" href={`/category/${category.slug}`} variant="secondary" size="small">

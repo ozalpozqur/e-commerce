@@ -21,7 +21,7 @@ export default function Products() {
 		name: product.name,
 		stock: product.qtyInStock,
 		price: moneyFormat(product.price),
-		createdAt: format(new Date(product.createdAt), 'PPP'),
+		createdAt: format(new Date(product.createdAt), 'P'),
 		action: (
 			<div className="flex gap-2">
 				<Button as="link" href={`/product/${product._id}`} variant="secondary" size="small">
