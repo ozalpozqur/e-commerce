@@ -1,16 +1,20 @@
 import { useLoaderData } from 'react-router-dom';
 import { Product } from '../types/altogic';
 import moneyFormat from '../helpers';
-import Header from '../components/Header';
 import useCartStore from '../store/cart';
 import { ChangeEvent, useState } from 'react';
 import Button from '../components/ui/Button';
 import { toast } from 'react-toastify';
+import CartService from '../services/CartService';
+import useAuthStore from '../store/auth';
+import { ca } from 'date-fns/locale';
 
 export default function () {
 	const product = useLoaderData() as Product;
 	const { addToCart } = useCartStore();
+	const { user } = useAuthStore();
 	const [quantity, setQuantity] = useState(1);
+	const [adding, setAdding] = useState(false);
 
 	function handleQuantity(e: ChangeEvent<HTMLInputElement>) {
 		const number = e.target.valueAsNumber;
@@ -19,9 +23,24 @@ export default function () {
 		setQuantity(e.target.valueAsNumber);
 	}
 
-	function handleClick() {
-		addToCart(product, quantity);
-		toast.success('Product added');
+	async function handleClick() {
+		if (!user) return;
+		try {
+			setAdding(true);
+			let cart = await CartService.addToCart({
+				product: product._id,
+				user: user._id,
+				quantity
+			});
+			addToCart(cart);
+			toast.success('Product added');
+		} catch (error) {
+			console.log(error);
+			// @ts-ignore
+			toast.error(error.items[0].message);
+		} finally {
+			setAdding(false);
+		}
 	}
 
 	return (
@@ -68,7 +87,9 @@ export default function () {
 									/>
 								</div>
 
-								<Button onClick={handleClick}>Add to Cart</Button>
+								<Button loading={adding} onClick={handleClick}>
+									Add to Cart
+								</Button>
 							</div>
 						</div>
 					</div>

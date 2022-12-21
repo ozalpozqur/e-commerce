@@ -29,6 +29,8 @@ export interface Product {
 	category: Category;
 	coverURL: string;
 	qtyInStock: number;
+	stripePriceId: string;
+	stripeProductId: string;
 	createdAt: string;
 	updatedAt: string;
 }
