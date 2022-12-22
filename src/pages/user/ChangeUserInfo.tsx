@@ -4,21 +4,28 @@ import UserService from '../../services/UserService';
 import { toast } from 'react-toastify';
 import useAuthStore from '../../store/auth';
 import Input from '../../components/ui/Input';
+import UserAvatar from '../../components/UserAvatar';
+import { APIError } from 'altogic';
 
 export default function ChangeUserInfo() {
 	const { user, setUser } = useAuthStore();
 	const [loading, setLoading] = useState(false);
-	const [name, setName] = useState(user?.name);
+	const [name, setName] = useState(user?.name ?? '');
+	const [phone, setPhone] = useState(user?.phone ?? '');
+
 	async function onSelectPhoto(e: ChangeEvent<HTMLInputElement>) {
 		if (!e.target.files || !user) return;
 		const [file] = e.target.files;
+		if (!file) return;
+		e.target.value = '';
 		try {
 			setLoading(true);
 			const updatedUser = await UserService.updateProfilePicture(user._id, file);
 			setUser(updatedUser);
-		} catch (error) {
-			console.log(error);
-			toast.error('Something went wrong, please try again.');
+			// @ts-ignore
+		} catch (error: APIError) {
+			console.error(error);
+			error.items.forEach((item: any) => toast.error(item.message));
 		} finally {
 			setLoading(false);
 		}
@@ -27,13 +34,21 @@ export default function ChangeUserInfo() {
 	async function submitHandler(e: FormEvent) {
 		e.preventDefault();
 		if (!user) return;
-		setLoading(true);
-		const updatedUser = await UserService.update(user?._id, { name });
-		setLoading(false);
-		toast.success('Profile updated');
-		setUser(updatedUser);
+		try {
+			setLoading(true);
+			const updatedUser = await UserService.update(user?._id, { name, phone });
+			setUser(updatedUser);
+			toast.success('Profile updated');
+			// @ts-ignore
+		} catch (error: APIError) {
+			console.error(error);
+			error.items.forEach((item: any) => toast.error(item.message));
+		} finally {
+			setLoading(false);
+		}
 	}
 
+	// @ts-ignore
 	return (
 		<section>
 			<form className="divide-y divide-gray-200 lg:col-span-9" onSubmit={submitHandler}>
@@ -51,7 +66,27 @@ export default function ChangeUserInfo() {
 								<label htmlFor="name" className="block text-sm font-medium text-gray-700">
 									Name
 								</label>
-								<Input value={name} required onChange={e => setName(e.target.value)} />
+								<Input
+									placeholder="Enter your name"
+									value={name}
+									id="name"
+									required
+									onChange={e => setName(e.target.value)}
+								/>
+							</div>
+						</div>
+						<div className="flex-1">
+							<div className="col-span-12 sm:col-span-6 flex flex-col gap-1">
+								<label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+									Phone
+								</label>
+								<Input
+									value={phone}
+									id="phone"
+									required
+									onChange={e => setPhone(e.target.value)}
+									placeholder="Enter your phone number"
+								/>
 							</div>
 						</div>
 						<div className="flex flex-col lg:flex-row">
@@ -65,12 +100,7 @@ export default function ChangeUserInfo() {
 											className="flex-shrink-0 inline-block rounded-full overflow-hidden h-12 w-12"
 											aria-hidden="true"
 										>
-											s
-											<img
-												className="rounded-full h-full w-full"
-												src={user?.profilePicture}
-												alt={user?.name}
-											/>
+											<UserAvatar />
 										</div>
 										<div className="ml-5 rounded-md shadow-sm">
 											<Button htmlFor="mobile-user-photo" as="label" variant="white">
@@ -88,17 +118,12 @@ export default function ChangeUserInfo() {
 								</div>
 
 								<div className="hidden border shadow relative rounded-full overflow-hidden lg:block">
-									<img
-										className="relative rounded-full w-40 h-40"
-										src={user?.profilePicture}
-										alt={user?.name}
-									/>
+									<UserAvatar width={200} className="relative" />
 									<label
 										htmlFor="desktop-user-photo"
-										className="absolute inset-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center text-sm font-medium text-white opacity-0 hover:opacity-100 focus-within:opacity-100"
+										className="absolute transition inset-0 w-full h-full bg-black bg-opacity-60 cursor-pointer flex items-center justify-center text-sm font-medium text-white opacity-0 hover:opacity-100 focus-within:opacity-100"
 									>
 										<span>Change</span>
-										<span className="sr-only"> user photo</span>
 										<input
 											type="file"
 											id="desktop-user-photo"
