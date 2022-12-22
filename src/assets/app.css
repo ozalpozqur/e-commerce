@@ -12,6 +12,9 @@
     select:has(>option:nth-child(1):checked) {
         @apply text-transparent;
     }
+    .font-barlow {
+        font-family: 'Barlow', sans-serif;
+    }
 }
 @layer components {
     .no-spinner {
