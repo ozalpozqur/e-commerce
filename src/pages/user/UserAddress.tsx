@@ -5,13 +5,15 @@ import useAuthStore from '../../store/auth';
 import { FormEvent, useEffect, useState } from 'react';
 import UserService from '../../services/UserService';
 import { toast } from 'react-toastify';
+import { APIError } from 'altogic';
 
 export default function UserAddress() {
-	const { user, setUser } = useAuthStore();
+	const { user, setUser, setAddress } = useAuthStore();
 	const [country, setCountry] = useState('');
 	const [city, setCity] = useState('');
 	const [zipCode, setZipCode] = useState('');
 	const [detailedAddress, setDetailedAddress] = useState('');
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		if (user?.address) {
@@ -24,17 +26,24 @@ export default function UserAddress() {
 
 	async function submitHandler(e: FormEvent) {
 		e.preventDefault();
-		if (!user) return;
-		const updatedUser = await UserService.update(user._id, {
-			address: {
+		if (!user || loading) return;
+		try {
+			setLoading(true);
+			const updatedUser = await UserService.updateAddress({
 				country,
 				city,
 				zipCode,
 				detailedAddress
-			}
-		});
-		setUser(updatedUser);
-		toast.success('Address updated successfully');
+			});
+			setUser(updatedUser);
+			toast.success('Address updated successfully');
+			// @ts-ignore
+		} catch (error: APIError) {
+			console.error(error);
+			error.items.forEach((item: any) => toast.error(item.message));
+		} finally {
+			setLoading(false);
+		}
 	}
 
 	return (
@@ -101,7 +110,7 @@ export default function UserAddress() {
 
 				<div className="pt-6">
 					<div className="px-4 flex justify-end sm:px-6 sm:px-0 gap-5">
-						<Button type="submit" className="w-full sm:w-auto">
+						<Button loading={loading} type="submit" className="w-full sm:w-auto">
 							Save Address
 						</Button>
 					</div>
