@@ -12,45 +12,43 @@ interface CartState {
 
 const useCartStore = create<CartState>()(
 	devtools(
-		persist(
-			set => ({
-				items: [],
-				totalAmount: 0,
-				addToCart(cartItem) {
-					set(prev => {
-						let items;
-						const exist = prev.items.find(item => item.product?._id === cartItem?.product._id);
-						if (exist) {
-							items = prev.items.map(item => {
-								if (item.product._id === cartItem.product._id) {
-									item = cartItem;
-								}
-								return item;
-							});
-						} else {
-							items = [...prev.items, cartItem];
-						}
-						set({ totalAmount: calculateTotalPrice(items) });
-						return { items };
-					});
-				},
-				removeProduct(item) {
-					set(prev => {
-						const items = prev.items.filter(_item => _item._id !== item._id);
-						set({ totalAmount: calculateTotalPrice(items) });
-						return {
-							items
-						};
-					});
-				},
-				setCart(items) {
-					set({ items, totalAmount: calculateTotalPrice(items) });
-				}
-			}),
-			{
-				name: 'cart-storage'
+		set => ({
+			items: [],
+			totalAmount: 0,
+			addToCart(cartItem) {
+				set(prev => {
+					let items;
+					const exist = prev.items.find(item => item.product?._id === cartItem?.product._id);
+					if (exist) {
+						items = prev.items.map(item => {
+							if (item.product._id === cartItem.product._id) {
+								item = cartItem;
+							}
+							return item;
+						});
+					} else {
+						items = [...prev.items, cartItem];
+					}
+					set({ totalAmount: calculateTotalPrice(items) });
+					return { items };
+				});
+			},
+			removeProduct(item) {
+				set(prev => {
+					const items = prev.items.filter(_item => _item._id !== item._id);
+					set({ totalAmount: calculateTotalPrice(items) });
+					return {
+						items
+					};
+				});
+			},
+			setCart(items) {
+				set({ items, totalAmount: calculateTotalPrice(items) });
 			}
-		)
+		}),
+		{
+			name: 'cart-storage'
+		}
 	)
 );
 

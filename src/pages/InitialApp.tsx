@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import useProductStore from '../store/product';
 import useCategoryStore from '../store/category';
 import useCartStore from '../store/cart';
+import useAuthStore from '../store/auth';
 
 interface LoaderData {
 	products: Product[];
@@ -15,11 +16,14 @@ export default function InitialApp() {
 	const { setProducts } = useProductStore();
 	const { setCategories } = useCategoryStore();
 	const { setCart } = useCartStore();
+	const { user } = useAuthStore();
 
 	useEffect(() => {
 		setProducts(products);
 		setCategories(categories);
-		setCart(cart);
+		if (user) {
+			setCart(cart);
+		}
 	}, []);
 
 	return <Outlet />;

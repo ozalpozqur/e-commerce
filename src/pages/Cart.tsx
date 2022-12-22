@@ -23,7 +23,7 @@ export default function ShoppingCart() {
 			acc[`product_${index + 1}_altogic_id`] = curr.product._id;
 			return acc;
 		}, {} as any);
-
+        
 		const { data: dataFromApi, errors } = await altogic.endpoint.post('/checkout', data);
 		setLoading(false);
 		if (errors) {

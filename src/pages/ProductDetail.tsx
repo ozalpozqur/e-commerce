@@ -1,4 +1,4 @@
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import { Product } from '../types/altogic';
 import moneyFormat from '../helpers';
 import useCartStore from '../store/cart';
@@ -7,7 +7,6 @@ import Button from '../components/ui/Button';
 import { toast } from 'react-toastify';
 import CartService from '../services/CartService';
 import useAuthStore from '../store/auth';
-import { ca } from 'date-fns/locale';
 
 export default function () {
 	const product = useLoaderData() as Product;
@@ -15,6 +14,7 @@ export default function () {
 	const { user } = useAuthStore();
 	const [quantity, setQuantity] = useState(1);
 	const [adding, setAdding] = useState(false);
+	const navigate = useNavigate();
 
 	function handleQuantity(e: ChangeEvent<HTMLInputElement>) {
 		const number = e.target.valueAsNumber;
@@ -24,7 +24,7 @@ export default function () {
 	}
 
 	async function handleClick() {
-		if (!user) return;
+		if (!user) return navigate('/auth/login');
 		try {
 			setAdding(true);
 			let cart = await CartService.addToCart({

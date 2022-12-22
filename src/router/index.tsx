@@ -18,26 +18,16 @@ import ShopLayout from '../layouts/ShopLayout';
 import Checkout from '../pages/Checkout';
 import AddCategory from '../pages/admin/AddCategory';
 import InitialApp from '../pages/InitialApp';
-import CategoryService from '../services/CategoryService';
 import Category from '../pages/Category';
 import Categories from '../pages/admin/Categories';
 import Products from '../pages/admin/Products';
-import CartService from '../services/CartService';
+import { rootLoader } from '../loaders';
 
 export const router = createBrowserRouter([
 	{
 		path: '/',
 		element: <InitialApp />,
-		async loader() {
-			const products = ProductService.getProducts();
-			const categories = CategoryService.getCategories();
-			const cart = CartService.getCart();
-			return {
-				products: await products,
-				categories: await categories,
-				cart: await cart
-			};
-		},
+		loader: rootLoader,
 		children: [
 			{
 				index: true,
