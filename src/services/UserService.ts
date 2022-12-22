@@ -1,5 +1,5 @@
 import altogic from '../libs/altogic';
-import { Address, Cart, User } from '../types/altogic';
+import { Address, User } from '../types/altogic';
 import { APIError } from 'altogic';
 
 export default class UserService {
