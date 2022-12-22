@@ -85,16 +85,23 @@ export default function Header() {
 									</button>
 								</div>
 
-								{/* mobile left */}
-								<div className="space-y-6 border-t border-gray-200 py-6 px-4">
-									{navigation.pages.map((page, index) => (
-										<div key={index} className="flow-root">
-											<a href={page.href} className="-m-2 block p-2 font-medium text-gray-900">
-												{page.name}
-											</a>
+								{
+									/* mobile left */
+									navigation.pages.length > 0 ? (
+										<div className="space-y-6 border-t border-gray-200 py-6 px-4">
+											{navigation.pages.map((page, index) => (
+												<div key={index} className="flow-root">
+													<a
+														href={page.href}
+														className="-m-2 block p-2 font-medium text-gray-900"
+													>
+														{page.name}
+													</a>
+												</div>
+											))}
 										</div>
-									))}
-								</div>
+									) : undefined
+								}
 
 								{/* Mobile right nav */}
 								<div className="space-y-6 border-t border-gray-200 py-6 px-4">
