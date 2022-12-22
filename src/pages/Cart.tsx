@@ -23,13 +23,12 @@ export default function ShoppingCart() {
 			acc[`product_${index + 1}_altogic_id`] = curr.product._id;
 			return acc;
 		}, {} as any);
-        
+
 		const { data: dataFromApi, errors } = await altogic.endpoint.post('/checkout', data);
 		setLoading(false);
 		if (errors) {
-			toast.error('Something went wrong, please try again');
+			errors.items.forEach(item => toast.error(item.message));
 		} else {
-			console.log(dataFromApi);
 			// @ts-ignore
 			location.replace(dataFromApi.url);
 		}
@@ -38,7 +37,7 @@ export default function ShoppingCart() {
 	return (
 		<div className="bg-white">
 			<div className="container mx-auto pt-5 pb-24 px-4 sm:px-6 lg:px-4">
-				<h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">Shopping Cart</h1>
+				<h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Shopping Cart</h1>
 				<form className="mt-12 lg:grid lg:grid-cols-12 lg:gap-x-12 lg:items-start xl:gap-x-16">
 					<section
 						aria-labelledby="cart-heading"
