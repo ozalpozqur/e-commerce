@@ -61,7 +61,7 @@ export default class ProductService {
 	}
 
 	static async uploadCoverImage(file: File) {
-		let { data, errors } = (await altogic.storage.bucket('coverImages').upload(file.name, file, {
+		let { data, errors } = (await altogic.storage.root.upload(file.name, file, {
 			isPublic: true,
 			onProgress() {} // suppress for ts error
 		})) as {
