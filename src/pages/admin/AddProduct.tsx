@@ -14,13 +14,14 @@ import { MdDelete } from 'react-icons/all';
 import { isMobile } from 'react-device-detect';
 import { cn } from '../../helpers';
 import Button from '../../components/ui/Button';
+import { APIError } from 'altogic';
 
 const addProductSchema = Yup.object().shape({
 	name: Yup.string().required('This field is required'),
-	qtyInStock: Yup.number().required('This field is required'),
+	qtyInStock: Yup.number().min(1, 'Stock quantity must be greater than 0').required('This field is required'),
 	category: Yup.string().required('This field is required'),
 	description: Yup.string().required('This field is required'),
-	price: Yup.number().required('This field is required'),
+	price: Yup.number().min(0, 'Product price cannot be negative value').required('This field is required'),
 	image: Yup.mixed().required('Product cover is required')
 });
 export default function AddProduct() {
@@ -47,9 +48,10 @@ export default function AddProduct() {
 				toast.success('Product added successfully');
 				formik.resetForm();
 				setImagePreview(null);
-			} catch (error) {
+				// @ts-ignore
+			} catch (error: APIError) {
 				console.error(error);
-				toast.error('Something went wrong please try again', {});
+				error.items.forEach((item: any) => toast.error(item.message));
 			} finally {
 				setLoading(false);
 			}
