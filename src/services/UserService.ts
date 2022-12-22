@@ -1,5 +1,5 @@
 import altogic from '../libs/altogic';
-import { Cart, User } from '../types/altogic';
+import { Address, Cart, User } from '../types/altogic';
 import { APIError } from 'altogic';
 
 export default class UserService {
@@ -18,5 +18,11 @@ export default class UserService {
 		if (errors) throw errors;
 
 		return user as User;
+	}
+	static async updateAddress(address: Address) {
+		const { data, errors } = await altogic.endpoint.post('/address', address);
+		if (errors) throw errors;
+
+		return data as User;
 	}
 }
