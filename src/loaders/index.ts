@@ -2,7 +2,9 @@ import ProductService from '../services/ProductService';
 import CategoryService from '../services/CategoryService';
 import CartService from '../services/CartService';
 import useAuthStore from '../store/auth';
-import { Product, Category, Cart } from '../types/altogic';
+import { Product, Category, Cart, User } from '../types/altogic';
+import altogic from '../libs/altogic';
+import { LoaderFunction } from 'react-router-dom';
 
 interface RootLoader {
 	products: Product[];
@@ -16,8 +18,15 @@ export async function rootLoader() {
 	const data: RootLoader = {
 		products: await products,
 		categories: await categories,
-		cart: useAuthStore.getState().user ? await CartService.getCart() : []
+		cart: []
 	};
+	const { user, logout, setUser } = useAuthStore.getState();
+	if (user) {
+		data.cart = await CartService.getCart();
+		const { user: userFromDB, errors } = await altogic.auth.getUserFromDB();
+		if (!userFromDB || errors) logout();
+		setUser(userFromDB as User);
+	}
 
 	return data;
 }
