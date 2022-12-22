@@ -21,15 +21,15 @@ export default function Register() {
 		if (!emailRef.current || !passwordRef.current || !usernameRef.current) return;
 		const email = emailRef.current.value.trim();
 		const password = passwordRef.current.value.trim();
-		const username = usernameRef.current.value.trim();
-		await register(email, password, username);
+		const name = usernameRef.current.value.trim();
+		await register(email, password, name);
 	};
 
-	const register = async (email: string, password: string, username: string) => {
+	const register = async (email: string, password: string, name: string) => {
 		setErrors(null);
 		setLoading(true);
 
-		const { user, session, errors } = await altogic.auth.signUpWithEmail(email, password, username);
+		const { user, session, errors } = await altogic.auth.signUpWithEmail(email, password, name);
 		setLoading(false);
 
 		if (errors) {
