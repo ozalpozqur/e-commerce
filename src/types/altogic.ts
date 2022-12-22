@@ -4,16 +4,17 @@ export interface User extends AltogicUser {
 	isAdmin: boolean;
 	createdAt: string;
 	updatedAt: string;
-	address?: {
-		country: string;
-		city: string;
-		detailedAddress: string;
-		zipCode: string;
-		_parent?: string;
-		_id?: string;
-	};
+	phone: string;
+	address?: Address;
 }
-
+export interface Address {
+	country: string;
+	city: string;
+	detailedAddress: string;
+	zipCode: string;
+	_parent?: string;
+	_id?: string;
+}
 export interface Category {
 	_id: string;
 	name: string;
