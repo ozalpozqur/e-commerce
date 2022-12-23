@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite --host",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy:f": "cd stripe_webhook_handler && altogic deploy",
+    "deploy:status": "cd stripe_webhook_handler && altogic get builds"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.5",
