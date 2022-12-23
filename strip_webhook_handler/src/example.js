@@ -1,9 +1,9 @@
 const { createClient } = require('altogic');
 
-const ENV_URL = 'https://e-commerce.c1-europe.altogic.com';
-const CLIENT_KEY = '8fc4e63ca4d746a1856ccace0741f60f';
-let altogic;
+const ENV_URL = 'CLIENT_KEY';
+const CLIENT_KEY = 'CLIENT_KEY';
 
+let altogic;
 //altogic = createClient(ENV_URL, CLIENT_KEY);
 
 const exampleJson = {

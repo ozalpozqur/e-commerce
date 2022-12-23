@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 stripe_webhook_handler/node_modules
+stripe_webhook_handler/src/index.js
 dist
 dist-ssr
 *.local
