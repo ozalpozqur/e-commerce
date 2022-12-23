@@ -23,6 +23,7 @@ export default function ShoppingCart() {
 			user: user?._id,
 			productName: item.product.name,
 			price: item.product.price,
+			product: item.product._id,
 			quantity: item.quantity
 		}));
 
@@ -41,7 +42,9 @@ export default function ShoppingCart() {
 			acc[`product_${index + 1}_price`] = curr.product.stripePriceId;
 			acc[`product_${index + 1}_quantity`] = curr.quantity;
 			// @ts-ignore
-			acc[`product_${index + 1}_altogic_id`] = orderItemsData[index]._id;
+			acc[`product_${index + 1}_order_item_id`] = orderItemsData[index]._id;
+			// @ts-ignore
+			acc[`product_${index + 1}_id`] = orderItemsData[index].product;
 			return acc;
 		}, {} as any);
 
