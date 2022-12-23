@@ -1,7 +1,0 @@
-{
-  "appId": "639999217534bd2115c2f7d6",
-  "functionId": "63a57189add9c115b449f944",
-  "name": "strip_webhook_handler",
-  "runtime": "node.js-18.0",
-  "entrypoint": "src/index.js"
-}
