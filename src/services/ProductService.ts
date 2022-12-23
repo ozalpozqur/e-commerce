@@ -8,6 +8,7 @@ export default class ProductService {
 	static async getProducts() {
 		const { data, errors } = await altogicOnlyRead.db
 			.model('products')
+			.filter('qtyInStock > 0')
 			.sort('createdAt', 'desc')
 			.lookup({ field: 'category' })
 			.get();
@@ -21,7 +22,7 @@ export default class ProductService {
 		const { data, errors } = await altogicOnlyRead.db
 			.model('products')
 			.sort('createdAt', 'desc')
-			.filter(`category.slug == '${slug}'`)
+			.filter(`qtyInStock > 0 && category.slug == '${slug}'`)
 			.lookup({ field: 'category' })
 			.get();
 
