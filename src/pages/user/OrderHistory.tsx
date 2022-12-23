@@ -23,7 +23,9 @@ export default function OrderHistory() {
 						<dl className="flex-1 grid sm:grid-cols-2 gap-2 md:grid-cols-4">
 							<div>
 								<dt className="font-medium text-gray-900">Order number</dt>
-								<dd className="mt-1 text-gray-500">{order.orderNumber?.toString().padStart(6, '0')}</dd>
+								<dd className="mt-1 text-gray-500 select-all">
+									#{order.orderNumber?.toString().padStart(6, '0')}
+								</dd>
 							</div>
 							<div>
 								<dt className="font-medium text-gray-900">Order date</dt>
