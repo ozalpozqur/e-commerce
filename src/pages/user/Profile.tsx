@@ -1,11 +1,12 @@
 import { UserCircleIcon } from '@heroicons/react/24/outline';
 import { cn } from '../../helpers';
-import { HiOutlineLocationMarker } from 'react-icons/all';
+import { HiOutlineLocationMarker, FiPackage } from 'react-icons/all';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
 const subNavigation = [
 	{ name: 'Profile', href: '/profile', icon: UserCircleIcon },
-	{ name: 'Address', href: '/profile/address', icon: HiOutlineLocationMarker }
+	{ name: 'Address', href: '/profile/address', icon: HiOutlineLocationMarker },
+	{ name: 'Order History', href: '/profile/orders', icon: FiPackage }
 ];
 
 export default function Profile() {

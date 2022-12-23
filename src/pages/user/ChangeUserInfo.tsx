@@ -51,7 +51,7 @@ export default function ChangeUserInfo() {
 	// @ts-ignore
 	return (
 		<section>
-			<form className="divide-y divide-gray-200 lg:col-span-9" onSubmit={submitHandler}>
+			<form className="divide-y divide-gray-200" onSubmit={submitHandler}>
 				<div className="py-6 px-4 space-y-4 sm:p-6 sm:px-0 sm:pt-0 lg:pb-8">
 					<div>
 						<h2 className="text-lg leading-6 font-medium text-gray-900">Update profile</h2>
@@ -96,10 +96,7 @@ export default function ChangeUserInfo() {
 								</p>
 								<div className="mt-1 lg:hidden">
 									<div className="flex items-center">
-										<div
-											className="flex-shrink-0 inline-block rounded-full overflow-hidden h-12 w-12"
-											aria-hidden="true"
-										>
+										<div className="flex-shrink-0 inline-block rounded-full overflow-hidden h-12 w-12">
 											<UserAvatar />
 										</div>
 										<div className="ml-5 rounded-md shadow-sm">
@@ -137,7 +134,6 @@ export default function ChangeUserInfo() {
 						</div>
 					</div>
 				</div>
-
 				<div className="pt-6">
 					<div className="px-4 flex justify-end sm:px-6 sm:px-0 gap-5">
 						<Button type="submit" loading={loading} className="w-full sm:w-auto">

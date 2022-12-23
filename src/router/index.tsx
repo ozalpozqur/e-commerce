@@ -15,13 +15,16 @@ import Logout from '../pages/auth/Logout';
 import ChangeUserInfo from '../pages/user/ChangeUserInfo';
 import UserAddress from '../pages/user/UserAddress';
 import ShopLayout from '../layouts/ShopLayout';
-import Checkout from '../pages/Checkout';
 import AddCategory from '../pages/admin/AddCategory';
 import InitialApp from '../pages/InitialApp';
 import Category from '../pages/Category';
 import Categories from '../pages/admin/Categories';
 import Products from '../pages/admin/Products';
 import { rootLoader } from '../loaders';
+import OrderHistory from '../pages/user/OrderHistory';
+import OrderService from '../services/OrderService';
+import Success from '../pages/checkout/Success';
+import Cancel from '../pages/checkout/Cancel';
 
 export const router = createBrowserRouter([
 	{
@@ -74,11 +77,21 @@ export const router = createBrowserRouter([
 				)
 			},
 			{
-				path: '/checkout',
+				path: '/checkout/success',
 				element: (
 					<AuthOnly>
 						<ShopLayout>
-							<Checkout />
+							<Success />
+						</ShopLayout>
+					</AuthOnly>
+				)
+			},
+			{
+				path: '/checkout/cancel',
+				element: (
+					<AuthOnly>
+						<ShopLayout>
+							<Cancel />
 						</ShopLayout>
 					</AuthOnly>
 				)
@@ -124,6 +137,11 @@ export const router = createBrowserRouter([
 					{
 						path: 'address',
 						element: <UserAddress />
+					},
+					{
+						path: 'orders',
+						loader: () => OrderService.getOrders(),
+						element: <OrderHistory />
 					}
 				]
 			},

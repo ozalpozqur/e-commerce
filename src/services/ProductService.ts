@@ -1,4 +1,4 @@
-import altogic from '../libs/altogic';
+import altogic, { altogicOnlyRead } from '../libs/altogic';
 import { Category, Product } from '../types/altogic';
 import { APIError } from 'altogic';
 import useCategoryStore from '../store/category';
@@ -6,7 +6,7 @@ import category from '../store/category';
 
 export default class ProductService {
 	static async getProducts() {
-		const { data, errors } = await altogic.db
+		const { data, errors } = await altogicOnlyRead.db
 			.model('products')
 			.sort('createdAt', 'desc')
 			.lookup({ field: 'category' })
@@ -18,7 +18,7 @@ export default class ProductService {
 	}
 
 	static async getProductsByCategory(slug: string) {
-		const { data, errors } = await altogic.db
+		const { data, errors } = await altogicOnlyRead.db
 			.model('products')
 			.sort('createdAt', 'desc')
 			.filter(`category.slug == '${slug}'`)
@@ -31,7 +31,7 @@ export default class ProductService {
 	}
 
 	static async getProductById(_id: string) {
-		const { data, errors } = await altogic.db.model('products').object(_id).get();
+		const { data, errors } = await altogicOnlyRead.db.model('products').object(_id).get();
 
 		if (errors) throw errors;
 

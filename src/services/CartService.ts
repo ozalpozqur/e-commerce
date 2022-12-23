@@ -1,6 +1,7 @@
 import altogic from '../libs/altogic';
 import { Cart } from '../types/altogic';
 import useAuthStore from '../store/auth';
+import { tr } from 'date-fns/locale';
 
 export default class CartService {
 	static async getCart() {
@@ -30,6 +31,15 @@ export default class CartService {
 		const { errors } = await altogic.db.model('cart').object(id).delete();
 		if (errors) throw errors;
 
+		return true;
+	}
+
+	static async clearCart() {
+		const user = useAuthStore.getState().user;
+		if (!user) throw new Error('Unauthorized');
+		const { errors } = await altogic.db.model('cart').filter(`user == '${user._id}'`).delete();
+		if (errors) throw errors;
+		altogic.realtime.send(user._id, 'cleared-cart', true);
 		return true;
 	}
 }

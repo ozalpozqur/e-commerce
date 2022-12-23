@@ -5,6 +5,7 @@ import useProductStore from '../store/product';
 import useCategoryStore from '../store/category';
 import useCartStore from '../store/cart';
 import useAuthStore from '../store/auth';
+import altogic from '../libs/altogic';
 
 interface LoaderData {
 	products: Product[];
@@ -21,10 +22,21 @@ export default function InitialApp() {
 	useEffect(() => {
 		setProducts(products);
 		setCategories(categories);
+		if (cart) setCart(cart);
+
 		if (user) {
-			setCart(cart);
+			altogic.realtime.join(user?._id);
+			altogic.realtime.on('cleared-cart', clearCart);
 		}
+
+		return () => {
+			altogic.realtime.off('cleared-cart', clearCart);
+		};
 	}, []);
+
+	function clearCart() {
+		setCart([]);
+	}
 
 	return <Outlet />;
 }

@@ -38,9 +38,22 @@ export interface Product {
 
 export interface Order {
 	_id: string;
-	completed: boolean;
+	orderNumber: number;
+	status: 'waiting' | 'preparing' | 'shipped' | 'completed' | 'canceled';
+	totalPrice: number;
+	stripeCheckoutId: string;
 	user: User;
-	product: Product;
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface OrderItem {
+	_id: string;
+	productName: string;
+	quantity: number;
+	price: number;
+	order: Order;
+	user: User;
 	createdAt: string;
 	updatedAt: string;
 }

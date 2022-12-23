@@ -9,24 +9,46 @@ import { Cart } from '../types/altogic';
 import { useState } from 'react';
 import CartService from '../services/CartService';
 import altogic from '../libs/altogic';
+import useAuthStore from '../store/auth';
 
 export default function ShoppingCart() {
 	const { items, totalAmount } = useCartStore();
+	const { user } = useAuthStore();
 	const [loading, setLoading] = useState(false);
 
 	async function checkout() {
 		setLoading(true);
 
+		const orderItems = items.map(item => ({
+			user: user?._id,
+			productName: item.product.name,
+			price: item.product.price,
+			quantity: item.quantity
+		}));
+
+		const { data: orderItemsData, errors: orderItemsErrors } = await altogic.db
+			.model('orderItems')
+			.create(orderItems);
+
+		if (orderItemsErrors) {
+			setLoading(false);
+			orderItemsErrors.items.forEach(item => toast.error(item.message));
+			console.log(orderItemsErrors);
+			return;
+		}
+
 		const data = items.reduce((acc, curr, index) => {
 			acc[`product_${index + 1}_price`] = curr.product.stripePriceId;
 			acc[`product_${index + 1}_quantity`] = curr.quantity;
-			acc[`product_${index + 1}_altogic_id`] = curr.product._id;
+			// @ts-ignore
+			acc[`product_${index + 1}_altogic_id`] = orderItemsData[index]._id;
 			return acc;
 		}, {} as any);
 
 		const { data: dataFromApi, errors } = await altogic.endpoint.post('/checkout', data);
 		setLoading(false);
 		if (errors) {
+			console.log(errors);
 			errors.items.forEach(item => toast.error(item.message));
 		} else {
 			// @ts-ignore

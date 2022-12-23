@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import { APIError } from 'altogic';
 
 export default function UserAddress() {
-	const { user, setUser, setAddress } = useAuthStore();
+	const { user, setUser } = useAuthStore();
 	const [country, setCountry] = useState('');
 	const [city, setCity] = useState('');
 	const [zipCode, setZipCode] = useState('');
@@ -48,7 +48,7 @@ export default function UserAddress() {
 
 	return (
 		<section>
-			<form className="divide-y divide-gray-200 lg:col-span-9" onSubmit={submitHandler}>
+			<form className="divide-y divide-gray-200" onSubmit={submitHandler}>
 				<div className="py-6 px-4 space-y-4 sm:p-6 sm:px-0 sm:pt-0 lg:pb-8">
 					<div>
 						<h2 className="text-lg leading-6 font-medium text-gray-900">Update address</h2>

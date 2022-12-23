@@ -1,9 +1,9 @@
-import altogic from '../libs/altogic';
+import altogic, { altogicOnlyRead } from '../libs/altogic';
 import { Category } from '../types/altogic';
 
 export default class CategoryService {
 	static async getCategories() {
-		const { data, errors } = await altogic.db.model('categories').get();
+		const { data, errors } = await altogicOnlyRead.db.model('categories').get();
 
 		if (errors) throw errors;
 
