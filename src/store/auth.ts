@@ -28,8 +28,8 @@ const useAuthStore = create<AuthState>()(
 			},
 			async logout() {
 				set({ user: null, session: null });
-				redirect('/auth/login');
 				await altogic.auth.signOut();
+				redirect('/auth/login');
 			}
 		}),
 		{
