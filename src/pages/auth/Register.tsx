@@ -5,6 +5,7 @@ import { APIError } from 'altogic';
 import altogic from '../../libs/altogic';
 import { User } from '../../types/altogic';
 import ShowApiError from '../../components/ShowApiError';
+import Input from '../../components/ui/Input';
 
 export default function Register() {
 	const { setUser, setSession } = useAuthStore();
@@ -72,14 +73,7 @@ export default function Register() {
 						</label>
 
 						<div className="relative mt-1">
-							<input
-								type="text"
-								id="name"
-								ref={usernameRef}
-								className="w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm"
-								placeholder="Enter name"
-								required
-							/>
+							<Input type="text" id="name" ref={usernameRef} placeholder="Enter name" required />
 						</div>
 					</div>
 					<div>
@@ -88,14 +82,7 @@ export default function Register() {
 						</label>
 
 						<div className="relative mt-1">
-							<input
-								type="email"
-								id="email"
-								ref={emailRef}
-								className="w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm"
-								placeholder="Enter email"
-								required
-							/>
+							<Input type="email" id="email" ref={emailRef} placeholder="Enter email" required />
 						</div>
 					</div>
 					<div>
@@ -104,11 +91,10 @@ export default function Register() {
 						</label>
 
 						<div className="relative mt-1">
-							<input
+							<Input
 								type="password"
 								id="password"
 								ref={passwordRef}
-								className="w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm"
 								placeholder="Enter password"
 								required
 							/>

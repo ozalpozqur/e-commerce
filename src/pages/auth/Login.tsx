@@ -5,6 +5,7 @@ import { APIError } from 'altogic';
 import ShowApiError from '../../components/ShowApiError';
 import altogic from '../../libs/altogic';
 import { User } from '../../types/altogic';
+import Input from '../../components/ui/Input';
 
 export default function Login() {
 	const { setUser, setSession } = useAuthStore();
@@ -52,14 +53,7 @@ export default function Login() {
 							Email
 						</label>
 						<div className="relative mt-1">
-							<input
-								type="email"
-								id="email"
-								className="w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm"
-								placeholder="Enter email"
-								ref={emailRef}
-								required
-							/>
+							<Input type="email" id="email" placeholder="Enter email" ref={emailRef} required />
 						</div>
 					</div>
 					<div>
@@ -67,10 +61,9 @@ export default function Login() {
 							Password
 						</label>
 						<div className="relative mt-1">
-							<input
+							<Input
 								type="password"
 								id="password"
-								className="w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm"
 								placeholder="Enter password"
 								ref={passwordRef}
 								required
