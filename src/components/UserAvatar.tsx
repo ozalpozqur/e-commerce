@@ -22,7 +22,7 @@ export default function UserAvatar({ user, className, width }: UserAvatarProps) 
 		return (
 			<img
 				style={style}
-				className={cn('rounded-full', !width ? 'w-12 text-xl' : '', className)}
+				className={cn('rounded-full object-cover', !width ? 'w-12 h-12 text-xl' : '', className)}
 				src={currentUser.profilePicture}
 				alt={currentUser.name}
 			/>
