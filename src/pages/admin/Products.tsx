@@ -12,6 +12,7 @@ import { useState } from 'react';
 import ProductService from '../../services/ProductService';
 import ConfirmModal from '../../components/ConfirmModal';
 import CartService from '../../services/CartService';
+import altogic from '../../libs/altogic';
 
 export default function Products() {
 	const { products, removeProduct } = useProductStore();

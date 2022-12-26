@@ -27,6 +27,7 @@ import Cancel from '../pages/checkout/Cancel';
 import OrderDetail from '../pages/user/OrderDetail';
 import CategoryService from '../services/CategoryService';
 import AddOrUpdateProduct from '../pages/admin/AddOrUpdateProduct';
+import Orders from '../pages/admin/Orders';
 
 export const router = createBrowserRouter([
 	{
@@ -183,8 +184,7 @@ export const router = createBrowserRouter([
 					},
 					{
 						path: 'categories',
-						element: <Categories />,
-						loader: () => CategoryService.getCategories()
+						element: <Categories />
 					},
 					{
 						path: 'categories/new',
@@ -193,6 +193,11 @@ export const router = createBrowserRouter([
 					{
 						path: 'products',
 						element: <Products />
+					},
+					{
+						path: 'orders',
+						element: <Orders />,
+						loader: () => OrderService.getAllOrders()
 					}
 				]
 			}

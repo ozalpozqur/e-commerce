@@ -9,15 +9,12 @@ import ConfirmModal from '../../components/ConfirmModal';
 import CategoryService from '../../services/CategoryService';
 import { toast } from 'react-toastify';
 import { APIError } from 'altogic';
-import { useLoaderData } from 'react-router-dom';
-import { Category } from '../../types/altogic';
 
 export default function Categories() {
 	const [confirmationIsOpen, setConfirmationIsOpen] = useState(false);
 	const [selectedCategoryId, setSelectedCategoryId] = useState<string>();
 	const [deleting, setDeleting] = useState(false);
-	const categoriesFromDB = useLoaderData() as Category[];
-	const [categories, setCategories] = useState<Category[]>(categoriesFromDB);
+	const { categories, setCategories, removeCategory } = useCategoryStore();
 
 	const cols = [
 		{ colName: 'Name' },
@@ -43,9 +40,7 @@ export default function Categories() {
 		try {
 			setDeleting(true);
 			await CategoryService.deleteCategory(selectedCategoryId);
-			setCategories(prevState => {
-				return prevState.filter(category => category._id !== selectedCategoryId);
-			});
+			removeCategory(selectedCategoryId);
 		} catch (errors) {
 			(errors as APIError).items.forEach(item => toast.error(item.message));
 		} finally {

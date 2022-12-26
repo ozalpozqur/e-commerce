@@ -3,6 +3,17 @@ import { Order, OrderItem } from '../types/altogic';
 import useAuthStore from '../store/auth';
 
 export default class OrderService {
+	static async getAllOrders() {
+		const { data, errors } = await altogic.db
+			.model('orders')
+			.lookup({ field: 'user' })
+			.sort('createdAt', 'desc')
+			.get();
+
+		if (errors) throw errors;
+
+		return data as Order[];
+	}
 	static async getOrders() {
 		const { user } = useAuthStore.getState();
 		if (!user) return null;

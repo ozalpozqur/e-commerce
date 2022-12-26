@@ -15,6 +15,7 @@ const addCategorySchema = Yup.object().shape({
 	name: Yup.string().required('This field is required')
 });
 export default function AddCategory() {
+	const { addCategory } = useCategoryStore();
 	const [loading, setLoading] = useState(false);
 	const formik = useFormik({
 		initialValues: {
@@ -30,7 +31,7 @@ export default function AddCategory() {
 						lower: true
 					})
 				});
-				console.log(category);
+				addCategory(category);
 				formik.resetForm();
 				toast.success('Category added successfully');
 			} catch (errors) {

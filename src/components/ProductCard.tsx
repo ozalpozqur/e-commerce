@@ -11,7 +11,7 @@ export default function ProductCard({ product }: ProductProps) {
 			<div className="min-h-80 shadow aspect-square w-full overflow-hidden rounded-md bg-gray-100 group-hover:opacity-75 lg:h-80">
 				<img src={product.coverURL} alt={product.name} className="h-full w-full object-cover object-center" />
 			</div>
-			<div className="mt-auto flex justify-between py-4 px-1">
+			<div className="flex justify-between gap-4 py-4 px-1">
 				<div>
 					<h3 className="text-sm text-gray-700">
 						<Link to={`/product/${product._id}`}>
