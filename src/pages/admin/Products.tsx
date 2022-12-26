@@ -24,6 +24,7 @@ export default function Products() {
 		{ colName: '', className: 'min-w-[6rem] w-24' },
 		{ colName: 'Name' },
 		{ colName: 'Stock' },
+		{ colName: 'Category' },
 		{ colName: 'Price' },
 		{ colName: 'Created At' },
 		{ colName: 'Actions', className: 'w-32' }
@@ -32,6 +33,7 @@ export default function Products() {
 		cover: <img className="object-cover w-16 h-24 rounded" src={product.coverURL} alt={product.name} />,
 		name: product.name,
 		stock: product.qtyInStock,
+		category: product.category.name,
 		price: moneyFormat(product.price),
 		createdAt: format(new Date(product.createdAt), 'P'),
 		action: (
