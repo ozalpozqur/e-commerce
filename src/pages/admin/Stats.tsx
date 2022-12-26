@@ -1,11 +1,9 @@
 import AdminLayout from '../../layouts/AdminLayout';
-import ConfirmModal from '../../components/ConfirmModal';
 
 export default function Stats() {
 	return (
 		<AdminLayout title="Dashboard">
 			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 px-4">
-				<ConfirmModal />
 				<article className="group cursor-pointer hover:bg-gray-50 flex items-center gap-4 rounded-lg border border-gray-100 bg-white p-6">
 					<span className="rounded-full bg-blue-100 p-3 text-blue-600">
 						<svg
