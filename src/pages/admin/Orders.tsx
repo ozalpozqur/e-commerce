@@ -10,7 +10,7 @@ export default function Orders() {
 	const orders = useLoaderData() as Order[];
 	const cols = [
 		{ colName: 'Order Number' },
-		{ colName: 'User' },
+		{ colName: 'Customer' },
 		{ colName: 'Total Price' },
 		{ colName: 'Status' },
 		{ colName: 'Created At', className: 'w-52' },
@@ -21,7 +21,7 @@ export default function Orders() {
 	];
 	const rows = orders.map(order => ({
 		orderNumber: '#' + order.orderNumber.toString().padStart(6, '0'),
-		user: order.user.name,
+		customer: order.user.name,
 		total: moneyFormat(order.totalPrice),
 		status: order.status,
 		createdAt: format(new Date(order.createdAt), 'P'),
