@@ -3,6 +3,7 @@ import { Category, Product } from '../types/altogic';
 import { APIError } from 'altogic';
 import useCategoryStore from '../store/category';
 import category from '../store/category';
+import { th, tr } from 'date-fns/locale';
 
 export default class ProductService {
 	static async getProducts() {
@@ -76,6 +77,21 @@ export default class ProductService {
 			errors,
 			data
 		};
+	}
+
+	static async updateProfile(id: string, data: Partial<Product>) {
+		const { data: dataFromApi, errors } = await altogic.endpoint.put('/products/' + id, data);
+		if (errors) throw errors;
+
+		return dataFromApi as Product;
+	}
+
+	static async deleteProduct(id: string) {
+		const { errors } = await altogic.db.model('products').object(id).delete();
+
+		if (errors) throw errors;
+
+		return true;
 	}
 }
 

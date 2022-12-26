@@ -54,6 +54,7 @@ export interface OrderItem {
 	price: number;
 	order: Order;
 	user: User;
+	product: Product;
 	createdAt: string;
 	updatedAt: string;
 }

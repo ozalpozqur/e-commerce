@@ -29,7 +29,9 @@ const SelectBox = forwardRef(
 					)}
 					{...props}
 				>
-					<option className="text-gray-50">Select a category</option>
+					<option value="" className="text-gray-50">
+						Select a category
+					</option>
 					{fields.map(field => (
 						<option value={field.id} key={field.id}>
 							{field.value}

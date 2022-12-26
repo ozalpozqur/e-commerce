@@ -15,7 +15,6 @@ const addCategorySchema = Yup.object().shape({
 	name: Yup.string().required('This field is required')
 });
 export default function AddCategory() {
-	const { addCategory } = useCategoryStore();
 	const [loading, setLoading] = useState(false);
 	const formik = useFormik({
 		initialValues: {
@@ -25,8 +24,13 @@ export default function AddCategory() {
 		onSubmit: async data => {
 			setLoading(true);
 			try {
-				const category = await CategoryService.addCategory({ ...data, slug: slugify(data.name) });
-				addCategory(category);
+				const category = await CategoryService.addCategory({
+					...data,
+					slug: slugify(data.name, {
+						lower: true
+					})
+				});
+				console.log(category);
 				formik.resetForm();
 				toast.success('Category added successfully');
 			} catch (errors) {

@@ -15,6 +15,10 @@ import { isMobile } from 'react-device-detect';
 import { cn } from '../../helpers';
 import Button from '../../components/ui/Button';
 import { APIError } from 'altogic';
+import { useLoaderData } from 'react-router-dom';
+import { Product } from '../../types/altogic';
+import CartService from '../../services/CartService';
+import useCartStore from '../../store/cart';
 
 const addProductSchema = Yup.object().shape({
 	name: Yup.string().required('This field is required'),
@@ -24,39 +28,65 @@ const addProductSchema = Yup.object().shape({
 	price: Yup.number().min(0, 'Product price cannot be negative value').required('This field is required'),
 	image: Yup.mixed().required('Product cover is required')
 });
-export default function AddProduct() {
+
+interface AddOrUpdateProductProps {
+	type?: 'add' | 'update';
+}
+export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductProps) {
+	const isEditMode = type === 'update';
+	const product = useLoaderData() as Product;
 	const { categories } = useCategoryStore();
-	const { addProduct } = useProductStore();
-	const [imagePreview, setImagePreview] = useState<string | null>(null);
+	const { addProduct, updateProduct } = useProductStore();
+	const { setCart } = useCartStore();
+	const [imagePreview, setImagePreview] = useState<string | null>(isEditMode ? product.coverURL : null);
 	const [loading, setLoading] = useState(false);
 	const formik = useFormik({
 		initialValues: {
-			name: '',
-			qtyInStock: '',
-			category: '',
-			description: '',
-			price: '',
-			image: null
+			name: isEditMode ? product.name : '',
+			qtyInStock: isEditMode ? product.qtyInStock : '',
+			category: isEditMode ? product.category : '',
+			description: isEditMode ? product.description : '',
+			price: isEditMode ? product.price : '',
+			image: isEditMode ? product.coverURL : null
 		},
 		validationSchema: addProductSchema,
 		onSubmit: async ({ image, ...rest }) => {
 			setLoading(true);
 			try {
 				// @ts-ignore
-				const product = await ProductService.addProduct(rest, image);
-				addProduct(product);
-				toast.success('Product added successfully');
-				formik.resetForm();
-				setImagePreview(null);
-				// @ts-ignore
-			} catch (error: APIError) {
-				console.error(error);
-				error.items.forEach((item: any) => toast.error(item.message));
+				await (isEditMode ? updateProductInfo : addNewProduct)(image, rest);
+			} catch (errors) {
+				console.error(errors);
+				(errors as APIError).items.forEach((item: any) => toast.error(item.message));
 			} finally {
 				setLoading(false);
 			}
 		}
 	});
+
+	async function updateProductInfo(image: string | File, data: object) {
+		let coverURL = image;
+		if (image instanceof File) {
+			// @ts-ignore
+			const { data: dataFromUploader, errors } = await ProductService.uploadCoverImage(image);
+			if (errors) return toast.error("Product cover couldn't updated, please try again");
+			coverURL = dataFromUploader.publicPath;
+		}
+		// @ts-ignore
+		const updatedProduct = await ProductService.updateProfile(product._id, { ...data, coverURL });
+		toast.success('Product updated successfully');
+		updateProduct(updatedProduct);
+		setCart(await CartService.getCart());
+	}
+
+	async function addNewProduct(image: string, data: object) {
+		// @ts-ignore
+		const product = await ProductService.addProduct(data, image);
+		addProduct(product);
+		toast.success('Product added successfully');
+		formik.resetForm();
+		setImagePreview(null);
+	}
 
 	function removeCoverImage() {
 		setImagePreview(null);
@@ -81,7 +111,7 @@ export default function AddProduct() {
 	}
 
 	return (
-		<AdminLayout title="Add Product">
+		<AdminLayout title={isEditMode ? 'Update Product' : 'Add Product'}>
 			<form className="space-y-8 divide-y divide-gray-200 px-4 md:px-0" onSubmit={formik.handleSubmit}>
 				<div className="space-y-8 divide-y divide-gray-200 sm:space-y-5">
 					<div>
@@ -130,7 +160,7 @@ export default function AddProduct() {
 									showError={!!formik.errors.category && !!formik.touched.category}
 									errorMessage={formik.errors.category}
 									onChange={formik.handleChange}
-									value={formik.values.category}
+									value={formik.values.category.toString()}
 									name="category"
 									className="w-full"
 									fields={categories.map(category => ({ id: category._id, value: category.name }))}
@@ -207,11 +237,17 @@ export default function AddProduct() {
 				</div>
 				<div className="pt-5">
 					<div className="flex justify-end gap-2">
-						<Button type="button" onClick={resetForm} variant="secondary">
-							Clear
-						</Button>
+						{isEditMode ? (
+							<Button as="link" href="/admin/products" variant="secondary">
+								Go back
+							</Button>
+						) : (
+							<Button type="button" onClick={resetForm} variant="secondary">
+								Clear
+							</Button>
+						)}
 						<Button loading={loading} type="submit">
-							Add Product
+							{isEditMode ? 'Update product' : 'Add product'}
 						</Button>
 					</div>
 				</div>

@@ -43,7 +43,9 @@ export default function OrderHistory() {
 							</div>
 						</dl>
 						<div className="flex items-center justify-center">
-							<Button variant="primary">View details</Button>
+							<Button as="link" href={`/profile/orders/${order._id}`} variant="primary">
+								View details
+							</Button>
 						</div>
 					</div>
 				</div>

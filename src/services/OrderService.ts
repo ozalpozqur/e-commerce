@@ -1,5 +1,5 @@
 import altogic from '../libs/altogic';
-import { Order } from '../types/altogic';
+import { Order, OrderItem } from '../types/altogic';
 import useAuthStore from '../store/auth';
 
 export default class OrderService {
@@ -17,11 +17,15 @@ export default class OrderService {
 		return data as Order[];
 	}
 
-	static async addToCart(data: object) {
-		const { data: dataFromDB, errors } = await altogic.db.model('orders').create(data);
+	static async getOrderDetails(orderId: string) {
+		const { data, errors } = await altogic.db
+			.model('orderItems')
+			.filter(`order == '${orderId}'`)
+			.lookup({ field: 'product' })
+			.get();
 
 		if (errors) throw errors;
 
-		return dataFromDB as Order;
+		return data as OrderItem[];
 	}
 }

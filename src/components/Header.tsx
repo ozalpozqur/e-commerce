@@ -12,10 +12,10 @@ export default function Header() {
 	const { pathname } = useLocation();
 	const { items } = useCartStore();
 	const { user } = useAuthStore();
-	const { categories } = useCategoryStore();
+	const { activeCategories } = useCategoryStore();
 
 	const navigation = {
-		pages: categories.map(category => ({
+		pages: activeCategories.map(category => ({
 			...category,
 			href: `/category/${category.slug}`
 		}))
@@ -48,7 +48,7 @@ export default function Header() {
 	}
 
 	return (
-		<div className="bg-white">
+		<div className="bg-white sticky top-0 z-40">
 			<Transition.Root show={open} as={Fragment}>
 				<Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
 					<Transition.Child

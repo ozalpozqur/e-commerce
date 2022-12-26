@@ -1,6 +1,6 @@
 import { AiOutlineClose } from 'react-icons/all';
 import useCartStore from '../store/cart';
-import { Link } from 'react-router-dom';
+import { Link, useRouteLoaderData } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import moneyFormat, { cn } from '../helpers';
 import Button from '../components/ui/Button';
@@ -155,7 +155,7 @@ function CartProductItem({ item }: { item: Cart }) {
 				<div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
 					<div>
 						<div className="flex justify-between">
-							<h3 className="text-lg">
+							<h3 className="text-base ld:text-lg">
 								<Link
 									to={`/product/${item.product._id}`}
 									className="font-medium text-gray-700 hover:text-gray-800"
@@ -165,7 +165,7 @@ function CartProductItem({ item }: { item: Cart }) {
 							</h3>
 						</div>
 						<div className="text-gray-600">
-							<h4>{item.product.description}</h4>
+							<h4 className="line-clamp-3">{item.product.description}</h4>
 						</div>
 						<p className="mt-1 text-sm font-medium text-gray-900">
 							{moneyFormat(item.product.price)} x {item.quantity}

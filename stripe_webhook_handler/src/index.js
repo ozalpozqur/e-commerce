@@ -109,8 +109,6 @@ async function completed(altogic, req, res, user) {
 		return res.json(errors, errors.status);
 	}
 
-	console.log(orderItemsFilter);
-
 	const { errors: orderItemsErrors } = await altogic.db.model('orderItems').filter(orderItemsFilter).update({
 		order: order._id
 	});

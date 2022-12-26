@@ -6,7 +6,6 @@ import Register from '../pages/auth/Register';
 import ProductDetail from '../pages/ProductDetail';
 import Error from '../pages/Error';
 import Profile from '../pages/user/Profile';
-import AddProduct from '../pages/admin/AddProduct';
 import Stats from '../pages/admin/Stats';
 import Admin from '../pages/admin';
 import ProductService from '../services/ProductService';
@@ -25,6 +24,9 @@ import OrderHistory from '../pages/user/OrderHistory';
 import OrderService from '../services/OrderService';
 import Success from '../pages/checkout/Success';
 import Cancel from '../pages/checkout/Cancel';
+import OrderDetail from '../pages/user/OrderDetail';
+import CategoryService from '../services/CategoryService';
+import AddOrUpdateProduct from '../pages/admin/AddOrUpdateProduct';
 
 export const router = createBrowserRouter([
 	{
@@ -142,6 +144,14 @@ export const router = createBrowserRouter([
 						path: 'orders',
 						loader: () => OrderService.getOrders(),
 						element: <OrderHistory />
+					},
+					{
+						path: 'orders/:orderId',
+						loader: ({ params: { orderId } }) => {
+							if (!orderId) return;
+							return OrderService.getOrderDetails(orderId);
+						},
+						element: <OrderDetail />
 					}
 				]
 			},
@@ -159,11 +169,22 @@ export const router = createBrowserRouter([
 					},
 					{
 						path: 'products/new',
-						element: <AddProduct />
+						element: <AddOrUpdateProduct type="add" />
+					},
+					{
+						path: 'products/edit/:id',
+						element: <AddOrUpdateProduct type="update" />,
+						async loader({ params: { id } }) {
+							if (!id) return;
+							const product = await ProductService.getProductById(id);
+							if (!product) throw new Response('Not Found', { status: 404 });
+							return product;
+						}
 					},
 					{
 						path: 'categories',
-						element: <Categories />
+						element: <Categories />,
+						loader: () => CategoryService.getCategories()
 					},
 					{
 						path: 'categories/new',

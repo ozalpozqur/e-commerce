@@ -34,6 +34,13 @@ export default class CartService {
 		return true;
 	}
 
+	static async removeCartItemByProductId(productId: string) {
+		const { errors } = await altogic.db.model('cart').filter(`product == '${productId}'`).delete();
+		if (errors) throw errors;
+
+		return true;
+	}
+
 	static async clearCart() {
 		const user = useAuthStore.getState().user;
 		if (!user) throw new Error('Unauthorized');

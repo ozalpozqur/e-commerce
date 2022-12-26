@@ -10,18 +10,20 @@ import altogic from '../libs/altogic';
 interface LoaderData {
 	products: Product[];
 	categories: Category[];
+	activeCategories: Category[];
 	cart: Cart[];
 }
 export default function InitialApp() {
-	const { products, categories, cart } = useLoaderData() as LoaderData;
+	const { products, categories, cart, activeCategories } = useLoaderData() as LoaderData;
 	const { setProducts } = useProductStore();
-	const { setCategories } = useCategoryStore();
+	const { setCategories, setActiveCategories } = useCategoryStore();
 	const { setCart } = useCartStore();
 	const { user } = useAuthStore();
 
 	useEffect(() => {
 		setProducts(products);
 		setCategories(categories);
+		setActiveCategories(activeCategories);
 		if (cart) setCart(cart);
 
 		if (user) {
