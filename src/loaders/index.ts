@@ -5,7 +5,6 @@ import useAuthStore from '../store/auth';
 import { Product, Category, Cart, User } from '../types/altogic';
 import altogic from '../libs/altogic';
 import { OrderService } from '../services';
-import { LoaderFunction } from 'react-router-dom';
 
 interface RootLoader {
 	products: Product[];
