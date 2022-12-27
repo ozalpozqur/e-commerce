@@ -1,33 +1,21 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-import Home from '../pages/Home';
-import useAuthStore from '../store/auth';
-import Login from '../pages/auth/Login';
-import Register from '../pages/auth/Register';
-import ProductDetail from '../pages/ProductDetail';
-import Error from '../pages/Error';
-import Profile from '../pages/user/Profile';
-import Stats from '../pages/admin/Stats';
-import Admin from '../pages/admin';
-import ProductService from '../services/ProductService';
-import Cart from '../pages/Cart';
-import Logout from '../pages/auth/Logout';
-import ChangeUserInfo from '../pages/user/ChangeUserInfo';
-import UserAddress from '../pages/user/UserAddress';
-import ShopLayout from '../layouts/ShopLayout';
-import AddCategory from '../pages/admin/AddCategory';
-import InitialApp from '../pages/InitialApp';
-import Category from '../pages/Category';
-import Categories from '../pages/admin/Categories';
-import Products from '../pages/admin/Products';
 import { rootLoader } from '../loaders';
-import OrderHistory from '../pages/user/OrderHistory';
-import OrderService from '../services/OrderService';
-import Success from '../pages/checkout/Success';
-import Cancel from '../pages/checkout/Cancel';
-import OrderDetails from '../pages/user/OrderDetails';
-import AddOrUpdateProduct from '../pages/admin/AddOrUpdateProduct';
-import Orders from '../pages/admin/Orders';
-import OrderDetailsAdmin from '../pages/admin/OrderDetails';
+import { Profile, OrderDetails, OrderHistory, ChangeUserInfo, UserAddress } from '../pages/user';
+import { Login, Logout, Register } from '../pages/auth';
+import { InitialApp, Error, Category, Cart, Home, ProductDetail } from '../pages';
+import { Success } from '../pages/checkout';
+import { OrderService, ProductService } from '../services';
+import { ShopLayout } from '../layouts';
+import Admin, {
+	Stats,
+	AddCategory,
+	AddOrUpdateProduct,
+	Products,
+	Orders,
+	Categories,
+	OrderDetails as OrderDetailsAdmin
+} from '../pages/admin';
+import { useAuthStore } from '../store';
 
 export const router = createBrowserRouter([
 	{
@@ -85,16 +73,6 @@ export const router = createBrowserRouter([
 					<AuthOnly>
 						<ShopLayout>
 							<Success />
-						</ShopLayout>
-					</AuthOnly>
-				)
-			},
-			{
-				path: '/checkout/cancel',
-				element: (
-					<AuthOnly>
-						<ShopLayout>
-							<Cancel />
 						</ShopLayout>
 					</AuthOnly>
 				)
