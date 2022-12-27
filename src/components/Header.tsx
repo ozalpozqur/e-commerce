@@ -42,7 +42,7 @@ export default function Header() {
 	];
 	if (user?.isAdmin) {
 		rightNavigationForAuth.unshift({
-			name: 'Admin Dashboard',
+			name: 'Admin Panel',
 			href: '/admin'
 		});
 	}
@@ -152,7 +152,10 @@ export default function Header() {
 										<Link
 											key={page.name}
 											to={page.href}
-											className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+											className={cn(
+												'flex items-center border-b-2 border-transparent text-sm font-medium text-gray-700 hover:text-gray-800',
+												pathname === page.href ? 'border-gray-600' : ''
+											)}
 										>
 											{page.name}
 										</Link>
@@ -161,14 +164,14 @@ export default function Header() {
 							</Popover.Group>
 
 							{/* desktop right */}
-							<div className="ml-auto flex items-center">
-								<div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+							<div className="ml-auto h-full flex items-center">
+								<div className="hidden h-full lg:flex lg:flex-1 lg:self-stretch lg:items-center lg:justify-end lg:gap-x-6">
 									{(user ? rightNavigationForAuth : rightNavigationForGuest).map((nav, index) => (
 										<Link
 											key={index}
 											to={nav.href}
 											className={cn(
-												'text-sm font-medium text-gray-700 hover:text-gray-800 border-b-2 border-transparent',
+												'text-sm font-medium flex h-full items-center text-gray-700 hover:text-gray-800 border-b-2 border-transparent',
 												pathname === nav.href ? 'border-gray-600' : ''
 											)}
 										>
