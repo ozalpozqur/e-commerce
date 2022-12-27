@@ -5,7 +5,6 @@ import Button from '../../components/ui/Button';
 
 export default function OrderDetail() {
 	const orderDetails = useLoaderData() as OrderItem[];
-	console.log(orderDetails);
 	return (
 		<section className="py-6 px-4 space-y-4 sm:p-6 sm:px-0 sm:pt-0 lg:pb-8">
 			<div>
@@ -36,7 +35,9 @@ export default function OrderDetail() {
 										</p>
 									</div>
 									<div className="flex items-center sm:flex-col sm:justify-center gap-2 shrink-0">
-										<p>{moneyFormat(item.price)}</p>
+										<p>
+											{moneyFormat(item.price)} x {item.quantity}
+										</p>
 										<Button
 											variant="white"
 											as="link"
@@ -52,6 +53,9 @@ export default function OrderDetail() {
 					</li>
 				))}
 			</ul>
+			<div className="text-right font-bold text-lg">
+				Total: {moneyFormat(orderDetails.reduce((acc, curr) => (acc += curr.quantity * curr.price), 0))}
+			</div>
 		</section>
 	);
 }
