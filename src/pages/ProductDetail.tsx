@@ -1,6 +1,6 @@
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { Product } from '../types/altogic';
-import moneyFormat from '../helpers';
+import moneyFormat, { cn } from '../helpers';
 import useCartStore from '../store/cart';
 import { ChangeEvent, useState } from 'react';
 import Button from '../components/ui/Button';
@@ -71,23 +71,23 @@ export default function () {
 						</div>
 
 						<div className="mt-4">
-							<div className="flex gap-2 items-center">
+							<div className={cn('gap-2 flex flex-wrap items-center')}>
 								{product.qtyInStock > 1 ? (
 									<>
-										<label htmlFor="quantity" className="sr-only">
-											Qty
-										</label>
-
-										<input
-											type="number"
-											value={quantity}
-											id="quantity"
-											onChange={handleQuantity}
-											min="1"
-											className="w-20 rounded border-gray-200 py-3text-xs"
-										/>
-
-										<Button loading={adding} onClick={handleClick}>
+										<div className="w-20">
+											<label htmlFor="quantity" className="sr-only">
+												Qty
+											</label>
+											<input
+												type="number"
+												value={quantity}
+												id="quantity"
+												onChange={handleQuantity}
+												min="1"
+												className="w-full rounded border-gray-200"
+											/>
+										</div>
+										<Button className="max-[728px]:flex-1" loading={adding} onClick={handleClick}>
 											Add to Cart
 										</Button>
 									</>
@@ -95,8 +95,13 @@ export default function () {
 									<div className="text-red-600 font-semibold text-lg py-4">Out of stock</div>
 								)}
 								{user?.isAdmin && (
-									<Button as="link" href={`/admin/products/edit/${product._id}`} variant="secondary">
-										Edit this product
+									<Button
+										className="text-center max-[728px]:flex-[1_1_100%]"
+										as="link"
+										href={`/admin/products/edit/${product._id}`}
+										variant="secondary"
+									>
+										Edit this Product
 									</Button>
 								)}
 							</div>

@@ -129,7 +129,7 @@ export default function Header() {
 
 			<header className="relative bg-white">
 				<nav aria-label="Top" className="mx-auto container sm:px-4">
-					<div className="border-b border-gray-200">
+					<div className="border-b border-gray-200 px-1">
 						<div className="flex h-16 items-center">
 							<button
 								type="button"
