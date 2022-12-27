@@ -117,7 +117,7 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 			<form className="space-y-8 divide-y divide-gray-200 px-4 md:px-0" onSubmit={formik.handleSubmit}>
 				<div className="space-y-8 divide-y divide-gray-200 sm:space-y-5">
 					<div>
-						<div className="mt-6 sm:mt-5 space-y-6 sm:space-y-5">
+						<div className="space-y-6 sm:space-y-5">
 							<div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
 								<p className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Product name</p>
 								<Input
