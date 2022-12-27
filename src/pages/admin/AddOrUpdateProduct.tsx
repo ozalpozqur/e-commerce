@@ -15,14 +15,14 @@ import { isMobile } from 'react-device-detect';
 import { cn } from '../../helpers';
 import Button from '../../components/ui/Button';
 import { APIError } from 'altogic';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import { Product } from '../../types/altogic';
 import CartService from '../../services/CartService';
 import useCartStore from '../../store/cart';
 
 const addProductSchema = Yup.object().shape({
 	name: Yup.string().required('This field is required'),
-	qtyInStock: Yup.number().min(1, 'Stock quantity must be greater than 0').required('This field is required'),
+	qtyInStock: Yup.number().min(0, 'Stock quantity must be greater than 0').required('This field is required'),
 	category: Yup.string().required('This field is required'),
 	description: Yup.string().required('This field is required'),
 	price: Yup.number().min(0, 'Product price cannot be negative value').required('This field is required'),
@@ -40,6 +40,7 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 	const { setCart } = useCartStore();
 	const [imagePreview, setImagePreview] = useState<string | null>(isEditMode ? product.coverURL : null);
 	const [loading, setLoading] = useState(false);
+	const navigate = useNavigate();
 	const formik = useFormik({
 		initialValues: {
 			name: isEditMode ? product.name : '',
@@ -83,7 +84,9 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 		// @ts-ignore
 		const product = await ProductService.addProduct(data, image);
 		addProduct(product);
+		navigate('/admin/products');
 		toast.success('Product added successfully');
+
 		formik.resetForm();
 		setImagePreview(null);
 	}

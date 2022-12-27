@@ -34,7 +34,6 @@ export default function ShoppingCart() {
 		if (orderItemsErrors) {
 			setLoading(false);
 			orderItemsErrors.items.forEach(item => toast.error(item.message));
-			console.log(orderItemsErrors);
 			return;
 		}
 
@@ -113,9 +112,27 @@ export default function ShoppingCart() {
 							</dl>
 
 							<div className="mt-6">
-								<Button loading={loading} type="button" onClick={checkout} full>
+								<Button
+									disabled={!Boolean(user?.address)}
+									loading={loading}
+									type="button"
+									onClick={checkout}
+									full
+								>
 									Checkout
 								</Button>
+								{!Boolean(user?.address) && (
+									<small className="text-red-600">
+										* Please add your delivery address from{' '}
+										<Link
+											className="underline underline-offset-2 font-bold text-4 text-700"
+											to="/profile/address"
+										>
+											your profile
+										</Link>{' '}
+										before proceeding to the payment step.
+									</small>
+								)}
 							</div>
 						</section>
 					) : undefined}
@@ -129,6 +146,7 @@ function CartProductItem({ item }: { item: Cart }) {
 	const { removeProduct } = useCartStore();
 	const [removing, setRemoving] = useState(false);
 	async function removeItem() {
+		if (removing) return;
 		try {
 			setRemoving(true);
 			await CartService.removeCartItem(item._id);
@@ -176,6 +194,7 @@ function CartProductItem({ item }: { item: Cart }) {
 						<div className="absolute top-0 right-0">
 							<button
 								onClick={removeItem}
+								disabled={removing}
 								type="button"
 								className="-m-2 p-2 inline-flex text-gray-400 hover:text-gray-500"
 							>

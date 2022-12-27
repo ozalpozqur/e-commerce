@@ -148,9 +148,10 @@ export const router = createBrowserRouter([
 					},
 					{
 						path: 'orders/:orderId',
-						loader: ({ params: { orderId } }) => {
+						async loader({ params: { orderId } }) {
 							if (!orderId) return;
-							return OrderService.getOrderDetails(orderId);
+							const orderDetails = await OrderService.getOrderDetails(orderId);
+							if (orderDetails.length === 0) throw new Response('Not Found', { status: 404 });
 						},
 						element: <OrderDetail />
 					}
@@ -192,7 +193,8 @@ export const router = createBrowserRouter([
 					},
 					{
 						path: 'products',
-						element: <Products />
+						element: <Products />,
+						loader: () => ProductService.getProducts({ onlyHasStock: false })
 					},
 					{
 						path: 'orders',

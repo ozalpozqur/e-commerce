@@ -3,13 +3,14 @@ import { Category, Product } from '../types/altogic';
 import { APIError } from 'altogic';
 import useCategoryStore from '../store/category';
 import category from '../store/category';
-import { th, tr } from 'date-fns/locale';
 
 export default class ProductService {
-	static async getProducts() {
+	static async getProducts({ onlyHasStock = true, page = 1, limit = 50 }: GetProductsParams) {
 		const { data, errors } = await altogicOnlyRead.db
 			.model('products')
-			.filter('qtyInStock > 0')
+			.filter(onlyHasStock ? 'qtyInStock > 0' : '')
+			.page(page)
+			.limit(limit)
 			.sort('createdAt', 'desc')
 			.lookup({ field: 'category' })
 			.get();
@@ -101,4 +102,10 @@ interface AddProduct {
 	category: string;
 	description: string;
 	price: number;
+}
+
+interface GetProductsParams {
+	onlyHasStock: boolean;
+	page?: number;
+	limit?: number;
 }

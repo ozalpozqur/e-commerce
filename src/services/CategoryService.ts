@@ -17,7 +17,7 @@ export default class CategoryService {
 				modelName: 'products',
 				query: 'this._id == lookup.category'
 			})
-			.filter('EXISTS(product)')
+			.filter('EXISTS(product) && product.qtyInStock > 0')
 			.get();
 
 		if (errors) throw errors;

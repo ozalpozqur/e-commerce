@@ -1,7 +1,7 @@
 import AdminLayout from '../../layouts/AdminLayout';
 import useProductStore from '../../store/product';
 import Table from '../../components/ui/Table';
-import moneyFormat from '../../helpers';
+import moneyFormat, { cn } from '../../helpers';
 import Button from '../../components/ui/Button';
 import { FaPlus } from 'react-icons/all';
 import { format } from 'date-fns';
@@ -13,9 +13,12 @@ import ProductService from '../../services/ProductService';
 import ConfirmModal from '../../components/ConfirmModal';
 import CartService from '../../services/CartService';
 import altogic from '../../libs/altogic';
+import { useLoaderData } from 'react-router-dom';
+import { Product } from '../../types/altogic';
 
 export default function Products() {
-	const { products, removeProduct } = useProductStore();
+	const productsFromDB = useLoaderData() as Product[];
+	const [products, setProducts] = useState(productsFromDB);
 	const [confirmationIsOpen, setConfirmationIsOpen] = useState(false);
 	const [selectedProductId, setSelectedProductId] = useState<string>();
 	const [deleting, setDeleting] = useState(false);
@@ -27,14 +30,18 @@ export default function Products() {
 		{ colName: 'Category' },
 		{ colName: 'Price' },
 		{ colName: 'Created At' },
-		{ colName: 'Actions', className: 'w-32' }
+		{ colName: 'Actions', className: 'w-32 text-center' }
 	];
 	const rows = products.map(product => ({
 		cover: <img className="object-cover w-16 h-24 rounded" src={product.coverURL} alt={product.name} />,
 		name: product.name,
-		stock: product.qtyInStock,
+		stock: (
+			<span className={cn('tabular-nums block text-center', product.qtyInStock === 0 && 'text-red-600')}>
+				{product.qtyInStock}
+			</span>
+		),
 		category: product.category.name,
-		price: moneyFormat(product.price),
+		price: <span className="tabular-nums">{moneyFormat(product.price)}</span>,
 		createdAt: format(new Date(product.createdAt), 'P'),
 		action: (
 			<div className="flex gap-2">
@@ -56,7 +63,7 @@ export default function Products() {
 		try {
 			setDeleting(true);
 			await ProductService.deleteProduct(selectedProductId);
-			removeProduct(selectedProductId);
+			setProducts(prev => prev.filter(item => item._id !== selectedProductId));
 			toast.success('Product deleted successfully');
 			await CartService.removeCartItemByProductId(selectedProductId);
 		} catch (errors) {

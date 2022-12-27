@@ -32,6 +32,7 @@ export default function () {
 				user: user._id,
 				quantity
 			});
+			console.log(cart);
 			addToCart(cart);
 			toast.success('Product added');
 		} catch (error) {
@@ -71,26 +72,30 @@ export default function () {
 						</div>
 
 						<div className="mt-4">
-							<div className="flex gap-2">
-								<div>
-									<label htmlFor="quantity" className="sr-only">
-										Qty
-									</label>
+							{product.qtyInStock > 1 ? (
+								<div className="flex gap-2">
+									<div>
+										<label htmlFor="quantity" className="sr-only">
+											Qty
+										</label>
 
-									<input
-										type="number"
-										value={quantity}
-										id="quantity"
-										onChange={handleQuantity}
-										min="1"
-										className="w-20 rounded border-gray-200 py-3text-xs"
-									/>
+										<input
+											type="number"
+											value={quantity}
+											id="quantity"
+											onChange={handleQuantity}
+											min="1"
+											className="w-20 rounded border-gray-200 py-3text-xs"
+										/>
+									</div>
+
+									<Button loading={adding} onClick={handleClick}>
+										Add to Cart
+									</Button>
 								</div>
-
-								<Button loading={adding} onClick={handleClick}>
-									Add to Cart
-								</Button>
-							</div>
+							) : (
+								<div className="text-red-600 font-semibold text-lg">Out of stock</div>
+							)}
 						</div>
 					</div>
 				</div>

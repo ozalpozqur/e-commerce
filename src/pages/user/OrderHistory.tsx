@@ -17,39 +17,43 @@ export default function OrderHistory() {
 				</div>
 			</div>
 
-			{orders?.map(order => (
-				<div key={order._id} className="bg-white border-gray-200 shadow-sm rounded-lg border p-4">
-					<div className="flex items-center">
-						<dl className="flex-1 grid sm:grid-cols-2 gap-2 md:grid-cols-4">
-							<div>
-								<dt className="font-medium text-gray-900">Order number</dt>
-								<dd className="mt-1 text-gray-500 select-all">
-									#{order.orderNumber?.toString().padStart(6, '0')}
-								</dd>
+			{orders.length === 0 ? (
+				<div className="border p-4 shadow rounded text-center text-gray-700">You do not have any orders</div>
+			) : (
+				orders?.map(order => (
+					<div key={order._id} className="bg-white border-gray-200 shadow-sm rounded-lg border p-4">
+						<div className="flex items-center">
+							<dl className="flex-1 grid sm:grid-cols-2 gap-2 md:grid-cols-4">
+								<div>
+									<dt className="font-medium text-gray-900">Order number</dt>
+									<dd className="mt-1 text-gray-500 select-all">
+										#{order.orderNumber?.toString().padStart(6, '0')}
+									</dd>
+								</div>
+								<div>
+									<dt className="font-medium text-gray-900">Order date</dt>
+									<dd className="mt-1 text-gray-500">
+										<time dateTime={order.createdAt}>{format(new Date(order.createdAt), 'P')}</time>
+									</dd>
+								</div>
+								<div>
+									<dt className="font-medium text-gray-900">Order status</dt>
+									<dd className="mt-1 font-medium text-gray-500">{order.status}</dd>
+								</div>
+								<div>
+									<dt className="font-medium text-gray-900">Total amount</dt>
+									<dd className="mt-1 font-medium text-gray-500">{moneyFormat(order.totalPrice)}</dd>
+								</div>
+							</dl>
+							<div className="flex items-center justify-center">
+								<Button as="link" href={`/profile/orders/${order._id}`} variant="primary">
+									View details
+								</Button>
 							</div>
-							<div>
-								<dt className="font-medium text-gray-900">Order date</dt>
-								<dd className="mt-1 text-gray-500">
-									<time dateTime={order.createdAt}>{format(new Date(order.createdAt), 'P')}</time>
-								</dd>
-							</div>
-							<div>
-								<dt className="font-medium text-gray-900">Order status</dt>
-								<dd className="mt-1 font-medium text-gray-500">{order.status}</dd>
-							</div>
-							<div>
-								<dt className="font-medium text-gray-900">Total amount</dt>
-								<dd className="mt-1 font-medium text-gray-500">{moneyFormat(order.totalPrice)}</dd>
-							</div>
-						</dl>
-						<div className="flex items-center justify-center">
-							<Button as="link" href={`/profile/orders/${order._id}`} variant="primary">
-								View details
-							</Button>
 						</div>
 					</div>
-				</div>
-			))}
+				))
+			)}
 		</section>
 	);
 }

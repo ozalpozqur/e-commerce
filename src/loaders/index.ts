@@ -12,7 +12,7 @@ interface RootLoader {
 	cart: Cart[];
 }
 export async function rootLoader() {
-	const products = ProductService.getProducts();
+	const products = ProductService.getProducts({ onlyHasStock: true });
 	const activeCategories = CategoryService.getActiveCategories();
 	const categories = CategoryService.getCategories();
 

@@ -1,6 +1,7 @@
 import altogic from '../libs/altogic';
 import { Order, OrderItem } from '../types/altogic';
 import useAuthStore from '../store/auth';
+import { da } from 'date-fns/locale';
 
 export default class OrderService {
 	static async getAllOrders() {
@@ -16,7 +17,8 @@ export default class OrderService {
 	}
 	static async getOrders() {
 		const { user } = useAuthStore.getState();
-		if (!user) return null;
+		if (!user) throw new Error('Unauthorized');
+
 		const { data, errors } = await altogic.db
 			.model('orders')
 			.filter(`user == '${user._id}'`)
