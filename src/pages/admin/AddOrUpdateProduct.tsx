@@ -56,6 +56,7 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 			try {
 				// @ts-ignore
 				await (isEditMode ? updateProductInfo : addNewProduct)(image, rest);
+				navigate('/admin/products');
 			} catch (errors) {
 				console.error(errors);
 				(errors as APIError).items.forEach((item: any) => toast.error(item.message));
@@ -84,9 +85,7 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 		// @ts-ignore
 		const product = await ProductService.addProduct(data, image);
 		addProduct(product);
-		navigate('/admin/products');
 		toast.success('Product added successfully');
-
 		formik.resetForm();
 		setImagePreview(null);
 	}
@@ -194,13 +193,10 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 												alt="selected cover image"
 											/>
 										</picture>
-										<button
-											onClick={removeCoverImage}
-											className="bg-white gap-2 whitespace-nowrap px-4 py-2 self-end rounded bg-indigo-600 flex items-center justify-center text-white right-0.5"
-										>
+										<Button className="self-end gap-2" variant="white" onClick={removeCoverImage}>
 											<MdDelete size={20} />
 											Remove Cover
-										</button>
+										</Button>
 									</div>
 								) : isMobile ? (
 									<div>
@@ -241,7 +237,7 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 				<div className="pt-5">
 					<div className="flex justify-end gap-2">
 						{isEditMode ? (
-							<Button as="link" href="/admin/products" variant="secondary">
+							<Button type="button" onClick={() => navigate(-1)} variant="secondary">
 								Go back
 							</Button>
 						) : (

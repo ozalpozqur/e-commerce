@@ -27,7 +27,7 @@ export default function Orders() {
 		createdAt: format(new Date(order.createdAt), 'P'),
 		actions: (
 			<div className="flex gap-2">
-				<Button variant="secondary" size="small">
+				<Button as="link" href={`/admin/orders/${order._id}`} variant="secondary" size="small">
 					View details
 				</Button>
 			</div>

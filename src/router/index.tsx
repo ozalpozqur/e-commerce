@@ -24,10 +24,10 @@ import OrderHistory from '../pages/user/OrderHistory';
 import OrderService from '../services/OrderService';
 import Success from '../pages/checkout/Success';
 import Cancel from '../pages/checkout/Cancel';
-import OrderDetail from '../pages/user/OrderDetail';
-import CategoryService from '../services/CategoryService';
+import OrderDetails from '../pages/user/OrderDetails';
 import AddOrUpdateProduct from '../pages/admin/AddOrUpdateProduct';
 import Orders from '../pages/admin/Orders';
+import OrderDetailsAdmin from '../pages/admin/OrderDetails';
 
 export const router = createBrowserRouter([
 	{
@@ -154,7 +154,7 @@ export const router = createBrowserRouter([
 							if (orderDetails.length === 0) throw new Response('Not Found', { status: 404 });
 							return orderDetails;
 						},
-						element: <OrderDetail />
+						element: <OrderDetails />
 					}
 				]
 			},
@@ -201,6 +201,16 @@ export const router = createBrowserRouter([
 						path: 'orders',
 						element: <Orders />,
 						loader: () => OrderService.getAllOrders()
+					},
+					{
+						path: 'orders/:orderId',
+						element: <OrderDetailsAdmin />,
+						async loader({ params: { orderId } }) {
+							if (!orderId) return;
+							const orderDetails = await OrderService.getOrderDetails(orderId);
+							if (orderDetails.length === 0) throw new Response('Not Found', { status: 404 });
+							return orderDetails;
+						}
 					}
 				]
 			}

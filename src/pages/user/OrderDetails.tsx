@@ -3,7 +3,7 @@ import { OrderItem } from '../../types/altogic';
 import moneyFormat from '../../helpers';
 import Button from '../../components/ui/Button';
 
-export default function OrderDetail() {
+export default function OrderDetails() {
 	const orderDetails = useLoaderData() as OrderItem[];
 	return (
 		<section className="py-6 px-4 space-y-4 sm:p-6 sm:px-0 sm:pt-0 lg:pb-8">
