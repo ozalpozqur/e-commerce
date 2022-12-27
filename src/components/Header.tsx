@@ -91,12 +91,13 @@ export default function Header() {
 										<div className="space-y-6 border-t border-gray-200 py-6 px-4">
 											{navigation.pages.map((page, index) => (
 												<div key={index} className="flow-root">
-													<a
-														href={page.href}
+													<Link
+														onClick={() => setOpen(false)}
+														to={page.href}
 														className="-m-2 block p-2 font-medium text-gray-900"
 													>
 														{page.name}
-													</a>
+													</Link>
 												</div>
 											))}
 										</div>
@@ -108,6 +109,7 @@ export default function Header() {
 									{(user ? rightNavigationForAuth : rightNavigationForGuest).map((nav, index) => (
 										<div key={index} className="flow-root">
 											<Link
+												onClick={() => setOpen(false)}
 												to={nav.href}
 												className={cn(
 													'-m-2 block p-2 font-medium text-gray-900 border-b-2 border-transparent',
