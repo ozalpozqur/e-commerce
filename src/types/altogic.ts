@@ -28,6 +28,8 @@ export interface Product {
 	price: number;
 	description: string;
 	category: Category;
+	size?: Size;
+	color?: Color;
 	coverURL: string;
 	qtyInStock: number;
 	stripePriceId: string;
@@ -64,6 +66,20 @@ export interface Cart {
 	user: User;
 	product: Product;
 	quantity: number;
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface Color {
+	_id: string;
+	name: string;
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface Size {
+	_id: string;
+	name: string;
 	createdAt: string;
 	updatedAt: string;
 }
