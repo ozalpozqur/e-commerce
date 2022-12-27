@@ -85,6 +85,19 @@ async function getUserByEmail(altogic, email) {
 }
 
 async function completed(altogic, req, res, user) {
+	const { data: paymentCheck, errors: checkingError } = await altogic.db
+		.model('orders')
+		.filter(`stripeCheckoutId == '${req.body.data.object.payment_intent}'`)
+		.getSingle();
+
+	if (checkingError) {
+		console.warn(checkingError);
+	}
+
+	if (paymentCheck) {
+		return res.json({ message: 'The order has already been processed' });
+	}
+
 	const { errors: cartDeleteError } = await altogic.db.model('cart').filter(`user == '${user._id}'`).delete();
 
 	if (!cartDeleteError) {
