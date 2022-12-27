@@ -1,5 +1,5 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-import { rootLoader } from '../loaders';
+import { getProductByCategoryLoader, orderDetailLoader, productDetailLoader, rootLoader } from '../loaders';
 import { Profile, OrderDetails, OrderHistory, ChangeUserInfo, UserAddress } from '../pages/user';
 import { Login, Logout, Register } from '../pages/auth';
 import { InitialApp, Error, Category, Cart, Home, ProductDetail } from '../pages';
@@ -38,12 +38,7 @@ export const router = createBrowserRouter([
 						<ProductDetail />
 					</ShopLayout>
 				),
-				async loader({ params: { id } }) {
-					if (!id) return;
-					const product = await ProductService.getProductById(id);
-					if (!product) throw new Response('Not Found', { status: 404 });
-					return product;
-				}
+				loader: ({ params: { id } }) => productDetailLoader(id)
 			},
 			{
 				path: '/category/:slug',
@@ -52,10 +47,7 @@ export const router = createBrowserRouter([
 						<Category />
 					</ShopLayout>
 				),
-				async loader({ params: { slug } }) {
-					if (!slug) return;
-					return await ProductService.getProductsByCategory(slug);
-				}
+				loader: ({ params: { slug } }) => getProductByCategoryLoader(slug)
 			},
 			{
 				path: '/cart',
@@ -126,12 +118,7 @@ export const router = createBrowserRouter([
 					},
 					{
 						path: 'orders/:orderId',
-						async loader({ params: { orderId } }) {
-							if (!orderId) return;
-							const orderDetails = await OrderService.getOrderDetails(orderId);
-							if (orderDetails.length === 0) throw new Response('Not Found', { status: 404 });
-							return orderDetails;
-						},
+						loader: ({ params: { orderId } }) => orderDetailLoader(orderId),
 						element: <OrderDetails />
 					}
 				]
@@ -155,12 +142,7 @@ export const router = createBrowserRouter([
 					{
 						path: 'products/edit/:id',
 						element: <AddOrUpdateProduct type="update" />,
-						async loader({ params: { id } }) {
-							if (!id) return;
-							const product = await ProductService.getProductById(id);
-							if (!product) throw new Response('Not Found', { status: 404 });
-							return product;
-						}
+						loader: ({ params: { id } }) => productDetailLoader(id)
 					},
 					{
 						path: 'categories',
@@ -183,12 +165,7 @@ export const router = createBrowserRouter([
 					{
 						path: 'orders/:orderId',
 						element: <OrderDetailsAdmin />,
-						async loader({ params: { orderId } }) {
-							if (!orderId) return;
-							const orderDetails = await OrderService.getOrderDetails(orderId);
-							if (orderDetails.length === 0) throw new Response('Not Found', { status: 404 });
-							return orderDetails;
-						}
+						loader: ({ params: { orderId } }) => orderDetailLoader(orderId)
 					}
 				]
 			}

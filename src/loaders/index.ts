@@ -4,6 +4,8 @@ import CartService from '../services/CartService';
 import useAuthStore from '../store/auth';
 import { Product, Category, Cart, User } from '../types/altogic';
 import altogic from '../libs/altogic';
+import { OrderService } from '../services';
+import { LoaderFunction } from 'react-router-dom';
 
 interface RootLoader {
 	products: Product[];
@@ -31,4 +33,23 @@ export async function rootLoader() {
 	}
 
 	return data;
+}
+
+export async function orderDetailLoader(orderId?: string) {
+	if (!orderId) return;
+	const orderDetails = await OrderService.getOrderDetails(orderId);
+	if (orderDetails.length === 0) throw new Response('Not Found', { status: 404 });
+	return orderDetails;
+}
+
+export async function productDetailLoader(productId?: string) {
+	if (!productId) return;
+	const product = await ProductService.getProductById(productId);
+	if (!product) throw new Response('Not Found', { status: 404 });
+	return product;
+}
+
+export async function getProductByCategoryLoader(slug?: string) {
+	if (!slug) return;
+	return await ProductService.getProductsByCategory(slug);
 }
