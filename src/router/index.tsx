@@ -152,6 +152,7 @@ export const router = createBrowserRouter([
 							if (!orderId) return;
 							const orderDetails = await OrderService.getOrderDetails(orderId);
 							if (orderDetails.length === 0) throw new Response('Not Found', { status: 404 });
+							return orderDetails;
 						},
 						element: <OrderDetail />
 					}
