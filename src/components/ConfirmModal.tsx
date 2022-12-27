@@ -14,7 +14,7 @@ export default function ConfirmModal({ isOpen, close, onConfirm, confirmText, lo
 	};
 
 	return (
-		<Modal show={isOpen} size="md" popup={true} onClose={onClose}>
+		<Modal className="!h-full [&>:first-child]:h-auto" show={isOpen} size="md" popup={true} onClose={onClose}>
 			<Modal.Header />
 			<Modal.Body>
 				<div className="text-center">
