@@ -5,13 +5,22 @@ import { Fragment } from 'react';
 import useAuthStore from '../../store/auth';
 import { Link, useLocation } from 'react-router-dom';
 import UserAvatar from '../UserAvatar';
+import { BsShopWindow } from 'react-icons/all';
 
 const navigation = [
 	{ name: 'Dashboard', href: '/admin' },
 	{ name: 'Products', href: '/admin/products' },
 	{ name: 'Categories', href: '/admin/categories' },
 	{ name: 'Orders', href: '/admin/orders' },
-	{ name: 'Go To Shop', href: '/' }
+	{
+		name: (
+			<span className="flex items-center gap-2">
+				<BsShopWindow className="w-5 h-5 sm:w-4 sm:h-4" />
+				View the Shop
+			</span>
+		),
+		href: '/'
+	}
 ];
 const userNavigation = [
 	{ name: 'Profile', href: '/profile' },
@@ -28,11 +37,11 @@ export default function () {
 						<div className="flex h-16 items-center justify-between">
 							<div className="flex items-center">
 								<div className="flex-shrink-0 text-white font-bold tracking-widest">
-									ADMIN DASHBOARD
+									<Link to="/admin">ADMIN PANEL</Link>
 								</div>
 								<div className="hidden md:block">
-									<div className="ml-10 flex items-baseline gap-4">
-										{navigation.map(item => (
+									<div className="ml-10 flex items-center gap-4">
+										{navigation.map((item, index) => (
 											<Link
 												aria-current={item.href === pathname ? 'page' : undefined}
 												className={cn(
@@ -41,7 +50,7 @@ export default function () {
 														: 'text-gray-300 hover:bg-gray-700 hover:text-white',
 													'px-3 py-2 rounded-md text-sm font-medium'
 												)}
-												key={item.name}
+												key={index}
 												to={item.href}
 											>
 												{item.name}
@@ -105,9 +114,9 @@ export default function () {
 
 					<Disclosure.Panel className="md:hidden">
 						<div className="space-y-1 px-2 pt-2 pb-3 sm:px-3">
-							{navigation.map(item => (
+							{navigation.map((item, index) => (
 								<Disclosure.Button
-									key={item.name}
+									key={index}
 									as={Link}
 									to={item.href}
 									aria-current={item.href === pathname ? 'page' : undefined}
