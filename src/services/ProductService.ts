@@ -22,7 +22,7 @@ export default class ProductService {
 		return data as Product[];
 	}
 	static async getProductsByVariantId(variantId: string) {
-		const { data, errors } = await altogic.db
+		const { data, errors } = await altogicOnlyRead.db
 			.model('products')
 			.filter(`variantId == '${variantId}'`)
 			.lookup({ field: 'color' })
