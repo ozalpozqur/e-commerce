@@ -1,24 +1,23 @@
-import AdminLayout from '../../layouts/AdminLayout';
-import useCategoryStore from '../../store/category';
+import { AdminLayout } from '../../layouts';
 import { useFormik } from 'formik';
 import Input from '../../components/ui/Input';
 import Textarea from '../../components/ui/Textarea';
 import SelectBox from '../../components/ui/SelectBox';
 import * as Yup from 'yup';
-import ProductService from '../../services/ProductService';
+import { ProductService, CartService } from '../../services';
 import { toast } from 'react-toastify';
-import useProductStore from '../../store/product';
+import { useProductStore, useCategoryStore, useColorStore, useSizeStore } from '../../store';
 import { ChangeEvent, useState } from 'react';
 import DropZone from '../../components/ui/DropZone';
-import { MdDelete } from 'react-icons/all';
+import { MdInfo, MdDelete } from 'react-icons/all';
 import { isMobile } from 'react-device-detect';
 import { cn } from '../../helpers';
 import Button from '../../components/ui/Button';
 import { APIError } from 'altogic';
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import { useLoaderData, useNavigate, useSearchParams } from 'react-router-dom';
 import { Product } from '../../types/altogic';
-import CartService from '../../services/CartService';
-import useCartStore from '../../store/cart';
+import { useCartStore } from '../../store';
+import { Tooltip } from 'react-tooltip';
 
 const addProductSchema = Yup.object().shape({
 	name: Yup.string().required('This field is required'),
@@ -26,7 +25,10 @@ const addProductSchema = Yup.object().shape({
 	category: Yup.string().required('This field is required'),
 	description: Yup.string().required('This field is required'),
 	price: Yup.number().min(0, 'Product price cannot be negative value').required('This field is required'),
-	image: Yup.mixed().required('Product cover is required')
+	image: Yup.mixed().required('Product cover is required'),
+	color: Yup.string(),
+	size: Yup.string(),
+	variantId: Yup.string()
 });
 
 interface AddOrUpdateProductProps {
@@ -35,12 +37,19 @@ interface AddOrUpdateProductProps {
 export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductProps) {
 	const isEditMode = type === 'update';
 	const product = useLoaderData() as Product;
+
 	const { categories } = useCategoryStore();
 	const { addProduct, updateProduct } = useProductStore();
 	const { setCart } = useCartStore();
+	const { colors } = useColorStore();
+	const { sizes } = useSizeStore();
+
+	const [searchParams] = useSearchParams();
+
 	const [imagePreview, setImagePreview] = useState<string | null>(isEditMode ? product.coverURL : null);
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
+
 	const formik = useFormik({
 		initialValues: {
 			name: isEditMode ? product.name : '',
@@ -48,7 +57,10 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 			category: isEditMode ? product.category : '',
 			description: isEditMode ? product.description : '',
 			price: isEditMode ? product.price : '',
-			image: isEditMode ? product.coverURL : null
+			image: isEditMode ? product.coverURL : null,
+			color: isEditMode ? product.color : '',
+			size: isEditMode ? product.size : '',
+			variantId: isEditMode ? product.variantId : searchParams.get('variantId') ?? ''
 		},
 		validationSchema: addProductSchema,
 		onSubmit: async ({ image, ...rest }) => {
@@ -71,7 +83,7 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 		if (image instanceof File) {
 			// @ts-ignore
 			const { data: dataFromUploader, errors } = await ProductService.uploadCoverImage(image);
-			if (errors) return toast.error("Product cover couldn't updated, please try again");
+			if (errors) return errors.items.forEach(item => toast.error(item.message));
 			coverURL = dataFromUploader.publicPath;
 		}
 		// @ts-ignore
@@ -156,6 +168,63 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 							</div>
 							<div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5 sm:border-t sm:border-gray-200">
 								<p className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+									Product variant ID
+								</p>
+								<div className="relative">
+									<Input
+										showError={!!formik.errors.variantId && !!formik.touched.variantId}
+										errorMessage={formik.errors.variantId}
+										onChange={formik.handleChange}
+										value={formik.values.variantId}
+										name="variantId"
+										readOnly={!!searchParams.get('variantId')}
+									/>
+									{!searchParams.get('variantId') ? (
+										<div className="absolute top-0 bottom-0 right-3 flex items-center">
+											<Tooltip anchorId="productVariantCodeInfo" />
+											<button
+												type="button"
+												id="productVariantCodeInfo"
+												data-tooltip-content="If the product does not have a variant, leave it blank."
+												data-tooltip-place="top"
+												className="flex items-center justify-center cursor-pointer"
+											>
+												<MdInfo className="text-indigo-700" size={20} />
+											</button>
+										</div>
+									) : undefined}
+								</div>
+							</div>
+							<div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5 sm:border-t sm:border-gray-200">
+								<p className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Product size</p>
+								<SelectBox
+									showError={!!formik.errors.size && !!formik.touched.size}
+									errorMessage={formik.errors.size}
+									onChange={formik.handleChange}
+									value={formik.values.size?.toString()}
+									name="size"
+									firstSelectionText="Select a size"
+									className="w-full"
+									fields={sizes.map(size => ({ id: size._id, value: size.name }))}
+								/>
+							</div>
+							<div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5 sm:border-t sm:border-gray-200">
+								<p className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+									Product color
+								</p>
+								<SelectBox
+									showError={!!formik.errors.color && !!formik.touched.color}
+									errorMessage={formik.errors.color}
+									onChange={formik.handleChange}
+									value={formik.values.color?.toString()}
+									name="color"
+									firstSelectionText="Select a color"
+									className="w-full"
+									fields={colors.map(color => ({ id: color._id, value: color.name }))}
+								/>
+							</div>
+							<div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5 sm:border-t sm:border-gray-200">
+								<p className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
 									Product category
 								</p>
 								<SelectBox
@@ -165,6 +234,7 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 									value={formik.values.category.toString()}
 									name="category"
 									className="w-full"
+									firstSelectionText="Select a category"
 									fields={categories.map(category => ({ id: category._id, value: category.name }))}
 								/>
 							</div>

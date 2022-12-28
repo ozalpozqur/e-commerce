@@ -13,6 +13,20 @@ export default class ProductService {
 			.limit(limit)
 			.sort('createdAt', 'desc')
 			.lookup({ field: 'category' })
+			.lookup({ field: 'color' })
+			.lookup({ field: 'size' })
+			.get();
+
+		if (errors) throw errors;
+
+		return data as Product[];
+	}
+	static async getProductsByVariantId(variantId: string) {
+		const { data, errors } = await altogic.db
+			.model('products')
+			.filter(`variantId == '${variantId}'`)
+			.lookup({ field: 'color' })
+			.lookup({ field: 'size' })
 			.get();
 
 		if (errors) throw errors;
@@ -34,7 +48,12 @@ export default class ProductService {
 	}
 
 	static async getProductById(_id: string) {
-		const { data, errors } = await altogicOnlyRead.db.model('products').object(_id).get();
+		const { data, errors } = await altogicOnlyRead.db
+			.model('products')
+			.lookup({ field: 'color' })
+			.lookup({ field: 'size' })
+			.filter(`_id == '${_id}'`)
+			.getSingle();
 
 		if (errors) throw errors;
 
@@ -93,6 +112,14 @@ export default class ProductService {
 		if (errors) throw errors;
 
 		return true;
+	}
+
+	static async addVariant(productId: string) {
+		const { data, errors } = await altogic.endpoint.post(`/variant/${productId}`);
+
+		if (errors) throw errors;
+
+		return data as { variantId: string };
 	}
 }
 

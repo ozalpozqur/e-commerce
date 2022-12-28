@@ -1,5 +1,11 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-import { getProductByCategoryLoader, orderDetailLoader, productDetailLoader, rootLoader } from '../loaders';
+import {
+	getProductByCategoryLoader,
+	orderDetailLoader,
+	productDetailLoader,
+	productDetailLoaderForEdit,
+	rootLoader
+} from '../loaders';
 import { Profile, OrderDetails, OrderHistory, ChangeUserInfo, UserAddress } from '../pages/user';
 import { Login, Logout, Register } from '../pages/auth';
 import { InitialApp, Error, Category, Cart, Home, ProductDetail } from '../pages';
@@ -142,7 +148,7 @@ export const router = createBrowserRouter([
 					{
 						path: 'products/edit/:id',
 						element: <AddOrUpdateProduct type="update" />,
-						loader: ({ params: { id } }) => productDetailLoader(id)
+						loader: ({ params: { id } }) => productDetailLoaderForEdit(id)
 					},
 					{
 						path: 'categories',

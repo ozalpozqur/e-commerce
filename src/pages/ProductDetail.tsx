@@ -1,20 +1,46 @@
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import { Link, useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import { Product } from '../types/altogic';
 import moneyFormat, { cn } from '../helpers';
 import useCartStore from '../store/cart';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useMemo, useState } from 'react';
 import Button from '../components/ui/Button';
 import { toast } from 'react-toastify';
 import CartService from '../services/CartService';
 import useAuthStore from '../store/auth';
+import { it } from 'date-fns/locale';
 
-export default function () {
-	const product = useLoaderData() as Product;
+interface Loader {
+	product: Product;
+	variants: Product[];
+}
+
+export default function ProductDetail() {
+	const { product, variants } = useLoaderData() as Loader;
 	const { addToCart } = useCartStore();
 	const { user } = useAuthStore();
 	const [quantity, setQuantity] = useState(1);
 	const [adding, setAdding] = useState(false);
 	const navigate = useNavigate();
+
+	const sizes = useMemo(() => {
+		return variants.map(item => {
+			return {
+				link: `/product/${item._id}`,
+				name: item.size?.name,
+				isActive: product._id === item._id
+			};
+		});
+	}, [variants]);
+
+	const colors = useMemo(() => {
+		return variants.map(item => {
+			return {
+				link: `/product/${item._id}`,
+				name: item.color?.name,
+				isActive: product._id === item._id
+			};
+		});
+	}, [product, variants]);
 
 	function handleQuantity(e: ChangeEvent<HTMLInputElement>) {
 		const number = e.target.valueAsNumber;
@@ -25,6 +51,7 @@ export default function () {
 
 	async function handleClick() {
 		if (!user) return navigate('/auth/login');
+		toast.dismiss();
 		try {
 			setAdding(true);
 			let cart = await CartService.addToCart({
@@ -33,7 +60,7 @@ export default function () {
 				quantity
 			});
 			addToCart(cart);
-			toast.success('Product added to cart');
+			toast.success('Product added to cart', { autoClose: 1000 });
 		} catch (error) {
 			console.log(error);
 			// @ts-ignore
@@ -69,6 +96,48 @@ export default function () {
 								<p>{product.description}</p>
 							</div>
 						</div>
+
+						<div className="mt-4">
+							<p className="mb-1 text-sm font-medium">Color</p>
+
+							<div className="flow-root">
+								<div className="flex flex-wrap gap-1">
+									{colors.map((color, index) => (
+										<Link
+											key={index}
+											to={color.link}
+											className={cn(
+												'inline-block px-3 py-1 text-xs font-medium border rounded-full hover:bg-gray-200',
+												color.isActive ? '!bg-indigo-600 text-white' : ''
+											)}
+										>
+											{color.name}
+										</Link>
+									))}
+								</div>
+							</div>
+						</div>
+
+						<fieldset className="mt-4">
+							<p className="mb-1 text-sm font-medium">Size</p>
+
+							<div className="flow-root">
+								<div className="flex flex-wrap gap-1">
+									{sizes.map((size, index) => (
+										<Link
+											key={index}
+											to={size.link}
+											className={cn(
+												'inline-block px-3 py-1 text-xs font-medium border rounded-full hover:bg-gray-200',
+												size.isActive ? '!bg-indigo-600 text-white' : ''
+											)}
+										>
+											{size.name}
+										</Link>
+									))}
+								</div>
+							</div>
+						</fieldset>
 
 						<div className="mt-4">
 							<div className={cn('gap-2 flex flex-wrap items-center')}>

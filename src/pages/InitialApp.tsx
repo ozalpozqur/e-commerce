@@ -1,30 +1,25 @@
 import { Outlet, useLoaderData } from 'react-router-dom';
-import { Cart, Category, Product } from '../types/altogic';
 import { useEffect } from 'react';
-import useProductStore from '../store/product';
-import useCategoryStore from '../store/category';
-import useCartStore from '../store/cart';
-import useAuthStore from '../store/auth';
 import altogic from '../libs/altogic';
-import CartService from '../services/CartService';
+import { CartService } from '../services';
+import { RootLoader } from '../loaders';
+import { useColorStore, useCategoryStore, useAuthStore, useProductStore, useCartStore, useSizeStore } from '../store';
 
-interface LoaderData {
-	products: Product[];
-	categories: Category[];
-	activeCategories: Category[];
-	cart: Cart[];
-}
 export default function InitialApp() {
-	const { products, categories, cart, activeCategories } = useLoaderData() as LoaderData;
+	const { products, categories, cart, activeCategories, colors, sizes } = useLoaderData() as RootLoader;
 	const { setProducts } = useProductStore();
 	const { setCategories, setActiveCategories } = useCategoryStore();
 	const { setCart } = useCartStore();
 	const { user } = useAuthStore();
+	const { setColors } = useColorStore();
+	const { setSizes } = useSizeStore();
 
 	useEffect(() => {
 		setProducts(products);
 		setCategories(categories);
 		setActiveCategories(activeCategories);
+		setColors(colors);
+		setSizes(sizes);
 		if (cart) setCart(cart);
 
 		if (user) {

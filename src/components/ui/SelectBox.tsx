@@ -10,10 +10,20 @@ export interface SelectBoxProps extends ComponentPropsWithRef<'select'> {
 	}[];
 	label?: string;
 	className?: string;
+	firstSelectionText?: string;
 }
 const SelectBox = forwardRef(
 	(
-		{ fields, value, className, label, showError = false, errorMessage, ...props }: SelectBoxProps,
+		{
+			fields,
+			value,
+			className,
+			label,
+			firstSelectionText,
+			showError = false,
+			errorMessage,
+			...props
+		}: SelectBoxProps,
 		ref: ForwardedRef<HTMLSelectElement>
 	) => {
 		const id = useId();
@@ -29,9 +39,12 @@ const SelectBox = forwardRef(
 					)}
 					{...props}
 				>
-					<option value="" className="text-gray-50">
-						Select a category
-					</option>
+					{firstSelectionText ? (
+						<option value="" className="text-gray-50">
+							{firstSelectionText}
+						</option>
+					) : undefined}
+
 					{fields.map(field => (
 						<option value={field.id} key={field.id}>
 							{field.value}

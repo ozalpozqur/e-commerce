@@ -30,6 +30,7 @@ export interface Product {
 	category: Category;
 	size?: Size;
 	color?: Color;
+	variantId: string;
 	coverURL: string;
 	qtyInStock: number;
 	stripePriceId: string;

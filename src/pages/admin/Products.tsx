@@ -1,19 +1,16 @@
 import AdminLayout from '../../layouts/AdminLayout';
-import useProductStore from '../../store/product';
 import Table from '../../components/ui/Table';
 import moneyFormat, { cn } from '../../helpers';
 import Button from '../../components/ui/Button';
 import { FaPlus } from 'react-icons/all';
 import { format } from 'date-fns';
-import CategoryService from '../../services/CategoryService';
 import { APIError } from 'altogic';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import ProductService from '../../services/ProductService';
 import ConfirmModal from '../../components/ConfirmModal';
 import CartService from '../../services/CartService';
-import altogic from '../../libs/altogic';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import { Product } from '../../types/altogic';
 
 export default function Products() {
@@ -22,31 +19,43 @@ export default function Products() {
 	const [confirmationIsOpen, setConfirmationIsOpen] = useState(false);
 	const [selectedProductId, setSelectedProductId] = useState<string>();
 	const [deleting, setDeleting] = useState(false);
+	const navigate = useNavigate();
 
 	const cols = [
 		{ colName: '', className: 'min-w-[6rem] w-24' },
 		{ colName: 'Name' },
+		{ colName: 'Variant ID' },
 		{ colName: 'Stock' },
 		{ colName: 'Category' },
+		{ colName: 'Color' },
+		{ colName: 'Size' },
 		{ colName: 'Price' },
 		{ colName: 'Created At' },
 		{ colName: 'Actions', className: 'w-32 text-center' }
 	];
 	const rows = products.map(product => ({
 		cover: <img className="object-cover w-16 h-24 rounded" src={product.coverURL} alt={product.name} />,
-		name: product.name,
+		name: <p className="w-[20ch] whitespace-normal">{product.name}</p>,
+		variantCode: (
+			<p className="w-[15ch] overflow-x-auto [&::-webkit-scrollbar]:hidden select-all">{product.variantId}</p>
+		),
 		stock: (
 			<span className={cn('tabular-nums block text-center', product.qtyInStock === 0 && 'text-red-600')}>
 				{product.qtyInStock}
 			</span>
 		),
 		category: product.category.name,
+		color: product.color?.name,
+		size: product.size?.name,
 		price: <span className="tabular-nums">{moneyFormat(product.price)}</span>,
 		createdAt: format(new Date(product.createdAt), 'P'),
 		action: (
 			<div className="flex gap-2">
-				<Button as="link" href={`/product/${product._id}`} variant="secondary" size="small">
+				<Button as="link" href={`/product/${product._id}`} variant="white" size="small">
 					View
+				</Button>
+				<Button onClick={() => addVariant(product._id)} variant="secondary" size="small">
+					Add Variant
 				</Button>
 				<Button as="link" href={`/admin/products/edit/${product._id}`} variant="primary" size="small">
 					Edit
@@ -57,6 +66,15 @@ export default function Products() {
 			</div>
 		)
 	}));
+
+	async function addVariant(productId: string) {
+		try {
+			const { variantId } = await ProductService.addVariant(productId);
+			navigate('/admin/products/new?variantId=' + variantId);
+		} catch (errors) {
+			(errors as APIError).items.forEach(item => toast.error(item.message));
+		}
+	}
 
 	async function deleteProduct() {
 		if (!selectedProductId) return;
