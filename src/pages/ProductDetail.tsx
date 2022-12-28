@@ -7,7 +7,6 @@ import Button from '../components/ui/Button';
 import { toast } from 'react-toastify';
 import CartService from '../services/CartService';
 import useAuthStore from '../store/auth';
-import { it } from 'date-fns/locale';
 
 interface Loader {
 	product: Product;
@@ -97,47 +96,51 @@ export default function ProductDetail() {
 							</div>
 						</div>
 
-						<div className="mt-4">
-							<p className="mb-1 text-sm font-medium">Color</p>
+						{colors.length > 0 && (
+							<div className="mt-4">
+								<p className="mb-1 text-sm font-medium">Color</p>
 
-							<div className="flow-root">
-								<div className="flex flex-wrap gap-1">
-									{colors.map((color, index) => (
-										<Link
-											key={index}
-											to={color.link}
-											className={cn(
-												'inline-block px-3 py-1 text-xs font-medium border rounded-full hover:bg-gray-200',
-												color.isActive ? '!bg-indigo-600 text-white' : ''
-											)}
-										>
-											{color.name}
-										</Link>
-									))}
+								<div className="flow-root">
+									<div className="flex flex-wrap gap-1">
+										{colors.map((color, index) => (
+											<Link
+												key={index}
+												to={color.link}
+												className={cn(
+													'inline-block px-3 py-1 text-xs font-medium border rounded-full hover:bg-gray-200',
+													color.isActive ? '!bg-indigo-600 text-white' : ''
+												)}
+											>
+												{color.name}
+											</Link>
+										))}
+									</div>
 								</div>
 							</div>
-						</div>
+						)}
 
-						<fieldset className="mt-4">
-							<p className="mb-1 text-sm font-medium">Size</p>
+						{sizes.length > 0 && (
+							<div className="mt-4">
+								<p className="mb-1 text-sm font-medium">Size</p>
 
-							<div className="flow-root">
-								<div className="flex flex-wrap gap-1">
-									{sizes.map((size, index) => (
-										<Link
-											key={index}
-											to={size.link}
-											className={cn(
-												'inline-block px-3 py-1 text-xs font-medium border rounded-full hover:bg-gray-200',
-												size.isActive ? '!bg-indigo-600 text-white' : ''
-											)}
-										>
-											{size.name}
-										</Link>
-									))}
+								<div className="flow-root">
+									<div className="flex flex-wrap gap-1">
+										{sizes.map((size, index) => (
+											<Link
+												key={index}
+												to={size.link}
+												className={cn(
+													'inline-block px-3 py-1 text-xs font-medium border rounded-full hover:bg-gray-200',
+													size.isActive ? '!bg-indigo-600 text-white' : ''
+												)}
+											>
+												{size.name}
+											</Link>
+										))}
+									</div>
 								</div>
 							</div>
-						</fieldset>
+						)}
 
 						<div className="mt-4">
 							<div className={cn('gap-2 flex flex-wrap items-center')}>
