@@ -1,4 +1,4 @@
-import { Link, useLoaderData, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 import { Product } from '../types/altogic';
 import moneyFormat, { cn } from '../helpers';
 import useCartStore from '../store/cart';
@@ -7,6 +7,7 @@ import Button from '../components/ui/Button';
 import { toast } from 'react-toastify';
 import CartService from '../services/CartService';
 import useAuthStore from '../store/auth';
+import { groupBy } from 'lodash';
 
 interface Loader {
 	product: Product;
@@ -21,25 +22,33 @@ export default function ProductDetail() {
 	const [adding, setAdding] = useState(false);
 	const navigate = useNavigate();
 
-	const sizes = useMemo(() => {
-		return variants.map(item => {
-			return {
-				link: `/product/${item._id}`,
-				name: item.size?.name,
-				isActive: product._id === item._id
-			};
-		});
-	}, [variants]);
+	const { colors, sizes } = useMemo(() => {
+		const colorGroups = groupBy(variants, 'color.name');
 
-	const colors = useMemo(() => {
-		return variants.map(item => {
-			return {
-				link: `/product/${item._id}`,
-				name: item.color?.name,
-				isActive: product._id === item._id
-			};
-		});
-	}, [product, variants]);
+		const colors = Object.keys(colorGroups).map(item => ({
+			name: item === 'undefined' ? false : item,
+			link: `/product/${colorGroups[item][0]._id}`,
+			isActive: colorGroups[item].some(item => item._id === product._id),
+			sizes: colorGroups[item].map(p => ({
+				name: p.size?.name,
+				product: p._id,
+				isActive: product._id === p._id,
+				link: `/product/${p._id}`
+			}))
+		}));
+
+		const sizes = (colors.find(color => color.isActive)?.sizes || []) as {
+			name: string;
+			product: string;
+			isActive: boolean;
+			link: string;
+		}[];
+
+		return {
+			colors: colors.filter(color => color.name),
+			sizes
+		};
+	}, [variants]);
 
 	function handleQuantity(e: ChangeEvent<HTMLInputElement>) {
 		const number = e.target.valueAsNumber;

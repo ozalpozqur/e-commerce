@@ -18,6 +18,7 @@ import { useLoaderData, useNavigate, useSearchParams } from 'react-router-dom';
 import { Product } from '../../types/altogic';
 import { useCartStore } from '../../store';
 import { Tooltip } from 'react-tooltip';
+import { da } from 'date-fns/locale';
 
 const addProductSchema = Yup.object().shape({
 	name: Yup.string().required('This field is required'),
@@ -58,8 +59,8 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 			description: isEditMode ? product.description : '',
 			price: isEditMode ? product.price : '',
 			image: isEditMode ? product.coverURL : null,
-			color: isEditMode ? product.color : '',
-			size: isEditMode ? product.size : '',
+			color: isEditMode ? product.color?._id : '',
+			size: isEditMode ? product.size?._id : '',
 			variantId: isEditMode ? product.variantId : searchParams.get('variantId') ?? ''
 		},
 		validationSchema: addProductSchema,
@@ -93,7 +94,9 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 		setCart(await CartService.getCart());
 	}
 
-	async function addNewProduct(image: string, data: object) {
+	async function addNewProduct(image: string, data: typeof formik.initialValues) {
+		if (!data.color) delete data.color;
+		if (!data.size) delete data.size;
 		// @ts-ignore
 		const product = await ProductService.addProduct(data, image);
 		addProduct(product);
@@ -177,6 +180,7 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 										onChange={formik.handleChange}
 										value={formik.values.variantId}
 										name="variantId"
+										className={cn(!searchParams.get('variantId') ? 'pr-10' : '')}
 										readOnly={!!searchParams.get('variantId')}
 									/>
 									{!searchParams.get('variantId') ? (
