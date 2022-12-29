@@ -11,10 +11,14 @@ import ProductService from '../../services/ProductService';
 import ConfirmModal from '../../components/ConfirmModal';
 import CartService from '../../services/CartService';
 import { useLoaderData, useNavigate } from 'react-router-dom';
-import { Product } from '../../types/altogic';
+import { PaginateData, Product } from '../../types/altogic';
 
+interface ProductsLoader {
+	items: Product[];
+	paginateData: PaginateData;
+}
 export default function Products() {
-	const productsFromDB = useLoaderData() as Product[];
+	const { items: productsFromDB } = useLoaderData() as ProductsLoader;
 	const [products, setProducts] = useState(productsFromDB);
 	const [confirmationIsOpen, setConfirmationIsOpen] = useState(false);
 	const [selectedProductId, setSelectedProductId] = useState<string>();

@@ -1,7 +1,7 @@
 import ProductCard from './ProductCard';
 import useProductStore from '../store/product';
 import { Product } from '../types/altogic';
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { useEffect, useMemo } from 'react';
 import { ProductService } from '../services';
 import Button from './ui/Button';
