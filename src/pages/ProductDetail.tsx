@@ -153,7 +153,7 @@ export default function ProductDetail() {
 
 						<div className="mt-4">
 							<div className={cn('gap-2 flex flex-wrap items-center')}>
-								{product.qtyInStock > 1 ? (
+								{product.qtyInStock >= 1 ? (
 									<>
 										<div className="w-20">
 											<label htmlFor="quantity" className="sr-only">
