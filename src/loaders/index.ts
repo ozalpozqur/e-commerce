@@ -5,8 +5,6 @@ import useAuthStore from '../store/auth';
 import { Product, Category, Cart, User, Color, Size, PaginateData } from '../types/altogic';
 import altogic from '../libs/altogic';
 import { ColorService, OrderService, SizeService } from '../services';
-import { sl } from 'date-fns/locale';
-import product from '../store/product';
 
 export async function rootLoader() {
 	const searchParams = new URLSearchParams(location.search);

@@ -5,7 +5,6 @@ import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { useEffect, useMemo } from 'react';
 import { ProductService } from '../services';
 import Button from './ui/Button';
-import { sl } from 'date-fns/locale';
 import { PRODUCT_LIMIT } from '../services/ProductService';
 
 interface ProductListProps {

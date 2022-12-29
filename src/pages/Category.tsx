@@ -1,4 +1,4 @@
-import { json, useLoaderData } from 'react-router-dom';
+import { useLoaderData } from 'react-router-dom';
 import ProductList from '../components/ProductList';
 import { PaginateData, Product } from '../types/altogic';
 import { Player } from '@lottiefiles/react-lottie-player';
