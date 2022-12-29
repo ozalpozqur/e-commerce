@@ -11,7 +11,7 @@ import { PRODUCT_LIMIT } from '../services/ProductService';
 interface ProductListProps {
 	products?: Product[];
 	noProductsInfoMessage?: JSX.Element | string;
-	categoryPage: boolean;
+	categoryPag?: boolean;
 }
 
 export default function ProductList({ products, noProductsInfoMessage, categoryPage = false }: ProductListProps) {
