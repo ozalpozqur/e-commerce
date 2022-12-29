@@ -1,10 +1,11 @@
 import create from 'zustand';
 import { devtools } from 'zustand/middleware';
-import { Product } from '../types/altogic';
+import { PaginateData, Product } from '../types/altogic';
 
 interface ProductState {
 	products: Product[];
-	setProducts: (products: Product[]) => void;
+	paginateData: PaginateData;
+	setProducts: (products: Product[], paginateData: PaginateData) => void;
 	addProduct: (product: Product) => void;
 	updateProduct: (product: Product) => void;
 	removeProduct: (id: string) => void;
@@ -14,8 +15,9 @@ const useProductStore = create<ProductState>()(
 	devtools(
 		set => ({
 			products: [],
-			setProducts(products) {
-				set({ products });
+			paginateData: {},
+			setProducts(products, paginateData) {
+				set({ products, paginateData });
 			},
 			addProduct(product) {
 				set(prev => ({ products: [product, ...prev.products] }));

@@ -4,6 +4,7 @@ import altogic from '../libs/altogic';
 import { CartService } from '../services';
 import { RootLoader } from '../loaders';
 import { useColorStore, useCategoryStore, useAuthStore, useProductStore, useCartStore, useSizeStore } from '../store';
+import product from '../store/product';
 
 export default function InitialApp() {
 	const { products, categories, cart, activeCategories, colors, sizes } = useLoaderData() as RootLoader;
@@ -15,7 +16,7 @@ export default function InitialApp() {
 	const { setSizes } = useSizeStore();
 
 	useEffect(() => {
-		setProducts(products);
+		setProducts(products.items, products.paginateData);
 		setCategories(categories);
 		setActiveCategories(activeCategories);
 		setColors(colors);

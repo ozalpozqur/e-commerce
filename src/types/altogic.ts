@@ -84,3 +84,10 @@ export interface Size {
 	createdAt: string;
 	updatedAt: string;
 }
+
+export interface PaginateData {
+	count?: number;
+	currentPage?: number;
+	pageSize?: number;
+	totalPages?: number;
+}

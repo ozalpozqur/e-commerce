@@ -1,13 +1,17 @@
-import ProductService from '../services/ProductService';
+import ProductService, { PRODUCT_LIMIT } from '../services/ProductService';
 import CategoryService from '../services/CategoryService';
 import CartService from '../services/CartService';
 import useAuthStore from '../store/auth';
-import { Product, Category, Cart, User, Color, Size } from '../types/altogic';
+import { Product, Category, Cart, User, Color, Size, PaginateData } from '../types/altogic';
 import altogic from '../libs/altogic';
 import { ColorService, OrderService, SizeService } from '../services';
+import { sl } from 'date-fns/locale';
+import product from '../store/product';
 
 export async function rootLoader() {
-	const products = ProductService.getProducts({ onlyHasStock: true });
+	const searchParams = new URLSearchParams(location.search);
+	const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1;
+	const products = ProductService.getProducts({ onlyHasStock: true, page, limit: PRODUCT_LIMIT });
 	const activeCategories = CategoryService.getActiveCategories();
 	const categories = CategoryService.getCategories();
 	const colors = ColorService.getColors();
@@ -54,14 +58,18 @@ export async function productDetailLoaderForEdit(productId?: string) {
 	if (!product) throw new Response('Not Found', { status: 404 });
 	return product;
 }
-
 export async function getProductByCategoryLoader(slug?: string) {
 	if (!slug) return;
-	return await ProductService.getProductsByCategory(slug);
-}
 
+	const searchParams = new URLSearchParams(location.search);
+	const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1;
+	return ProductService.getProductsByCategory(slug, { onlyHasStock: true, page, limit: PRODUCT_LIMIT });
+}
 export interface RootLoader {
-	products: Product[];
+	products: {
+		items: Product[];
+		paginateData: PaginateData;
+	};
 	categories: Category[];
 	activeCategories: Category[];
 	colors: Color[];

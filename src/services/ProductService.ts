@@ -1,12 +1,17 @@
 import altogic, { altogicOnlyRead } from '../libs/altogic';
-import { Category, Product } from '../types/altogic';
+import { Category, PaginateData, Product } from '../types/altogic';
 import { APIError } from 'altogic';
 import useCategoryStore from '../store/category';
 import category from '../store/category';
 
+export const PRODUCT_LIMIT = 12;
 export default class ProductService {
-	static async getProducts({ onlyHasStock = true, page = 1, limit = 50 }: GetProductsParams) {
-		const { data, errors } = await altogicOnlyRead.db
+	static async getProducts({ onlyHasStock = true, page = 1, limit = PRODUCT_LIMIT }: GetProductsParams) {
+		const {
+			// @ts-ignore
+			data: { data, info },
+			errors
+		} = await altogicOnlyRead.db
 			.model('products')
 			.filter(onlyHasStock ? 'qtyInStock > 0' : '')
 			.page(page)
@@ -15,11 +20,14 @@ export default class ProductService {
 			.lookup({ field: 'category' })
 			.lookup({ field: 'color' })
 			.lookup({ field: 'size' })
-			.get();
+			.get(true);
 
 		if (errors) throw errors;
 
-		return data as Product[];
+		return {
+			items: data as Product[],
+			paginateData: info as PaginateData
+		};
 	}
 	static async getProductsByVariantId(variantId: string) {
 		const { data, errors } = await altogicOnlyRead.db
@@ -34,17 +42,29 @@ export default class ProductService {
 		return data as Product[];
 	}
 
-	static async getProductsByCategory(slug: string) {
-		const { data, errors } = await altogicOnlyRead.db
+	static async getProductsByCategory(
+		slug: string,
+		{ onlyHasStock = true, page = 1, limit = PRODUCT_LIMIT }: GetProductsParams
+	) {
+		const {
+			// @ts-ignore
+			data: { data, info },
+			errors
+		} = await altogicOnlyRead.db
 			.model('products')
 			.sort('createdAt', 'desc')
-			.filter(`qtyInStock > 0 && category.slug == '${slug}'`)
+			.filter(onlyHasStock ? `qtyInStock > 0 && category.slug == '${slug}'` : `category.slug == '${slug}'`)
+			.page(page)
+			.limit(limit)
 			.lookup({ field: 'category' })
-			.get();
+			.get(true);
 
 		if (errors) throw errors;
 
-		return data as Product[];
+		return {
+			items: data as Product[],
+			paginateData: info as PaginateData
+		};
 	}
 
 	static async getProductById(_id: string) {
