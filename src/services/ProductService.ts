@@ -80,14 +80,18 @@ export default class ProductService {
 		return data as Product;
 	}
 
-	static async addProduct(product: AddProduct, image: File) {
-		const { errors: uploadErrors, data } = await ProductService.uploadCoverImage(image);
+	static async addProduct(product: AddProduct, image: File | string) {
+		let coverURL = image;
+		if (image instanceof File) {
+			const { errors: uploadErrors, data } = await ProductService.uploadCoverImage(image);
+			if (uploadErrors) throw uploadErrors;
 
-		if (uploadErrors) throw uploadErrors;
+			coverURL = data.publicPath;
+		}
 
 		const { data: dataFromDB, errors } = (await altogic.endpoint.post('/products', {
 			...product,
-			coverURL: data.publicPath
+			coverURL
 		})) as {
 			data: Product;
 			errors: APIError;

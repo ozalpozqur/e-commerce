@@ -7,22 +7,28 @@ import { format } from 'date-fns';
 import { APIError } from 'altogic';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
-import ProductService from '../../services/ProductService';
+import ProductService, { PRODUCT_LIMIT } from '../../services/ProductService';
 import ConfirmModal from '../../components/ConfirmModal';
 import CartService from '../../services/CartService';
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import { useLoaderData, useNavigate, useSearchParams } from 'react-router-dom';
 import { PaginateData, Product } from '../../types/altogic';
+import Pagination from '../../components/Pagination';
 
 interface ProductsLoader {
 	items: Product[];
 	paginateData: PaginateData;
 }
 export default function Products() {
-	const { items: productsFromDB } = useLoaderData() as ProductsLoader;
+	const { items: productsFromDB, paginateData: paginateDataFromDB } = useLoaderData() as ProductsLoader;
+
 	const [products, setProducts] = useState(productsFromDB);
+	const [paginateData, setPaginateData] = useState(paginateDataFromDB);
+
 	const [confirmationIsOpen, setConfirmationIsOpen] = useState(false);
 	const [selectedProductId, setSelectedProductId] = useState<string>();
 	const [deleting, setDeleting] = useState(false);
+
+	const [searchParams] = useSearchParams();
 	const navigate = useNavigate();
 
 	const cols = [
@@ -58,7 +64,7 @@ export default function Products() {
 				<Button as="link" href={`/product/${product._id}`} variant="white" size="small">
 					View
 				</Button>
-				<Button onClick={() => addVariant(product._id)} variant="secondary" size="small">
+				<Button onClick={() => addVariant(product)} variant="secondary" size="small">
 					Add Variant
 				</Button>
 				<Button as="link" href={`/admin/products/edit/${product._id}`} variant="primary" size="small">
@@ -71,10 +77,31 @@ export default function Products() {
 		)
 	}));
 
-	async function addVariant(productId: string) {
+	async function getPaginateProducts() {
+		const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1;
+
+		const { items, paginateData } = await ProductService.getProducts({
+			onlyHasStock: false,
+			page,
+			limit: PRODUCT_LIMIT
+		});
+
+		setProducts(items);
+		setPaginateData(paginateData);
+	}
+
+	async function addVariant(product: Product) {
 		try {
-			const { variantId } = await ProductService.addVariant(productId);
-			navigate('/admin/products/new?variantId=' + variantId);
+			const { variantId } = await ProductService.addVariant(product._id);
+			const searchParams = new URLSearchParams({
+				variantId,
+				name: product.name,
+				category: product.category._id,
+				description: product.description,
+				price: product.price.toString(),
+				coverURL: product.coverURL
+			});
+			navigate('/admin/products/new?' + searchParams.toString());
 		} catch (errors) {
 			(errors as APIError).items.forEach(item => toast.error(item.message));
 		}
@@ -107,7 +134,7 @@ export default function Products() {
 		<AdminLayout title="All Products">
 			<>
 				<ConfirmModal
-					confirmText="Are you sure you want to delete this?"
+					confirmText="Are you sure you want to delete this product?"
 					isOpen={confirmationIsOpen}
 					close={closeConfirmation}
 					loading={deleting}
@@ -127,6 +154,7 @@ export default function Products() {
 						</Button>
 					</div>
 					<Table cols={cols} rows={rows} />
+					<Pagination paginateData={paginateData} onPageChange={getPaginateProducts} />
 				</div>
 			</>
 		</AdminLayout>

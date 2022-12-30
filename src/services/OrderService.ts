@@ -1,33 +1,51 @@
 import altogic from '../libs/altogic';
-import { Order, OrderItem } from '../types/altogic';
+import { Order, OrderItem, PaginateData, Product } from '../types/altogic';
 import useAuthStore from '../store/auth';
-import { da } from 'date-fns/locale';
 
+export const ORDER_LIMIT = 5;
 export default class OrderService {
-	static async getAllOrders() {
-		const { data, errors } = await altogic.db
+	static async getAllOrders(page: number = 1, limit: number = ORDER_LIMIT) {
+		const {
+			// @ts-ignore
+			data: { data, info },
+			errors
+		} = await altogic.db
 			.model('orders')
 			.lookup({ field: 'user' })
 			.sort('createdAt', 'desc')
-			.get();
+			.page(page)
+			.limit(limit)
+			.get(true);
 
 		if (errors) throw errors;
 
-		return data as Order[];
+		return {
+			orders: data as Order[],
+			paginateData: info as PaginateData
+		};
 	}
-	static async getOrders() {
+	static async getOrders(page: number = 1, limit: number = ORDER_LIMIT) {
 		const { user } = useAuthStore.getState();
 		if (!user) throw new Error('Unauthorized');
 
-		const { data, errors } = await altogic.db
+		const {
+			// @ts-ignore
+			data: { data, info },
+			errors
+		} = await altogic.db
 			.model('orders')
 			.filter(`user == '${user._id}'`)
 			.sort('createdAt', 'desc')
-			.get();
+			.page(page)
+			.limit(limit)
+			.get(true);
 
 		if (errors) throw errors;
 
-		return data as Order[];
+		return {
+			orders: data as Order[],
+			paginateData: info as PaginateData
+		};
 	}
 
 	static async getOrderDetails(orderId: string) {

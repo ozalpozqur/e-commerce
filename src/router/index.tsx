@@ -22,6 +22,7 @@ import Admin, {
 	OrderDetails as OrderDetailsAdmin
 } from '../pages/admin';
 import { useAuthStore } from '../store';
+import { ORDER_LIMIT } from '../services/OrderService';
 
 export const router = createBrowserRouter([
 	{
@@ -171,7 +172,7 @@ export const router = createBrowserRouter([
 					{
 						path: 'orders',
 						element: <Orders />,
-						loader: () => OrderService.getAllOrders()
+						loader: () => OrderService.getAllOrders(1, ORDER_LIMIT)
 					},
 					{
 						path: 'orders/:orderId',

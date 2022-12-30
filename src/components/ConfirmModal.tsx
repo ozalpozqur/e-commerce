@@ -1,5 +1,6 @@
 import { Modal } from 'flowbite-react';
 import Button from './ui/Button';
+import { MouseEvent, useEffect } from 'react';
 
 interface ConfirmModalProps {
 	isOpen: boolean;
@@ -13,8 +14,34 @@ export default function ConfirmModal({ isOpen, close, onConfirm, confirmText, lo
 		close?.();
 	};
 
+	useEffect(() => {
+		if (!isOpen) return;
+		function handler(event: KeyboardEvent) {
+			if (event.key === 'Escape') {
+				close?.();
+			}
+		}
+
+		document.addEventListener('keydown', handler);
+
+		return () => {
+			document.removeEventListener('keydown', handler);
+		};
+	}, [isOpen]);
+
+	function clickOutSide(event: MouseEvent) {
+		if (event.target === event.currentTarget) close?.();
+	}
+
 	return (
-		<Modal className="!h-full [&>:first-child]:h-auto" show={isOpen} size="md" popup={true} onClose={onClose}>
+		<Modal
+			onClick={clickOutSide}
+			className="!h-full [&>:first-child]:h-auto"
+			show={isOpen}
+			size="md"
+			popup={true}
+			onClose={onClose}
+		>
 			<Modal.Header />
 			<Modal.Body>
 				<div className="text-center">

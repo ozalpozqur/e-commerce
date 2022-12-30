@@ -14,7 +14,7 @@ export default function Categories() {
 	const [confirmationIsOpen, setConfirmationIsOpen] = useState(false);
 	const [selectedCategoryId, setSelectedCategoryId] = useState<string>();
 	const [deleting, setDeleting] = useState(false);
-	const { categories, setCategories, removeCategory } = useCategoryStore();
+	const { categories, removeCategory } = useCategoryStore();
 
 	const cols = [
 		{ colName: 'Name' },
@@ -60,7 +60,7 @@ export default function Categories() {
 		<AdminLayout title="All Categories">
 			<>
 				<ConfirmModal
-					confirmText="Are you sure you want to delete this?"
+					confirmText="Are you sure you want to delete this category?"
 					isOpen={confirmationIsOpen}
 					close={closeConfirmation}
 					loading={deleting}

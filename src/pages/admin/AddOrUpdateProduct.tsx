@@ -47,18 +47,20 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 
 	const [searchParams] = useSearchParams();
 
-	const [imagePreview, setImagePreview] = useState<string | null>(isEditMode ? product.coverURL : null);
+	const [imagePreview, setImagePreview] = useState<string | null>(
+		isEditMode ? product.coverURL : searchParams.get('coverURL') ?? null
+	);
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
 
 	const formik = useFormik({
 		initialValues: {
-			name: isEditMode ? product.name : '',
+			name: isEditMode ? product.name : searchParams.get('name') ?? '',
 			qtyInStock: isEditMode ? product.qtyInStock : '',
-			category: isEditMode ? product.category : '',
-			description: isEditMode ? product.description : '',
-			price: isEditMode ? product.price : '',
-			image: isEditMode ? product.coverURL : null,
+			category: isEditMode ? product.category : searchParams.get('category') ?? '',
+			description: isEditMode ? product.description : searchParams.get('description') ?? '',
+			price: isEditMode ? product.price : searchParams.get('price') ?? '',
+			image: isEditMode ? product.coverURL : searchParams.get('coverURL') ?? null,
 			color: isEditMode ? product.color?._id : '',
 			size: isEditMode ? product.size?._id : '',
 			variantId: isEditMode ? product.variantId : searchParams.get('variantId') ?? ''

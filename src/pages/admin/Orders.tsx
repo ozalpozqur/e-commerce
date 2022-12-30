@@ -2,12 +2,23 @@ import AdminLayout from '../../layouts/AdminLayout';
 import Button from '../../components/ui/Button';
 import Table from '../../components/ui/Table';
 import { format } from 'date-fns';
-import { useLoaderData } from 'react-router-dom';
-import { Order } from '../../types/altogic';
+import { useLoaderData, useSearchParams } from 'react-router-dom';
+import { Order, PaginateData } from '../../types/altogic';
 import moneyFormat from '../../helpers';
+import Pagination from '../../components/Pagination';
+import { useState } from 'react';
+import { OrderService } from '../../services';
 
+interface OrderLoader {
+	orders: Order[];
+	paginateData: PaginateData;
+}
 export default function Orders() {
-	const orders = useLoaderData() as Order[];
+	const { orders: orderFromDB, paginateData: paginateDataFromDB } = useLoaderData() as OrderLoader;
+	const [orders, setOrders] = useState(orderFromDB);
+	const [paginateData, setPaginateData] = useState(paginateDataFromDB);
+	const [searchParams] = useSearchParams();
+
 	const cols = [
 		{ colName: 'Order Number' },
 		{ colName: 'Customer' },
@@ -33,10 +44,19 @@ export default function Orders() {
 			</div>
 		)
 	}));
+
+	async function getPaginateProducts() {
+		const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1;
+		const { orders, paginateData } = await OrderService.getAllOrders(page);
+		setOrders(orders);
+		setPaginateData(paginateData);
+	}
+
 	return (
 		<AdminLayout title="Orders">
 			<div className="px-4 sm:p-0 space-y-2">
 				<Table cols={cols} rows={rows} />
+				<Pagination onPageChange={getPaginateProducts} paginateData={paginateData} />
 			</div>
 		</AdminLayout>
 	);
