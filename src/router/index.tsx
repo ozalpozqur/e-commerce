@@ -53,7 +53,12 @@ export const router = createBrowserRouter([
 						<Category />
 					</ShopLayout>
 				),
-				loader: ({ params: { slug } }) => getProductByCategoryLoader(slug)
+				loader: ({ params: { slug }, request: { url } }) => {
+					const page = new URL(url).searchParams.get('page')
+						? Number(new URL(url).searchParams.get('page'))
+						: 1;
+					return getProductByCategoryLoader(slug, page);
+				}
 			},
 			{
 				path: '/cart',
