@@ -1,6 +1,6 @@
 import ProductCard from './ProductCard';
 import useProductStore from '../store/product';
-import { Product } from '../types/altogic';
+import { PaginateData, Product } from '../types/altogic';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { ProductService } from '../services';
 import { PRODUCT_LIMIT } from '../services/ProductService';
@@ -10,11 +10,18 @@ interface ProductListProps {
 	products?: Product[];
 	noProductsInfoMessage?: JSX.Element | string;
 	categoryPage?: boolean;
+	paginateData?: PaginateData;
 }
 
-export default function ProductList({ products, noProductsInfoMessage, categoryPage = false }: ProductListProps) {
-	const { products: productsFromStore, paginateData, setProducts } = useProductStore();
+export default function ProductList({
+	products,
+	noProductsInfoMessage,
+	paginateData,
+	categoryPage = false
+}: ProductListProps) {
+	const { products: productsFromStore, paginateData: paginateDataFromStore, setProducts } = useProductStore();
 	const _products = products ?? productsFromStore;
+	const _paginateData = paginateData ?? paginateDataFromStore;
 	const [searchParams] = useSearchParams();
 	const { slug } = useParams();
 
@@ -48,7 +55,7 @@ export default function ProductList({ products, noProductsInfoMessage, categoryP
 						))}
 					</div>
 
-					<Pagination onPageChange={getPaginateProducts} paginateData={paginateData} />
+					<Pagination onPageChange={getPaginateProducts} paginateData={_paginateData} />
 				</div>
 			)}
 		</section>

@@ -9,7 +9,7 @@ interface CategoryLoader {
 }
 
 export default function Category() {
-	const { items } = useLoaderData() as CategoryLoader;
+	const { items, paginateData } = useLoaderData() as CategoryLoader;
 
 	const noProductsInfoMessage = (
 		<div className="text-center p-4 text-xl">
@@ -17,5 +17,12 @@ export default function Category() {
 			<p>No products found in this category</p>
 		</div>
 	);
-	return <ProductList noProductsInfoMessage={noProductsInfoMessage} products={items} categoryPage />;
+	return (
+		<ProductList
+			noProductsInfoMessage={noProductsInfoMessage}
+			products={items}
+			paginateData={paginateData}
+			categoryPage
+		/>
+	);
 }
