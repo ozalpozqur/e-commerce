@@ -1,6 +1,6 @@
 import { AiOutlineClose } from 'react-icons/all';
 import useCartStore from '../store/cart';
-import { Link, useRouteLoaderData } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import moneyFormat, { cn } from '../helpers';
 import Button from '../components/ui/Button';
