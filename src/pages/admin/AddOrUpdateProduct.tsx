@@ -156,6 +156,7 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 									value={formik.values.qtyInStock}
 									name="qtyInStock"
 									type="number"
+									min={0}
 								/>
 							</div>
 							<div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5 sm:border-t sm:border-gray-200">
@@ -169,6 +170,7 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 									value={formik.values.price}
 									name="price"
 									type="number"
+									min={0}
 								/>
 							</div>
 							<div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5 sm:border-t sm:border-gray-200">
