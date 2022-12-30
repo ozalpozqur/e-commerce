@@ -42,7 +42,7 @@ export default function Pagination({ onPageChange, paginateData }: PaginationPro
 				variant="white"
 				onClick={() => setPage(prevPage)}
 				disabled={Boolean(paginateData?.currentPage && paginateData.currentPage === 1)}
-				className="disabled:!border-gray-100 !border-gray-100 shadow-none"
+				className="disabled:!border-gray-100 !border-gray-100 shadow-none !rounded"
 			>
 				<MdKeyboardArrowLeft size={15} />
 			</Button>
@@ -56,7 +56,7 @@ export default function Pagination({ onPageChange, paginateData }: PaginationPro
 				variant="white"
 				onClick={() => setPage(nextPage)}
 				disabled={Boolean(paginateData?.totalPages && paginateData.totalPages < nextPage)}
-				className="disabled:!border-gray-100 !border-gray-100 shadow-none"
+				className="disabled:!border-gray-100 !border-gray-100 shadow-none !rounded"
 			>
 				<MdKeyboardArrowRight size={15} />
 			</Button>

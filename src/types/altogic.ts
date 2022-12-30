@@ -39,10 +39,12 @@ export interface Product {
 	updatedAt: string;
 }
 
+export type OrderStatus = 'waiting' | 'preparing' | 'shipped' | 'completed' | 'canceled';
+
 export interface Order {
 	_id: string;
 	orderNumber: number;
-	status: 'waiting' | 'preparing' | 'shipped' | 'completed' | 'canceled';
+	status: OrderStatus;
 	totalPrice: number;
 	stripeCheckoutId: string;
 	user: User;

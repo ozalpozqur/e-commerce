@@ -48,11 +48,27 @@ export default class OrderService {
 		};
 	}
 
+	static async getOrderById(id: string) {
+		const { data, errors } = await altogic.db.model('orders').object(id).get();
+
+		if (errors) throw errors;
+
+		return data as Order;
+	}
+
+	static async updateOrder(id: string, data: Partial<Order>) {
+		const { data: order, errors } = await altogic.db.model('orders').object(id).update(data);
+		if (errors) throw errors;
+		console.log(order);
+		return order as Order;
+	}
+
 	static async getOrderDetails(orderId: string) {
 		const { data, errors } = await altogic.db
 			.model('orderItems')
-			.filter(`order == '${orderId}'`)
+			.filter(`order._id == '${orderId}'`)
 			.lookup({ field: 'product' })
+			.lookup({ field: 'order' })
 			.get();
 
 		if (errors) throw errors;

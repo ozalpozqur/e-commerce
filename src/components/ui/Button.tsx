@@ -29,7 +29,7 @@ const buttonProps = variantProps({
 	defaultVariants: {
 		size: 'medium',
 		variant: 'primary',
-		rounded: 'lg'
+		rounded: 'md'
 	}
 });
 

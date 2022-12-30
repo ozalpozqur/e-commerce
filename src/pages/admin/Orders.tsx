@@ -34,7 +34,7 @@ export default function Orders() {
 		orderNumber: '#' + order.orderNumber.toString().padStart(6, '0'),
 		customer: order.user.name,
 		total: moneyFormat(order.totalPrice),
-		status: order.status,
+		status: order.status.toLocaleUpperCase(),
 		createdAt: format(new Date(order.createdAt), 'P'),
 		actions: (
 			<div className="flex gap-2">
