@@ -29,13 +29,19 @@ export default function OrderDetails() {
 		}
 	];
 	const rows = orderDetails.map(item => ({
-		cover: <img className="object-cover w-16 h-24 rounded" src={item.product.coverURL} alt={item.product.name} />,
+		cover: (
+			<img
+				className="object-cover w-16 h-24 rounded"
+				src={item?.product?.coverURL ?? '/no-image.png'}
+				alt={item.productName}
+			/>
+		),
 		productName: item.productName,
 		quantity: item.quantity,
 		price: moneyFormat(item.price),
-		actions: (
+		actions: item?.product?._id && (
 			<div className="flex gap-2">
-				<Button as="link" href={`/product/${item.product._id}`} variant="secondary" size="small">
+				<Button as="link" href={`/product/${item?.product?._id}`} variant="secondary" size="small">
 					View product
 				</Button>
 			</div>
