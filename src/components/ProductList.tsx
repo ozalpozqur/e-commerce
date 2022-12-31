@@ -54,7 +54,6 @@ export default function ProductList({
 							<ProductCard key={product._id} product={product} />
 						))}
 					</div>
-
 					<Pagination onPageChange={getPaginateProducts} paginateData={_paginateData} />
 				</div>
 			)}
