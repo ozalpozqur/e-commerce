@@ -59,7 +59,9 @@ export default function OrderHistory() {
 									</div>
 									<div>
 										<dt className="font-medium text-gray-900">Order status</dt>
-										<dd className="mt-1 font-medium text-gray-500">{order.status}</dd>
+										<dd className="mt-1 font-medium text-gray-500">
+											{order.status.toLocaleUpperCase()}
+										</dd>
 									</div>
 									<div>
 										<dt className="font-medium text-gray-900">Total amount</dt>
