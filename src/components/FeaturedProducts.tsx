@@ -3,7 +3,8 @@ import { cn } from '../helpers';
 import { Link } from 'react-router-dom';
 
 export default function FeaturedProducts() {
-	const { products } = useProductStore();
+	const { products, paginateData } = useProductStore();
+	if (paginateData.currentPage !== 1) return null;
 	return (
 		<div className="container mx-auto px-4 mt-5">
 			<ul className="grid grid-cols-1 gap-4 h-[70vh] [&>li_img] lg:grid-cols-3 [&>li]:rounded-md [&>li]:overflow-hidden">
