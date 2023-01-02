@@ -4,7 +4,7 @@ import Table from '../../components/ui/Table';
 import { format } from 'date-fns';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
 import { Order, PaginateData } from '../../types/altogic';
-import moneyFormat from '../../helpers';
+import { moneyFormat } from '../../helpers';
 import Pagination from '../../components/Pagination';
 import { useState } from 'react';
 import { OrderService } from '../../services';

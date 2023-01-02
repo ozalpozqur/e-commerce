@@ -1,7 +1,7 @@
 import Button from '../../components/ui/Button';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
 import { Order, PaginateData } from '../../types/altogic';
-import moneyFormat from '../../helpers';
+import { moneyFormat } from '../../helpers';
 import { format } from 'date-fns';
 import Pagination from '../../components/Pagination';
 import { useState } from 'react';

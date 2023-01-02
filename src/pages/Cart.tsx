@@ -2,7 +2,7 @@ import { AiOutlineClose } from 'react-icons/all';
 import useCartStore from '../store/cart';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import moneyFormat, { cn } from '../helpers';
+import { cn, moneyFormat } from '../helpers';
 import Button from '../components/ui/Button';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { Cart } from '../types/altogic';

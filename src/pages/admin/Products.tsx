@@ -1,6 +1,6 @@
 import AdminLayout from '../../layouts/AdminLayout';
 import Table from '../../components/ui/Table';
-import moneyFormat, { cn } from '../../helpers';
+import { moneyFormat, cn } from '../../helpers';
 import Button from '../../components/ui/Button';
 import { FaPlus } from 'react-icons/all';
 import { format } from 'date-fns';

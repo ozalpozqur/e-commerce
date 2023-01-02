@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Product } from '../types/altogic';
-import moneyFormat from '../helpers';
+import { moneyFormat } from '../helpers';
 
 interface ProductProps {
 	product: Product;

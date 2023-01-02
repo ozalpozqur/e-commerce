@@ -1,4 +1,5 @@
 const format = require('date-fns/format');
+const moneyFormat = require('./moneyFormat');
 
 module.exports = async (altogic, user, orderId, totalPrice) => {
 	const { data: products, errors } = await altogic.db
@@ -23,15 +24,6 @@ module.exports = async (altogic, user, orderId, totalPrice) => {
 
 	console.log(data);
 };
-
-function moneyFormat(number) {
-	return new Intl.NumberFormat('en-EN', {
-		style: 'currency',
-		currency: 'USD',
-		minimumFractionDigits: 2,
-		maximumFractionDigits: 2
-	}).format(number);
-}
 
 function generateProductSection(img, title, price, desc) {
 	return `<div class="u-row-container" style="padding: 0px;background-color: transparent">
@@ -104,7 +96,7 @@ function generateProductSection(img, title, price, desc) {
     <tr>
       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px 10px 32px;font-family:'Rubik',sans-serif;" align="left">
         
-  <h1 class="v-text-align v-font-size" style="margin: 0px; color: #ba372a; line-height: 140%; text-align: left; word-wrap: break-word; font-weight: normal; font-family: 'Rubik',sans-serif; font-size: 18px;">Price: <strong> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;${moneyFormat(
+  <h1 class="v-text-align v-font-size" style="margin: 0px; color: #ba372a; line-height: 140%; text-align: left; word-wrap: break-word; font-weight: normal; font-family: 'Rubik',sans-serif; font-size: 18px;">Price: <strong>${moneyFormat(
 		price
   )}</strong></h1>
 

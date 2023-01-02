@@ -263,7 +263,7 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 
 								{imagePreview ? (
 									<div className="grid mt-1 grid-cols-2 sm:flex flex gap-2 sm:col-span-2">
-										<picture className="group overflow-hidden border-gray-300 w-full sm:w-fit sm:min-w-[150px] flex items-center justify-center relative h-40 border p-1 rounded-md">
+										<picture className="group overflow-hidden border-gray-300 w-full sm:w-fit sm:min-w-[150px] max-w-[300px] flex items-center justify-center relative h-40 border p-1 rounded-md">
 											<img
 												draggable={false}
 												className="max-h-full w-full rounded object-cover"
@@ -271,7 +271,11 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 												alt="selected cover image"
 											/>
 										</picture>
-										<Button className="self-end gap-2" variant="white" onClick={removeCoverImage}>
+										<Button
+											className="self-end gap-2 whitespace-nowrap"
+											variant="white"
+											onClick={removeCoverImage}
+										>
 											<MdDelete size={20} />
 											Remove Cover
 										</Button>

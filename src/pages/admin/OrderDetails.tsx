@@ -3,7 +3,7 @@ import Button from '../../components/ui/Button';
 import Table from '../../components/ui/Table';
 import { useLoaderData, useParams } from 'react-router-dom';
 import { OrderItem, OrderStatus } from '../../types/altogic';
-import moneyFormat from '../../helpers';
+import { moneyFormat } from '../../helpers';
 import SelectBox from '../../components/ui/SelectBox';
 import { useState } from 'react';
 import { OrderService } from '../../services';

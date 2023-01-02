@@ -1,6 +1,6 @@
-import { Link, useLoaderData } from 'react-router-dom';
+import { useLoaderData } from 'react-router-dom';
 import { OrderItem } from '../../types/altogic';
-import moneyFormat from '../../helpers';
+import { moneyFormat } from '../../helpers';
 import Button from '../../components/ui/Button';
 
 export default function OrderDetails() {

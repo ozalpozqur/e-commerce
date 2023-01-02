@@ -37,6 +37,7 @@ export default function Login() {
 		if (session && user) {
 			setUser(user as User);
 			setSession(session);
+			altogic.endpoint.post('/add-access-token').then(({ data }) => setSession(data));
 			navigate('/');
 		}
 	};

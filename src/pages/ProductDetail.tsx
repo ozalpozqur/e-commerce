@@ -1,6 +1,6 @@
 import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 import { Product } from '../types/altogic';
-import moneyFormat, { cn } from '../helpers';
+import { cn, moneyFormat } from '../helpers';
 import useCartStore from '../store/cart';
 import { ChangeEvent, useMemo, useState } from 'react';
 import Button from '../components/ui/Button';
