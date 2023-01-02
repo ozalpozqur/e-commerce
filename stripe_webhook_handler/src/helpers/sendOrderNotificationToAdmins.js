@@ -12,7 +12,7 @@ module.exports = async altogic => {
 		const { data, errors: emailErrors } = await sendEmail(altogic, {
 			toEmail: admin.email,
 			subject: 'New Order Arrived',
-			html: `<h1>Hey Admin,</h1> <br> <br> <p>There is a new order arrived. Please check your dashboard.</p>`
+			html: `<h1>Hey Admin,</h1> <br> <p style='font-size: 20px'>There is a new order arrived. Please check your dashboard.</p>`
 		});
 
 		if (emailErrors) {
