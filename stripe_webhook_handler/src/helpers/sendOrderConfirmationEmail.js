@@ -1,5 +1,6 @@
 const format = require('date-fns/format');
 const moneyFormat = require('./moneyFormat');
+const sendEmail = require('./sendEmail');
 
 module.exports = async (altogic, user, orderId, totalPrice) => {
 	const { data: products, errors } = await altogic.db
@@ -7,12 +8,13 @@ module.exports = async (altogic, user, orderId, totalPrice) => {
 		.filter(`order == '${orderId}'`)
 		.lookup({ field: 'product' })
 		.get();
+
 	if (errors || products.length === 0) {
 		console.error(errors);
 		return;
 	}
 
-	const { data, errors: emailErrors } = await altogic.endpoint.post('/send/email', {
+	const { data, errors: emailErrors } = await sendEmail(altogic, {
 		toEmail: user.email,
 		subject: 'Order confirmation',
 		html: generateOrderEmailTemplate(user, products, totalPrice)
