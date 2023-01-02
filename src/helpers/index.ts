@@ -12,18 +12,7 @@ export default function moneyFormat(number: number) {
 		maximumFractionDigits: 2
 	}).format(number);
 }
-const d = [
-	{
-		origin: 'client_error',
-		code: 'not_unique',
-		message:
-			"The value 'deneme' of field 'name' is not unique. There is already an object with the same value in collection.",
-		details: {
-			field: 'name',
-			value: 'deneme'
-		}
-	}
-];
+
 export function parseAltogicAPIError(errors: APIError) {
 	return errors.items.map(item => {
 		return {
