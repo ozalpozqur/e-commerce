@@ -29,6 +29,9 @@ export async function rootLoader() {
 		const { user: userFromDB, errors } = await altogic.auth.getUserFromDB();
 		if (!userFromDB || errors) logout();
 		setUser(userFromDB as User);
+		if (user.isAdmin) {
+			altogic.endpoint.post('/add-access-token').then(({ data }) => useAuthStore.getState().setSession(data));
+		}
 	}
 
 	return data;
