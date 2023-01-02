@@ -59,7 +59,6 @@ export default class OrderService {
 	static async updateOrder(id: string, data: Partial<Order>) {
 		const { data: order, errors } = await altogic.db.model('orders').object(id).update(data);
 		if (errors) throw errors;
-		console.log(order);
 		return order as Order;
 	}
 
