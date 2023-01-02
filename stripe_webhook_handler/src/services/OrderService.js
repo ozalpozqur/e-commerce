@@ -1,3 +1,5 @@
+const sendOrderConfirmationEmail = require('../helpers/sendOrderConfirmationEmail');
+
 class OrderService {
 	static async completed(altogic, req, res, user) {
 		const { data: paymentCheck, errors: checkingError } = await altogic.db
@@ -58,6 +60,7 @@ class OrderService {
 			return res.json(orderItemsErrors, orderItemsErrors.status);
 		}
 
+		sendOrderConfirmationEmail(altogic, user, order._id, data.totalPrice).catch(console.error);
 		await res.json({ message: 'ok' }, 201);
 	}
 }
