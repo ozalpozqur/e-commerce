@@ -137,7 +137,7 @@ export default class ProductService {
 
 		if (!productError && productFromDB) {
 			const { coverURL, variantId } = productFromDB as Product;
-			if (variantId.trim().length > 0) altogic.storage.deleteFile(coverURL).catch(console.error);
+			if (!variantId) altogic.storage.deleteFile(coverURL).catch(console.error);
 		}
 
 		const { errors } = await product.delete();
