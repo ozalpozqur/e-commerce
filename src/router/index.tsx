@@ -1,17 +1,12 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-import {
-	getProductByCategoryLoader,
-	orderDetailLoader,
-	productDetailLoader,
-	productDetailLoaderForEdit,
-	rootLoader
-} from '../loaders';
 import { Profile, OrderDetails, OrderHistory, ChangeUserInfo, UserAddress } from '../pages/user';
 import { Login, Logout, Register } from '../pages/auth';
 import { InitialApp, Error, Category, Cart, Home, ProductDetail } from '../pages';
 import { Success } from '../pages/checkout';
 import { OrderService, ProductService } from '../services';
 import { ShopLayout } from '../layouts';
+import { useAuthStore } from '../store';
+import { ORDER_LIMIT } from '../services/OrderService';
 import Admin, {
 	Stats,
 	AddCategory,
@@ -21,8 +16,13 @@ import Admin, {
 	Categories,
 	OrderDetails as OrderDetailsAdmin
 } from '../pages/admin';
-import { useAuthStore } from '../store';
-import { ORDER_LIMIT } from '../services/OrderService';
+import {
+	getProductByCategoryLoader,
+	orderDetailLoader,
+	productDetailLoader,
+	productDetailLoaderForEdit,
+	rootLoader
+} from '../loaders';
 
 export const router = createBrowserRouter([
 	{
