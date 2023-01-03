@@ -60,7 +60,7 @@ export default function Products() {
 		color: product.color?.name,
 		size: product.size?.name,
 		price: <span className="tabular-nums">{moneyFormat(product.price)}</span>,
-		createdAt: format(new Date(product.createdAt), 'P'),
+		createdAt: format(new Date(product.createdAt), 'P p'),
 		action: (
 			<div className="flex gap-1">
 				<Button as="link" href={`/product/${product._id}`} variant="white" size="small">

@@ -4,11 +4,13 @@ import Button from '../../components/ui/Button';
 import { FaPlus } from 'react-icons/all';
 import Table from '../../components/ui/Table';
 import { format } from 'date-fns';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ConfirmModal from '../../components/ConfirmModal';
 import CategoryService from '../../services/CategoryService';
 import { toast } from 'react-toastify';
 import { APIError } from 'altogic';
+import altogic from '../../libs/altogic';
+import { cn } from '../../helpers';
 
 export default function Categories() {
 	const [confirmationIsOpen, setConfirmationIsOpen] = useState(false);
@@ -18,15 +20,25 @@ export default function Categories() {
 
 	const cols = [
 		{ colName: 'Name' },
+		{ colName: 'Product Count' },
 		{ colName: 'Created At', className: 'w-52' },
 		{ colName: 'Actions', className: 'w-32' }
 	];
 	const rows = categories.map(category => ({
 		name: category.name,
-		createdAt: format(new Date(category.createdAt), 'P'),
+		productCount: (
+			<span className={cn(category.productCount === 0 ? 'text-red-600' : '')}>{category.productCount}</span>
+		),
+		createdAt: format(new Date(category.createdAt), 'P p'),
 		action: (
 			<div className="flex gap-2">
-				<Button as="link" href={`/category/${category.slug}`} variant="secondary" size="small">
+				<Button
+					disabled={category.productCount === 0}
+					as={category.productCount === 0 ? 'button' : 'link'}
+					href={`/category/${category.slug}`}
+					variant="secondary"
+					size="small"
+				>
 					View
 				</Button>
 				<Button onClick={() => showConfirmation(category._id)} variant="danger" size="small">

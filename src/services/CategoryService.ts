@@ -5,9 +5,24 @@ export default class CategoryService {
 	static async getCategories() {
 		const { data, errors } = await altogicOnlyRead.db.model('categories').get();
 
+		const { data: productCount } = await altogic.db
+			.model('products')
+			.group('category')
+			.compute({ type: 'count', name: 'count' });
+
+		// @ts-ignore
+		const newData = productCount.reduce((acc, curr) => {
+			acc[curr.groupby.group] = curr.count;
+			return acc;
+		}, {});
 		if (errors) throw errors;
 
-		return data as Category[];
+		return (data as Category[]).map(category => {
+			return {
+				...category,
+				productCount: newData[category._id] ?? 0
+			};
+		});
 	}
 	static async getActiveCategories() {
 		const { data, errors } = await altogicOnlyRead.db

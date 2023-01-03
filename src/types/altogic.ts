@@ -21,6 +21,7 @@ export interface Category {
 	slug: string;
 	createdAt: string;
 	updatedAt: string;
+	productCount?: number;
 }
 export interface Product {
 	_id: string;

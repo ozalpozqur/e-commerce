@@ -35,7 +35,7 @@ export default function Orders() {
 		customer: order.user.name,
 		total: moneyFormat(order.totalPrice),
 		status: order.status.toUpperCase(),
-		createdAt: format(new Date(order.createdAt), 'P'),
+		createdAt: format(new Date(order.createdAt), 'P p'),
 		actions: (
 			<div className="flex gap-2">
 				<Button as="link" href={`/admin/orders/${order._id}`} variant="secondary" size="small">
