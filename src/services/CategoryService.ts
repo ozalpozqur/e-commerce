@@ -5,7 +5,7 @@ export default class CategoryService {
 	static async getCategories() {
 		const { data, errors } = await altogicOnlyRead.db.model('categories').get();
 
-		const { data: productCount } = await altogic.db
+		const { data: productCount } = await altogicOnlyRead.db
 			.model('products')
 			.group('category')
 			.compute({ type: 'count', name: 'count' });
