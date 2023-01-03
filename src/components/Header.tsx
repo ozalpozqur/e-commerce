@@ -1,6 +1,6 @@
 import { Fragment, useState } from 'react';
 import { Dialog, Popover, Transition } from '@headlessui/react';
-import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { cn } from '../helpers';
 import { Link, useLocation } from 'react-router-dom';
 import useCartStore from '../store/cart';
@@ -74,7 +74,7 @@ export default function Header() {
 							leaveTo="-translate-x-full"
 						>
 							<Dialog.Panel className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white pb-12 shadow-xl">
-								<div className="flex pl-3 py-4">
+								<div className="flex pl-4 py-5">
 									<button
 										type="button"
 										className="-m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
