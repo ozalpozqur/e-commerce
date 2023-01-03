@@ -134,7 +134,9 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 					<div>
 						<div className="space-y-6 sm:space-y-5">
 							<div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
-								<p className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Product name</p>
+								<p className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+									Product name <span className="text-red-500">*</span>
+								</p>
 								<Input
 									showError={!!formik.errors.name && !!formik.touched.name}
 									errorMessage={formik.errors.name}
@@ -145,7 +147,7 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 							</div>
 							<div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5 sm:border-t sm:border-gray-200">
 								<p className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-									Product in stock
+									Product in stock <span className="text-red-500">*</span>
 								</p>
 								<Input
 									showError={!!formik.errors.qtyInStock && !!formik.touched.qtyInStock}
@@ -159,7 +161,7 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 							</div>
 							<div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5 sm:border-t sm:border-gray-200">
 								<p className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-									Product price
+									Product price <span className="text-red-500">*</span>
 								</p>
 								<Input
 									showError={!!formik.errors.price && !!formik.touched.price}
@@ -231,7 +233,7 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 							</div>
 							<div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5 sm:border-t sm:border-gray-200">
 								<p className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-									Product category
+									Product category <span className="text-red-500">*</span>
 								</p>
 								<SelectBox
 									showError={!!formik.errors.category && !!formik.touched.category}
@@ -244,19 +246,24 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 									fields={categories.map(category => ({ id: category._id, value: category.name }))}
 								/>
 							</div>
-							<Textarea
-								showError={!!formik.errors.description && !!formik.touched.description}
-								errorMessage={formik.errors.description}
-								onChange={formik.handleChange}
-								value={formik.values.description}
-								name="description"
-								rows={6}
-								label="Product description"
-								className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5"
-							/>
+							<div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5 sm:border-t sm:border-gray-200">
+								<p className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+									Product description <span className="text-red-500">*</span>
+								</p>
+								<Textarea
+									showError={!!formik.errors.description && !!formik.touched.description}
+									errorMessage={formik.errors.description}
+									onChange={formik.handleChange}
+									value={formik.values.description}
+									name="description"
+									rows={6}
+									className="mt-1 sm:mt-0 sm:col-span-2"
+								/>
+							</div>
+
 							<div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
 								<p className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-									Product cover
+									Product cover <span className="text-red-500">*</span>
 								</p>
 
 								{imagePreview ? (
