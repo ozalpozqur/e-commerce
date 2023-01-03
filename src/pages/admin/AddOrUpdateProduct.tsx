@@ -18,18 +18,6 @@ import { Product } from '../../types/altogic';
 import { useCartStore } from '../../store';
 import { Tooltip } from 'react-tooltip';
 
-const addProductSchema = Yup.object().shape({
-	name: Yup.string().required('This field is required'),
-	qtyInStock: Yup.number().min(0, 'Stock quantity must be greater than 0').required('This field is required'),
-	category: Yup.string().required('This field is required'),
-	description: Yup.string().required('This field is required'),
-	price: Yup.number().min(0, 'Product price cannot be negative value').required('This field is required'),
-	image: Yup.mixed().required('Product cover is required'),
-	color: Yup.string(),
-	size: Yup.string(),
-	variantId: Yup.string()
-});
-
 interface AddOrUpdateProductProps {
 	type?: 'add' | 'update';
 }
@@ -44,12 +32,23 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 	const { sizes } = useSizeStore();
 
 	const [searchParams] = useSearchParams();
-
 	const [imagePreview, setImagePreview] = useState<string | null>(
 		isEditMode ? product.coverURL : searchParams.get('coverURL') ?? null
 	);
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
+
+	const addProductSchema = Yup.object().shape({
+		name: Yup.string().required('This field is required'),
+		qtyInStock: Yup.number().min(0, 'Stock quantity must be greater than 0').required('This field is required'),
+		category: Yup.string().required('This field is required'),
+		description: Yup.string().required('This field is required'),
+		price: Yup.number().min(0, 'Product price cannot be negative value').required('This field is required'),
+		image: Yup.mixed().required('Product cover is required'),
+		color: isEditMode ? Yup.string().required('This field is required') : Yup.string(),
+		size: isEditMode ? Yup.string().required('This field is required') : Yup.string(),
+		variantId: Yup.string()
+	});
 
 	const formik = useFormik({
 		initialValues: {
@@ -79,10 +78,11 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 		}
 	});
 
-	async function updateProductInfo(image: string | File, data: object) {
+	async function updateProductInfo(image: string | File, data: typeof formik.initialValues) {
 		let coverURL = image;
+		if (!data.color) delete data.color;
+		if (!data.size) delete data.size;
 		if (image instanceof File) {
-			// @ts-ignore
 			const { data: dataFromUploader, errors } = await ProductService.uploadCoverImage(image);
 			if (errors) return errors.items.forEach(item => toast.error(item.message));
 			coverURL = dataFromUploader.publicPath;

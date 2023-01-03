@@ -35,10 +35,8 @@ export default function Products() {
 		{ colName: '', className: 'min-w-[6rem] w-24' },
 		{ colName: 'Name' },
 		{ colName: 'Variant ID' },
-		{ colName: 'Stock' },
+		{ colName: 'Detail' },
 		{ colName: 'Category' },
-		{ colName: 'Color' },
-		{ colName: 'Size' },
 		{ colName: 'Price' },
 		{ colName: 'Created At' },
 		{ colName: 'Actions', className: 'w-32 text-center' }
@@ -47,27 +45,47 @@ export default function Products() {
 		cover: <img className="object-cover w-16 h-24 rounded" src={product.coverURL} alt={product.name} />,
 		name: <p className="w-[20ch] whitespace-normal">{product.name}</p>,
 		variantCode: (
-			<p className="w-[15ch] overflow-x-auto text-center [&::-webkit-scrollbar]:hidden select-all">
-				{product.variantId ?? '-'}
-			</p>
+			<span className="inline-flex flex-col gap-2">
+				<p className="w-[12ch] overflow-x-auto text-center [&::-webkit-scrollbar]:hidden select-all">
+					{product.variantId ?? '-'}
+				</p>
+				<Button onClick={() => addVariant(product)} variant="secondary" size="small">
+					Add Variant
+				</Button>
+			</span>
 		),
-		stock: (
-			<span className={cn('tabular-nums block text-center', product.qtyInStock === 0 && 'text-red-600')}>
-				{product.qtyInStock}
+		detail: (
+			<span className="inline-flex flex-col gap-1">
+				<p>
+					stock:{' '}
+					<span className={cn('tabular-nums', product.qtyInStock === 0 ? 'text-red-600' : '')}>
+						{product.qtyInStock}
+					</span>
+				</p>
+				<p className="tabular-nums">size: {product.size?.name ?? '-'}</p>
+				<p>
+					color:{' '}
+					<span
+						className={cn(
+							'tabular-nums',
+							product.color && product.color.name === 'mixed'
+								? 'bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-blue-600 to-green-700'
+								: ''
+						)}
+						style={product.color && product.color.name !== 'mixed' ? { color: product.color.name } : {}}
+					>
+						{product.color?.name ?? '-'}
+					</span>
+				</p>
 			</span>
 		),
 		category: product.category.name,
-		color: product.color?.name,
-		size: product.size?.name,
 		price: <span className="tabular-nums">{moneyFormat(product.price)}</span>,
 		createdAt: format(new Date(product.createdAt), 'P p'),
 		action: (
 			<div className="flex gap-1">
 				<Button as="link" href={`/product/${product._id}`} variant="white" size="small">
 					View
-				</Button>
-				<Button onClick={() => addVariant(product)} variant="secondary" size="small">
-					Add Variant
 				</Button>
 				<Button as="link" href={`/admin/products/edit/${product._id}`} variant="primary" size="small">
 					Edit

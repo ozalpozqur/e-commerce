@@ -4,6 +4,7 @@ import { OrderStatus } from '../../types/altogic';
 import { capitalize, moneyFormat } from '../../helpers';
 import { BiStats, GiTakeMyMoney } from 'react-icons/all';
 import { OrderService } from '../../services';
+import { Link } from 'react-router-dom';
 
 type Stats = {
 	[key in OrderStatus]?: number;
@@ -53,8 +54,12 @@ export default function Stats() {
 								<p className="text-2xl font-medium tabular-nums text-gray-900">
 									{moneyFormat(totalSales)}
 								</p>
-
-								<p className="text-sm text-gray-500">Total sales</p>
+								<Link
+									to="/admin/orders"
+									className="text-sm text-gray-500 underline-offset-4 group-hover:text-indigo-700 group-hover:underline"
+								>
+									Total sales
+								</Link>
 							</div>
 						</article>
 					)}
@@ -71,7 +76,12 @@ export default function Stats() {
 							<div>
 								<p className="text-2xl font-medium tabular-nums text-gray-900">{count}</p>
 
-								<p className="text-sm text-gray-500">{capitalize(status)} orders</p>
+								<Link
+									to="/admin/orders"
+									className="text-sm text-gray-500 underline-offset-4 group-hover:text-indigo-700 group-hover:underline"
+								>
+									{capitalize(status)} orders
+								</Link>
 							</div>
 						</article>
 					))}

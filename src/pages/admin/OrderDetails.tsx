@@ -1,7 +1,7 @@
 import AdminLayout from '../../layouts/AdminLayout';
 import Button from '../../components/ui/Button';
 import Table from '../../components/ui/Table';
-import { useLoaderData, useParams } from 'react-router-dom';
+import { useLoaderData, useParams, useSearchParams } from 'react-router-dom';
 import { OrderItem, OrderStatus } from '../../types/altogic';
 import { moneyFormat } from '../../helpers';
 import SelectBox from '../../components/ui/SelectBox';
@@ -17,6 +17,7 @@ export default function OrderDetails() {
 	const [currentStatus, setCurrentStatus] = useState<OrderStatus>(orderDetails[0].order.status);
 	const [updating, setUpdating] = useState(false);
 	const { orderId } = useParams();
+	const [searchParams] = useSearchParams();
 
 	const cols = [
 		{ colName: '', className: 'min-w-[6rem] w-24' },
@@ -64,17 +65,22 @@ export default function OrderDetails() {
 	return (
 		<AdminLayout title="Order Details">
 			<div className="px-4 sm:p-0 space-y-2">
-				<div className="flex items-end justify-end gap-2">
-					<SelectBox
-						firstSelectionText="Select a status"
-						onChange={e => setCurrentStatus(e.target.value as OrderStatus)}
-						value={currentStatus}
-						name="status"
-						fields={status.map(value => ({ id: value, value: value.toUpperCase() }))}
-					/>
-					<Button loading={updating} className="py-1.5" onClick={updateStatusHandler}>
-						Save Status
-					</Button>
+				<div className="flex items-end justify-between gap-2">
+					<h1 className="font-semibold text-2xl">
+						Order #{searchParams.get('orderNumber')?.padStart(6, '0')}
+					</h1>
+					<div className="flex items-center gap-2">
+						<SelectBox
+							firstSelectionText="Select a status"
+							onChange={e => setCurrentStatus(e.target.value as OrderStatus)}
+							value={currentStatus}
+							name="status"
+							fields={status.map(value => ({ id: value, value: value.toUpperCase() }))}
+						/>
+						<Button loading={updating} className="py-1.5" onClick={updateStatusHandler}>
+							Save Status
+						</Button>
+					</div>
 				</div>
 				<Table cols={cols} rows={rows} />
 			</div>

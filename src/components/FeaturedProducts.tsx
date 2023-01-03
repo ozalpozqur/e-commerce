@@ -19,7 +19,7 @@ export default function FeaturedProducts() {
 								: 'bg-[center_bottom_-5rem]'
 						)}
 					>
-						<div className="absolute transition-all inset-0 group-hover:bg-white/20"></div>
+						<div className="absolute transition-all inset-0 group-hover:bg-white/20" />
 						<Link
 							to={`/product/${product._id}`}
 							className="absolute inset-0 flex flex-col items-start justify-end p-6"
