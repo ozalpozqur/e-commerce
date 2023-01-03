@@ -1,9 +1,9 @@
 import AdminLayout from '../../layouts/AdminLayout';
 import { useEffect, useState } from 'react';
-import altogic from '../../libs/altogic';
 import { OrderStatus } from '../../types/altogic';
 import { capitalize, moneyFormat } from '../../helpers';
 import { BiStats, GiTakeMyMoney } from 'react-icons/all';
+import { OrderService } from '../../services';
 
 type Stats = {
 	[key in OrderStatus]?: number;
@@ -14,15 +14,12 @@ export default function Stats() {
 	const [totalSales, setTotalSales] = useState<number>();
 
 	useEffect(() => {
-		getTotalSales();
-		getStats();
+		getTotalSales().catch(console.error);
+		getStats().catch(console.error);
 	}, []);
 
 	async function getStats() {
-		const { data, errors } = await altogic.db.model('orders').group('status').compute({
-			name: 'count',
-			type: 'count'
-		});
+		const { data, errors } = await OrderService.getStats();
 		if (errors) {
 			return location.reload();
 		}
@@ -35,10 +32,7 @@ export default function Stats() {
 		setStats(stats);
 	}
 	async function getTotalSales() {
-		const { data, errors } = await altogic.db
-			.model('orders')
-			.filter(`status == 'completed'`)
-			.compute({ name: 'total', type: 'sum', expression: 'totalPrice' });
+		const { data, errors } = await OrderService.getTotalSalesByStatus('completed');
 		if (errors) {
 			return location.reload();
 		}
