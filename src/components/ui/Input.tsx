@@ -12,7 +12,7 @@ const Input = forwardRef(
 		ref: ForwardedRef<HTMLInputElement>
 	) => {
 		return (
-			<>
+			<div>
 				<input
 					ref={ref}
 					type={type}
@@ -24,7 +24,7 @@ const Input = forwardRef(
 					{...props}
 				/>
 				{showError ? <small className="text-red-600">{errorMessage}</small> : undefined}
-			</>
+			</div>
 		);
 	}
 );
