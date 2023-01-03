@@ -1,5 +1,5 @@
 import altogic from '../libs/altogic';
-import { Order, OrderItem, PaginateData, Product } from '../types/altogic';
+import { Order, OrderItem, OrderStatus, PaginateData, Product } from '../types/altogic';
 import useAuthStore from '../store/auth';
 
 export const ORDER_LIMIT = 5;
@@ -60,6 +60,20 @@ export default class OrderService {
 		const { data: order, errors } = await altogic.db.model('orders').object(id).update(data);
 		if (errors) throw errors;
 		return order as Order;
+	}
+
+	static async getStats() {
+		return altogic.db.model('orders').group('status').compute({
+			name: 'count',
+			type: 'count'
+		});
+	}
+
+	static async getTotalSalesByStatus(status: OrderStatus = 'completed') {
+		return altogic.db
+			.model('orders')
+			.filter(`status == '${status}'`)
+			.compute({ name: 'total', type: 'sum', expression: 'totalPrice' });
 	}
 
 	static async getOrderDetails(orderId: string) {
