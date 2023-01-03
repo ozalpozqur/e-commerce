@@ -6,7 +6,7 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/all';
 
 interface PaginationProps {
 	onPageChange?: () => void;
-	paginateData: PaginateData;
+	paginateData?: PaginateData;
 }
 export default function Pagination({ onPageChange, paginateData }: PaginationProps) {
 	const [searchParams, setSearchParams] = useSearchParams();

@@ -172,7 +172,12 @@ export const router = createBrowserRouter([
 					{
 						path: 'orders',
 						element: <Orders />,
-						loader: () => OrderService.getAllOrders(1, ORDER_LIMIT)
+						loader: ({ request: { url } }) => {
+							const page = new URL(url).searchParams.get('page')
+								? Number(new URL(url).searchParams.get('page'))
+								: 1;
+							return OrderService.getAllOrders(page, ORDER_LIMIT);
+						}
 					},
 					{
 						path: 'orders/:orderId',

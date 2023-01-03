@@ -6,6 +6,7 @@ import useAuthStore from '../../store/auth';
 import { Link, useLocation } from 'react-router-dom';
 import UserAvatar from '../UserAvatar';
 import { BsShopWindow } from 'react-icons/all';
+import { it } from 'date-fns/locale';
 
 const navigation = [
 	{ name: 'Dashboard', href: '/admin' },
@@ -19,7 +20,8 @@ const navigation = [
 				View the Shop
 			</span>
 		),
-		href: '/'
+		href: '/',
+		native: true
 	}
 ];
 const userNavigation = [
@@ -41,21 +43,33 @@ export default function () {
 								</div>
 								<div className="hidden md:block">
 									<div className="ml-10 flex items-center gap-4">
-										{navigation.map((item, index) => (
-											<Link
-												aria-current={item.href === pathname ? 'page' : undefined}
-												className={cn(
-													item.href === pathname
-														? 'bg-gray-900 text-white active'
-														: 'text-gray-300 hover:bg-gray-700 hover:text-white',
-													'px-3 py-2 rounded-md text-sm font-medium'
-												)}
-												key={index}
-												to={item.href}
-											>
-												{item.name}
-											</Link>
-										))}
+										{navigation.map((item, index) =>
+											item.native ? (
+												<a
+													className={cn(
+														'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
+													)}
+													key={index}
+													href={item.href}
+												>
+													{item.name}
+												</a>
+											) : (
+												<Link
+													aria-current={item.href === pathname ? 'page' : undefined}
+													className={cn(
+														item.href === pathname
+															? 'bg-gray-900 text-white active'
+															: 'text-gray-300 hover:bg-gray-700 hover:text-white',
+														'px-3 py-2 rounded-md text-sm font-medium'
+													)}
+													key={index}
+													to={item.href}
+												>
+													{item.name}
+												</Link>
+											)
+										)}
 									</div>
 								</div>
 							</div>

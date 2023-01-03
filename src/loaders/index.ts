@@ -30,7 +30,7 @@ export async function rootLoader() {
 		if (!userFromDB || errors) logout();
 		setUser(userFromDB as User);
 		if (user.isAdmin) {
-			altogic.endpoint.post('/add-access-token').then(({ data }) => useAuthStore.getState().setSession(data));
+			altogic.endpoint.post('/add-access-group').then(({ data }) => useAuthStore.getState().setSession(data));
 		}
 	}
 
