@@ -28,3 +28,7 @@ export function parseAltogicAPIError(errors: APIError) {
 		};
 	});
 }
+
+export function isMobile() {
+	return 'orientation' in window;
+}

@@ -10,15 +10,13 @@ import { useProductStore, useCategoryStore, useColorStore, useSizeStore } from '
 import { ChangeEvent, useState } from 'react';
 import DropZone from '../../components/ui/DropZone';
 import { MdInfo, MdDelete } from 'react-icons/all';
-import { isMobile } from 'react-device-detect';
-import { cn } from '../../helpers';
+import { cn, isMobile } from '../../helpers';
 import Button from '../../components/ui/Button';
 import { APIError } from 'altogic';
 import { useLoaderData, useNavigate, useSearchParams } from 'react-router-dom';
 import { Product } from '../../types/altogic';
 import { useCartStore } from '../../store';
 import { Tooltip } from 'react-tooltip';
-import { da } from 'date-fns/locale';
 
 const addProductSchema = Yup.object().shape({
 	name: Yup.string().required('This field is required'),
@@ -274,13 +272,14 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 										<Button
 											className="self-end gap-2 whitespace-nowrap"
 											variant="white"
+											type="button"
 											onClick={removeCoverImage}
 										>
 											<MdDelete size={20} />
 											Remove Cover
 										</Button>
 									</div>
-								) : isMobile ? (
+								) : isMobile() ? (
 									<div>
 										<label
 											className={cn(

@@ -47,7 +47,9 @@ export default function Products() {
 		cover: <img className="object-cover w-16 h-24 rounded" src={product.coverURL} alt={product.name} />,
 		name: <p className="w-[20ch] whitespace-normal">{product.name}</p>,
 		variantCode: (
-			<p className="w-[15ch] overflow-x-auto [&::-webkit-scrollbar]:hidden select-all">{product.variantId}</p>
+			<p className="w-[15ch] overflow-x-auto text-center [&::-webkit-scrollbar]:hidden select-all">
+				{product.variantId ?? '-'}
+			</p>
 		),
 		stock: (
 			<span className={cn('tabular-nums block text-center', product.qtyInStock === 0 && 'text-red-600')}>

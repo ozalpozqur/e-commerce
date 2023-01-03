@@ -131,10 +131,18 @@ export default class ProductService {
 	}
 
 	static async deleteProduct(id: string) {
-		const { errors } = await altogic.db.model('products').object(id).delete();
+		const product = await altogic.db.model('products').object(id);
+
+		const { data: productFromDB, errors: productError } = await product.get();
+
+		if (!productError && productFromDB) {
+			const { coverURL, variantId } = productFromDB as Product;
+			if (variantId.trim().length > 0) altogic.storage.deleteFile(coverURL).catch(console.error);
+		}
+
+		const { errors } = await product.delete();
 
 		if (errors) throw errors;
-
 		return true;
 	}
 

@@ -70,7 +70,7 @@ export default function OrderDetails() {
 						onChange={e => setCurrentStatus(e.target.value as OrderStatus)}
 						value={currentStatus}
 						name="status"
-						fields={status.map(value => ({ id: value, value: value.toLocaleUpperCase() }))}
+						fields={status.map(value => ({ id: value, value: value.toUpperCase() }))}
 					/>
 					<Button loading={updating} className="py-1.5" onClick={updateStatusHandler}>
 						Save Status
