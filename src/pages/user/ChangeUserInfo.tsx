@@ -89,10 +89,10 @@ export default function ChangeUserInfo() {
 								/>
 							</div>
 						</div>
-						<div className="flex flex-col lg:flex-row">
+						<div className="sm:-mt-14 flex flex-col lg:flex-row">
 							<div className="flex-grow lg:mt-0 lg:ml-6 lg:flex-grow-0 lg:flex-shrink-0">
 								<p className="text-sm font-medium text-gray-700" aria-hidden="true">
-									Photo
+									Profile Picture
 								</p>
 								<div className="mt-1 lg:hidden">
 									<div className="flex items-center">
