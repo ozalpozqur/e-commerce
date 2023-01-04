@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { TailSpin } from 'react-loader-spinner';
 
 const buttonProps = variantProps({
-	base: 'inline-flex overflow-hidden items-center shadow-sm [&:disabled]:cursor-not-allowed justify-center border border-transparent transition rounded font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 relative [&:disabled]:opacity-60',
+	base: 'inline-flex overflow-hidden items-center enabled:shadow-sm [&:disabled]:cursor-not-allowed justify-center border border-transparent transition rounded font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 relative [&:disabled]:opacity-60',
 	variants: {
 		size: {
 			small: 'px-2 py-1 text-xs',
