@@ -1,6 +1,6 @@
 import create from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
-import { Cart, Product } from '../types/altogic';
+import { devtools } from 'zustand/middleware';
+import { Cart } from '../types/altogic';
 
 interface CartState {
 	items: Cart[];
