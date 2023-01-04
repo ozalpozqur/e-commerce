@@ -100,7 +100,7 @@ function generateProductSection(img, title, price, desc, quantity) {
         
   <h1 class="v-text-align v-font-size" style="margin: 0px; color: #ba372a; line-height: 140%; text-align: left; word-wrap: break-word; font-weight: normal; font-family: 'Rubik',sans-serif; font-size: 18px;">Price: <strong>${moneyFormat(
 		price
-  )} x ${quantity}</strong></h1>
+  )} x ${quantity ?? 1}</strong></h1>
 
       </td>
     </tr>
@@ -357,8 +357,14 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 
 <!-- Product Section -->
 ${products
-	.map(({ product }) =>
-		generateProductSection(product.coverURL, product.name, product.price, product.description, product.quantity)
+	.map(item =>
+		generateProductSection(
+			item.product.coverURL,
+			item.product.name,
+			item.product.price,
+			item.product.description,
+			item.quantity
+		)
 	)
 	.join('')}
 
