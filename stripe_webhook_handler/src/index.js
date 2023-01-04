@@ -14,6 +14,7 @@ module.exports = async (req, res) => {
 	if (!ENV_URL || !CLIENT_KEY) {
 		return res.json(
 			{
+				code: 'missing-altogic-params',
 				message:
 					'Client library environment URL and/or client key variables are not set. Unless these variables are set, the cloud function cannot use Altogic Client Library.'
 			},
@@ -33,7 +34,7 @@ module.exports = async (req, res) => {
 		}
 
 		default: {
-			await res.json({ code: 'unknown handler' }, 500);
+			await res.json({ code: 'unknown-handler', message: 'Unknown requests cannot be handled' }, 500);
 		}
 	}
 };
