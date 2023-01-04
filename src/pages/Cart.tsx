@@ -1,20 +1,25 @@
 import { AiOutlineClose } from 'react-icons/all';
 import useCartStore from '../store/cart';
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { cn, moneyFormat } from '../helpers';
 import Button from '../components/ui/Button';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { Cart } from '../types/altogic';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CartService from '../services/CartService';
 import altogic from '../libs/altogic';
 import useAuthStore from '../store/auth';
 
 export default function ShoppingCart() {
-	const { items, totalAmount } = useCartStore();
+	const cart = useLoaderData() as Cart[];
+	const { items, totalAmount, setCart } = useCartStore();
 	const { user } = useAuthStore();
 	const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+		setCart(cart);
+	}, []);
 
 	async function checkout() {
 		setLoading(true);
