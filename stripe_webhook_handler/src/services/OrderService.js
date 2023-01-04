@@ -60,9 +60,10 @@ class OrderService {
 			return res.json(orderItemsErrors, orderItemsErrors.status);
 		}
 		altogic.realtime.send('admin', 'waiting-order-count', true);
+		altogic.realtime.close();
+
 		sendOrderConfirmationEmail(altogic, user, order._id, data.totalPrice).catch(console.error);
 		sendOrderNotificationToAdmins(altogic).catch(console.error);
-		altogic.realtime.close();
 		await res.json({ message: 'ok' }, 201);
 	}
 }
