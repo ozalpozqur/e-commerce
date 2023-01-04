@@ -27,7 +27,7 @@ module.exports = async (altogic, user, orderId, totalPrice) => {
 	console.log(data);
 };
 
-function generateProductSection(img, title, price, desc) {
+function generateProductSection(img, title, price, desc, quantity) {
 	return `<div class="u-row-container" style="padding: 0px;background-color: transparent">
   <div class="u-row" style="Margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
     <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
@@ -100,7 +100,7 @@ function generateProductSection(img, title, price, desc) {
         
   <h1 class="v-text-align v-font-size" style="margin: 0px; color: #ba372a; line-height: 140%; text-align: left; word-wrap: break-word; font-weight: normal; font-family: 'Rubik',sans-serif; font-size: 18px;">Price: <strong>${moneyFormat(
 		price
-  )}</strong></h1>
+  )} x ${quantity}</strong></h1>
 
       </td>
     </tr>
@@ -357,7 +357,9 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 
 <!-- Product Section -->
 ${products
-	.map(({ product }) => generateProductSection(product.coverURL, product.name, product.price, product.description))
+	.map(({ product }) =>
+		generateProductSection(product.coverURL, product.name, product.price, product.description, product.quantity)
+	)
 	.join('')}
 
 
