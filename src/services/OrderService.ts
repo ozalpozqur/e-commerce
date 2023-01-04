@@ -1,8 +1,8 @@
 import altogic from '../libs/altogic';
-import { Order, OrderItem, OrderStatus, PaginateData, Product } from '../types/altogic';
+import { Order, OrderItem, OrderStatus, PaginateData } from '../types/altogic';
 import useAuthStore from '../store/auth';
 
-export const ORDER_LIMIT = 5;
+export const ORDER_LIMIT = 10;
 export default class OrderService {
 	static async getAllOrders(page: number = 1, limit: number = ORDER_LIMIT) {
 		const {
@@ -87,5 +87,16 @@ export default class OrderService {
 		if (errors) throw errors;
 
 		return data as OrderItem[];
+	}
+
+	static async getWaitingOrderCount() {
+		const { data, errors } = await altogic.db
+			.model('orders')
+			.filter("status == 'waiting'")
+			.compute({ name: 'count', type: 'count' });
+
+		if (errors || !Array.isArray(data)) return 0;
+		if (data.length === 0) return 0;
+		return data[0].count as number;
 	}
 }
