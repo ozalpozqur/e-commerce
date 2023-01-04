@@ -1,12 +1,12 @@
 import { cn } from '../../helpers';
 import { IoCloseSharp, TfiMenu } from 'react-icons/all';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import useAuthStore from '../../store/auth';
 import { Link, useLocation } from 'react-router-dom';
 import UserAvatar from '../UserAvatar';
 import { BsShopWindow } from 'react-icons/all';
-import { it } from 'date-fns/locale';
+import { useAdminStore } from '../../store';
 
 const navigation = [
 	{ name: 'Dashboard', href: '/admin' },
@@ -28,9 +28,10 @@ const userNavigation = [
 	{ name: 'Profile', href: '/profile' },
 	{ name: 'Logout', href: '/auth/logout' }
 ];
-export default function () {
+export default function Navbar() {
 	const { user } = useAuthStore();
 	const { pathname } = useLocation();
+	const { waitingOrderCount } = useAdminStore();
 	return (
 		<Disclosure as="nav" className="bg-gray-800">
 			{({ open }) => (
@@ -61,11 +62,16 @@ export default function () {
 														item.href === pathname
 															? 'bg-gray-900 text-white active'
 															: 'text-gray-300 hover:bg-gray-700 hover:text-white',
-														'px-3 py-2 rounded-md text-sm font-medium'
+														'px-3 py-2 rounded-md text-sm font-medium relative'
 													)}
 													key={index}
 													to={item.href}
 												>
+													{item.href === '/admin/orders' && (
+														<span className="absolute -top-1 text-white -right-1 tabular-nums flex items-center h-5 w-5 justify-center bg-red-500 rounded-full text-[10px]">
+															{waitingOrderCount}
+														</span>
+													)}
 													{item.name}
 												</Link>
 											)
@@ -138,10 +144,15 @@ export default function () {
 										item.href === pathname
 											? 'bg-gray-900 text-white'
 											: 'text-gray-300 hover:bg-gray-700 hover:text-white',
-										'block px-3 py-2 rounded-md text-base font-medium'
+										'block px-3 py-2 rounded-md text-base font-medium flex items-center gap-2'
 									)}
 								>
 									{item.name}
+									{item.href === '/admin/orders' && (
+										<span className="text-white tabular-nums flex items-center h-6 w-6 justify-center bg-red-500 rounded-full text-[12px]">
+											{waitingOrderCount}
+										</span>
+									)}
 								</Disclosure.Button>
 							))}
 						</div>
