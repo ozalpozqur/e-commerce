@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 import Pagination from '../../components/Pagination';
 import { useState } from 'react';
 import { OrderService } from '../../services';
+import { TbTruckDelivery } from 'react-icons/all';
 
 interface OrderLoader {
 	orders: Order[];
@@ -68,8 +69,23 @@ export default function OrderHistory() {
 										</dd>
 									</div>
 								</dl>
-								<div className="flex items-center justify-center">
-									<Button as="link" href={`/profile/orders/${order._id}`} variant="primary">
+								<div className="flex gap-1 flex-col sm:flex-row items-center justify-center">
+									<Button
+										size="small"
+										as={order.trackingURL ? 'link' : 'button'}
+										href={order.trackingURL}
+										disabled={!order.trackingURL}
+										variant="primary"
+										className="flex items-center gap-1"
+									>
+										<TbTruckDelivery size={15} /> Track the order
+									</Button>
+									<Button
+										size="small"
+										as="link"
+										href={`/profile/orders/${order._id}`}
+										variant="secondary"
+									>
 										View details
 									</Button>
 								</div>
