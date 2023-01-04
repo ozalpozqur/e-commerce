@@ -3,7 +3,7 @@ import { Profile, OrderDetails, OrderHistory, ChangeUserInfo, UserAddress } from
 import { Login, Logout, Register } from '../pages/auth';
 import { InitialApp, Error, Category, Cart, Home, ProductDetail } from '../pages';
 import { Success } from '../pages/checkout';
-import { OrderService, ProductService } from '../services';
+import { CartService, OrderService, ProductService } from '../services';
 import { ShopLayout } from '../layouts';
 import { useAuthStore } from '../store';
 import { ORDER_LIMIT } from '../services/OrderService';
@@ -18,10 +18,12 @@ import Admin, {
 } from '../pages/admin';
 import {
 	getProductByCategoryLoader,
+	getWaitingOrderCountLoader,
 	orderDetailLoader,
 	productDetailLoader,
 	productDetailLoaderForEdit,
-	rootLoader
+	rootLoader,
+	statsLoader
 } from '../loaders';
 
 export const router = createBrowserRouter([
@@ -63,6 +65,7 @@ export const router = createBrowserRouter([
 			},
 			{
 				path: '/cart',
+				loader: () => CartService.getCart(),
 				element: (
 					<AuthOnly>
 						<ShopLayout>
@@ -142,9 +145,12 @@ export const router = createBrowserRouter([
 						<Admin />
 					</AdminOnly>
 				),
+				id: 'admin',
+				loader: getWaitingOrderCountLoader,
 				children: [
 					{
 						index: true,
+						loader: statsLoader,
 						element: <Stats />
 					},
 					{
