@@ -44,6 +44,7 @@ export type OrderStatus = 'waiting' | 'preparing' | 'shipped' | 'completed' | 'c
 
 export interface Order {
 	_id: string;
+	trackingURL?: string;
 	orderNumber: number;
 	status: OrderStatus;
 	totalPrice: number;
