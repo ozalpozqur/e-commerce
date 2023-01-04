@@ -68,7 +68,7 @@ export default function ProductDetail() {
 				quantity
 			});
 			addToCart(cart);
-			toast.success('Product added to cart', { autoClose: 1000 });
+			toast.success('Product added to cart', { autoClose: 1000, position: 'top-center' });
 		} catch (error) {
 			console.log(error);
 			// @ts-ignore
