@@ -58,6 +58,8 @@ export default function Orders() {
 						data-tooltip-place="top"
 						id={order._id}
 						title="Track"
+						target="_blank"
+						rel="noreferrer"
 						href={order.trackingURL}
 					>
 						<FaShippingFast className="hover:text-indigo-700 transition-all" size={25} />
