@@ -61,32 +61,47 @@ export default function ChangeUserInfo() {
 					</div>
 
 					<div className="flex gap-4 flex-col md:flex-row">
-						<div className="flex-1">
-							<div className="col-span-12 sm:col-span-6 flex flex-col gap-1">
-								<label htmlFor="name" className="block text-sm font-medium text-gray-700">
-									Name
-								</label>
-								<Input
-									placeholder="Enter your name"
-									value={name}
-									id="name"
-									required
-									onChange={e => setName(e.target.value)}
-								/>
+						<div className="grid sm:grid-cols-2 gap-4 flex-1">
+							<div>
+								<div className="col-span-12 sm:col-span-6 flex flex-col gap-1">
+									<label htmlFor="name" className="block text-sm font-medium text-gray-700">
+										Name
+									</label>
+									<Input
+										placeholder="Enter your name"
+										value={name}
+										id="name"
+										required
+										onChange={e => setName(e.target.value)}
+									/>
+								</div>
 							</div>
-						</div>
-						<div className="flex-1">
-							<div className="col-span-12 sm:col-span-6 flex flex-col gap-1">
-								<label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-									Phone
-								</label>
-								<Input
-									value={phone}
-									id="phone"
-									required
-									onChange={e => setPhone(e.target.value)}
-									placeholder="Enter your phone number"
-								/>
+							<div>
+								<div className="col-span-12 sm:col-span-6 flex flex-col gap-1">
+									<label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+										Phone
+									</label>
+									<Input
+										value={phone}
+										id="phone"
+										required
+										onChange={e => setPhone(e.target.value)}
+										placeholder="Enter your phone number"
+									/>
+								</div>
+							</div>
+							<div>
+								<div className="col-span-12 sm:col-span-6 flex flex-col gap-1">
+									<label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+										Email
+									</label>
+									<Input
+										defaultValue={user?.email}
+										id="email"
+										className="read-only:bg-gray-100 read-only:cursor-not-allowed"
+										readOnly
+									/>
+								</div>
 							</div>
 						</div>
 						<div className="sm:-mt-14 flex flex-col lg:flex-row">
