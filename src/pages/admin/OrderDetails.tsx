@@ -51,6 +51,9 @@ export default function OrderDetails() {
 
 	async function updateStatusHandler() {
 		if (!orderId) return;
+		if (!currentStatus) {
+			return toast.error("Status can't be empty");
+		}
 		try {
 			setUpdating(true);
 			await OrderService.updateOrder(orderId, { status: currentStatus });
@@ -77,7 +80,7 @@ export default function OrderDetails() {
 							name="status"
 							fields={status.map(value => ({ id: value, value: value.toUpperCase() }))}
 						/>
-						<Button loading={updating} className="py-1.5" onClick={updateStatusHandler}>
+						<Button loading={updating} className="py-2 sm:py-1.5" onClick={updateStatusHandler}>
 							Save Status
 						</Button>
 					</div>
