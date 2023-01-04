@@ -68,6 +68,29 @@ export async function getProductByCategoryLoader(slug?: string, page?: number) {
 		limit: PRODUCT_LIMIT
 	});
 }
+export async function getWaitingOrderCountLoader() {
+	return OrderService.getWaitingOrderCount();
+}
+
+export async function statsLoader() {
+	const { data: completedSales, errors: completedSalesErrors } = await OrderService.getTotalSalesByStatus(
+		'completed'
+	);
+	const { data: stats, errors: statsErrors } = await OrderService.getStats();
+
+	if (completedSalesErrors || statsErrors) return { completedSales: 0, stats: {} };
+
+	return {
+		// @ts-ignore
+		totalSales: completedSales[0].total,
+		// @ts-ignore
+		orderStats: stats?.reduce((acc, curr) => {
+			acc[curr.groupby.group] = curr.count;
+			return acc;
+		}, {})
+	};
+}
+
 export interface RootLoader {
 	products: {
 		items: Product[];
