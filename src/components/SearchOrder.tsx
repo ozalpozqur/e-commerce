@@ -9,29 +9,25 @@ import { Link } from 'react-router-dom';
 let timeout: number;
 
 export default function SearchOrder() {
-	const [open, setOpen] = useState(false);
-	const [result, setResult] = useState<Order[]>([]);
+	const [result, setResult] = useState<Order[] | null>(null);
 	const input = useRef<HTMLInputElement>(null);
-
-	useEffect(() => {
-		if (open) input.current?.focus();
-		else {
-			input.current?.blur();
-			setResult([]);
-		}
-	}, [open]);
 
 	function onChangeHandler() {
 		if (!input.current) return;
 		const value = input.current?.value;
 		clearTimeout(timeout);
-		if (value.trim().length === 0) return setResult([]);
+		if (value.trim().length === 0) return setResult(null);
 		timeout = window.setTimeout(() => search(value), 500);
 	}
 
 	async function search(query: string) {
-		const result = await OrderService.searchOrder(query);
-		setResult(result);
+		try {
+			const result = await OrderService.searchOrder(query);
+			setResult(result);
+		} catch (e) {
+			console.log(e);
+			setResult([]);
+		}
 	}
 
 	return (
@@ -45,7 +41,7 @@ export default function SearchOrder() {
 						placeholder="Type any customer name or email or order number to search"
 					/>
 					<AnimatePresence>
-						{result.length > 0 && (
+						{result && (
 							<motion.div
 								initial={{ y: -1, opacity: 0 }}
 								animate={{ y: 5, opacity: 1 }}
@@ -54,18 +50,27 @@ export default function SearchOrder() {
 								className="hidden z-50 group-focus-within:block origin-top-left shadow min-h-[30px] absolute bg-white top-full rounded py-2 left-0 right-0 border"
 							>
 								<ul className="grid gap-1">
-									{result.map(order => (
-										<li key={order._id} className="hover:bg-gray-100 transition h-[40px] relative">
-											<Link
-												className="block absolute inset-0 flex items-center px-2 gap-1"
-												to={`/admin/orders/${order._id}?orderNumber=${order.orderNumber}`}
+									{Array.isArray(result) && result.length > 0 ? (
+										result?.map(order => (
+											<li
+												key={order._id}
+												className="hover:bg-gray-100 transition h-[40px] relative"
 											>
-												<strong>#{order.orderNumber.toString().padStart(6, '0')}</strong>
-												<span>-</span>
-												<span>{order.user.name}</span>
-											</Link>
+												<Link
+													className="block absolute inset-0 flex items-center px-2  gap-1"
+													to={`/admin/orders/${order._id}?orderNumber=${order.orderNumber}`}
+												>
+													<strong>#{order.orderNumber.toString().padStart(6, '0')}</strong>
+													<span>-</span>
+													<span>{order.user.name}</span>
+												</Link>
+											</li>
+										))
+									) : (
+										<li className="hover:bg-gray-100 transition px-2 justify-center font-bold h-[40px] relative flex items-center">
+											No orders found
 										</li>
-									))}
+									)}
 								</ul>
 							</motion.div>
 						)}
