@@ -62,6 +62,20 @@ export default class OrderService {
 		return order as Order;
 	}
 
+	static async setTrackingURL(orderId: string, trackingURL: string) {
+		const { data: order, errors } = await altogic.endpoint.put('/order/tracking-url/' + orderId, { trackingURL });
+		if (errors) throw errors;
+
+		return order as Order;
+	}
+
+	static async updateOrderStatus(orderId: string, status: OrderStatus) {
+		const { data: order, errors } = await altogic.endpoint.put('/order/status/' + orderId, { status });
+		if (errors) throw errors;
+
+		return order as Order;
+	}
+
 	static async getStats() {
 		return altogic.db.model('orders').group('status').compute({
 			name: 'count',
@@ -98,5 +112,18 @@ export default class OrderService {
 		if (errors || !Array.isArray(data)) return 0;
 		if (data.length === 0) return 0;
 		return data[0].count as number;
+	}
+
+	static async searchOrder(query: string) {
+		const { data, errors } = await altogic.db
+			.model('orders')
+			.lookup({ field: 'user' })
+			.filter(
+				`INCLUDES(this.user.email, '${query}', false) || INCLUDES(this.user.name, '${query}', false) || INCLUDES(orderNumber, '${query}', false)`
+			)
+			.get();
+		if (errors) throw errors;
+
+		return data as Order[];
 	}
 }
