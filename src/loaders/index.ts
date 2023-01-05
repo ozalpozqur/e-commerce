@@ -82,7 +82,7 @@ export async function statsLoader() {
 
 	return {
 		// @ts-ignore
-		totalSales: completedSales[0].total,
+		totalSales: completedSales[0]?.total ?? 0.0,
 		// @ts-ignore
 		orderStats: stats?.reduce((acc, curr) => {
 			acc[curr.groupby.group] = curr.count;
