@@ -56,7 +56,7 @@ export default function OrderDetails() {
 		}
 		try {
 			setUpdating(true);
-			await OrderService.updateOrder(orderId, { status: currentStatus });
+			await OrderService.updateOrderStatus(orderId, currentStatus);
 			toast.success('Order status updated');
 		} catch (e) {
 			(e as APIError).items.forEach(item => toast.error(item.message));
