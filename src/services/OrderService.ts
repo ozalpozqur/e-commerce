@@ -119,7 +119,7 @@ export default class OrderService {
 			.model('orders')
 			.lookup({ field: 'user' })
 			.filter(
-				`INCLUDES(this.user.email, '${query}', false) || INCLUDES(this.user.name, '${query}', false) || INCLUDES(orderNumber, '${query}', false)`
+				`INCLUDES(user.email, '${query}') || INCLUDES(user.name, '${query}') || INCLUDES(orderNumber, '${query}')`
 			)
 			.get();
 		if (errors) throw errors;
