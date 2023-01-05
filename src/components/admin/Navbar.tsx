@@ -67,7 +67,7 @@ export default function Navbar() {
 													key={index}
 													to={item.href}
 												>
-													{item.href === '/admin/orders' && (
+													{item.href === '/admin/orders' && waitingOrderCount > 0 && (
 														<span className="absolute -top-1 text-white -right-1 tabular-nums flex items-center h-5 w-5 justify-center bg-red-500 rounded-full text-[10px]">
 															{waitingOrderCount}
 														</span>
@@ -148,7 +148,7 @@ export default function Navbar() {
 									)}
 								>
 									{item.name}
-									{item.href === '/admin/orders' && (
+									{item.href === '/admin/orders' && waitingOrderCount > 0 && (
 										<span className="text-white tabular-nums flex items-center h-6 w-6 justify-center bg-red-500 rounded-full text-[12px]">
 											{waitingOrderCount}
 										</span>
