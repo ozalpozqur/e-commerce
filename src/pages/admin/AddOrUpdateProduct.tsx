@@ -43,7 +43,10 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 		qtyInStock: Yup.number().min(0, 'Stock quantity must be greater than 0').required('This field is required'),
 		category: Yup.string().required('This field is required'),
 		description: Yup.string().required('This field is required'),
-		price: Yup.number().min(0, 'Product price cannot be negative value').required('This field is required'),
+		price: Yup.number()
+			.min(0, 'Product price cannot be negative value')
+			.max(999999, 'Product price cannot be greater than $999.999')
+			.required('This field is required'),
 		image: Yup.mixed().required('Product cover is required'),
 		color: isEditMode ? Yup.string().required('This field is required') : Yup.string(),
 		size: isEditMode ? Yup.string().required('This field is required') : Yup.string(),
