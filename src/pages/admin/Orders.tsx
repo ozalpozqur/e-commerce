@@ -13,8 +13,9 @@ import { toast } from 'react-toastify';
 import { APIError } from 'altogic';
 import altogic from '../../libs/altogic';
 import InputModal from '../../components/InputModal';
-import { FaShippingFast } from 'react-icons/all';
+import { FaSearch, FaShippingFast } from 'react-icons/all';
 import { Tooltip } from 'react-tooltip';
+import SearchOrder from '../../components/SearchOrder';
 const status: OrderStatus[] = ['waiting', 'preparing', 'shipped', 'completed', 'canceled'];
 
 interface OrderLoader {
@@ -94,7 +95,6 @@ export default function Orders() {
 		setSelectedOrderId(orderId);
 		setSelectedOrderTrackingURL(url);
 	}
-
 	function items(orderId: string) {
 		return status.map(item => ({
 			title: `Set to ${item}`,
@@ -110,10 +110,10 @@ export default function Orders() {
 			autoClose: 2000
 		});
 		try {
-			const order = await OrderService.updateOrder(orderId, { status });
+			const order = await OrderService.updateOrderStatus(orderId, status);
 			setOrders(prev =>
 				prev.map(item => {
-					if (item._id === order._id) item.status = order.status;
+					if (item._id === orderId) item.status = order.status;
 					return item;
 				})
 			);
@@ -127,16 +127,11 @@ export default function Orders() {
 			(e as APIError).items.forEach(item => toast.error(item.message));
 		}
 	}
-
-	function setTrackingURL(orderId: string, value: string) {
-		return OrderService.updateOrder(orderId, { trackingURL: value });
-	}
-
 	async function onTrackingURLSubmit(value: string) {
 		if (!selectedOrderId) return;
 		setUpdating(true);
 		try {
-			const order = await setTrackingURL(selectedOrderId, value);
+			const order = await OrderService.setTrackingURL(selectedOrderId, value);
 			setOrders(prev =>
 				prev.map(item => {
 					if (item._id === order._id) item.trackingURL = order.trackingURL;
@@ -150,7 +145,6 @@ export default function Orders() {
 			setOpen(false);
 		}
 	}
-
 	async function getPaginateProducts() {
 		const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1;
 		const { orders, paginateData } = await OrderService.getAllOrders(page);
@@ -160,7 +154,7 @@ export default function Orders() {
 
 	return (
 		<AdminLayout title="Orders">
-			<div className="px-4 sm:p-0 space-y-2">
+			<>
 				<InputModal
 					label="Tracking URL"
 					isOpen={open}
@@ -169,9 +163,22 @@ export default function Orders() {
 					close={() => setOpen(false)}
 					onSubmit={onTrackingURLSubmit}
 				/>
-				<Table cols={cols} rows={rows} />
-				<Pagination onPageChange={getPaginateProducts} paginateData={paginateData} />
-			</div>
+				<div className="px-4 sm:p-0 space-y-2">
+					{orders.length > 0 ? (
+						<>
+							<div className="flex justify-end">
+								<SearchOrder />
+							</div>
+							<Table cols={cols} rows={rows} />
+							<Pagination onPageChange={getPaginateProducts} paginateData={paginateData} />
+						</>
+					) : (
+						<div>
+							<h1 className="text-2xl font-semibold text-center">No Orders Found</h1>
+						</div>
+					)}
+				</div>
+			</>
 		</AdminLayout>
 	);
 }
