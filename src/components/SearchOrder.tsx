@@ -42,7 +42,7 @@ export default function SearchOrder() {
 						onChange={onChangeHandler}
 						ref={input}
 						className="py-2.5"
-						placeholder="Type customer name or email or order number"
+						placeholder="Type any customer name or email or order number to search"
 					/>
 					<AnimatePresence>
 						{result.length > 0 && (
