@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 import { APIError } from 'altogic';
 import altogic from '../../libs/altogic';
 import InputModal from '../../components/InputModal';
-import { FaSearch, FaShippingFast } from 'react-icons/all';
+import { FaShippingFast } from 'react-icons/all';
 import { Tooltip } from 'react-tooltip';
 import SearchOrder from '../../components/SearchOrder';
 const status: OrderStatus[] = ['waiting', 'preparing', 'shipped', 'completed', 'canceled'];
