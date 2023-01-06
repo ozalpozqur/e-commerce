@@ -127,7 +127,7 @@ export default function Orders() {
 			(e as APIError).items.forEach(item => toast.error(item.message));
 		}
 	}
-	async function onTrackingURLSubmit(value: string) {
+	async function onTrackingURLSubmit(value: string, reset: () => void) {
 		if (!selectedOrderId) return;
 		setUpdating(true);
 		try {
@@ -138,6 +138,7 @@ export default function Orders() {
 					return item;
 				})
 			);
+			reset();
 		} catch (e) {
 			(e as APIError).items.forEach(item => toast.error(item.message));
 		} finally {
@@ -158,9 +159,11 @@ export default function Orders() {
 				<InputModal
 					label="Tracking URL"
 					isOpen={open}
+					inputType="url"
 					loading={updating}
 					defaultValue={selectedOrderTrackingURL}
 					close={() => setOpen(false)}
+					inputPlaceholder="Type order's tracking URL"
 					onSubmit={onTrackingURLSubmit}
 				/>
 				<div className="px-4 sm:p-0 space-y-2">
