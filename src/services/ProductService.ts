@@ -5,15 +5,19 @@ import useCategoryStore from '../store/category';
 import category from '../store/category';
 
 export const PRODUCT_LIMIT = 12;
+
 export default class ProductService {
 	static async getProducts({ onlyHasStock = true, page = 1, limit = PRODUCT_LIMIT }: GetProductsParams) {
+		let filter = ['EXISTS(stripeProductId)', 'EXISTS(stripePriceId)'];
+		if (onlyHasStock) filter.push('qtyInStock > 0');
+
 		const {
 			// @ts-ignore
 			data: { data, info },
 			errors
 		} = await altogicOnlyRead.db
 			.model('products')
-			.filter(onlyHasStock ? 'qtyInStock > 0' : '')
+			.filter(filter.join(' && '))
 			.page(page)
 			.limit(limit)
 			.sort('createdAt', 'desc')
@@ -46,6 +50,9 @@ export default class ProductService {
 		slug: string,
 		{ onlyHasStock = true, page = 1, limit = PRODUCT_LIMIT }: GetProductsParams
 	) {
+		let filter = ['EXISTS(stripeProductId)', 'EXISTS(stripePriceId)', `category.slug == '${slug}'`];
+		if (onlyHasStock) filter.push('qtyInStock > 0');
+
 		const {
 			// @ts-ignore
 			data: { data, info },
@@ -53,7 +60,7 @@ export default class ProductService {
 		} = await altogicOnlyRead.db
 			.model('products')
 			.sort('createdAt', 'desc')
-			.filter(onlyHasStock ? `qtyInStock > 0 && category.slug == '${slug}'` : `category.slug == '${slug}'`)
+			.filter(filter.join(' && '))
 			.page(page)
 			.limit(limit)
 			.lookup({ field: 'category' })
@@ -72,8 +79,8 @@ export default class ProductService {
 			.model('products')
 			.lookup({ field: 'color' })
 			.lookup({ field: 'size' })
-			.filter(`_id == '${_id}'`)
-			.getSingle();
+			.object(_id)
+			.get();
 
 		if (errors) throw errors;
 
