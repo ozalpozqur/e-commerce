@@ -1,5 +1,5 @@
 import Button from './ui/Button';
-import { FormEvent, useId, useRef } from 'react';
+import { FormEvent, useEffect, useId, useRef } from 'react';
 import Input from './ui/Input';
 import Modal from './ui/Modal';
 
@@ -29,6 +29,14 @@ export default function InputModal({
 	const input = useRef<HTMLInputElement>(null);
 	const id = useId();
 
+	useEffect(() => {
+		if (!input.current) return;
+		if (isOpen) {
+			input.current.focus();
+			input.current.value = defaultValue || '';
+		}
+	}, [isOpen]);
+
 	function submitHandler(e: FormEvent) {
 		e.preventDefault();
 		if (input.current?.value) onSubmit(input.current.value, resetInput);
@@ -48,7 +56,7 @@ export default function InputModal({
 						</label>
 					)}
 					<Input
-						defaultValue={defaultValue}
+						autoComplete="off"
 						ref={input}
 						placeholder={inputPlaceholder}
 						type={inputType}
