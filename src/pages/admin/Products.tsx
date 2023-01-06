@@ -84,7 +84,7 @@ export default function Products() {
 				</p>
 			</span>
 		),
-		category: product.category.name,
+		category: product.category?.name ?? '-',
 		price: <span className="tabular-nums">{moneyFormat(product.price)}</span>,
 		createdAt: format(new Date(product.createdAt), 'P p'),
 		action: (
