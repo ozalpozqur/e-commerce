@@ -14,6 +14,23 @@ import { parseAltogicAPIError } from '../../helpers';
 const addCategorySchema = Yup.object().shape({
 	name: Yup.string().required('This field is required')
 });
+
+export function showCategoryError(errors: APIError) {
+	console.error(errors);
+	const parsedErrors = parseAltogicAPIError(errors as APIError);
+	if (parsedErrors.length === 0) {
+		toast.error('Something went wrong, please try again');
+	} else {
+		for (let parsedError of parsedErrors) {
+			if (parsedError.error === 'not_unique') {
+				toast.error(`Category '${parsedError.value}' already exists, please type another category name`);
+			} else {
+				toast.error('Something went wrong, please try again');
+			}
+		}
+	}
+}
+
 export default function AddCategory() {
 	const { addCategory } = useCategoryStore();
 	const [loading, setLoading] = useState(false);
@@ -35,21 +52,7 @@ export default function AddCategory() {
 				formik.resetForm();
 				toast.success('Category added successfully');
 			} catch (errors) {
-				console.error(errors);
-				const parsedErrors = parseAltogicAPIError(errors as APIError);
-				if (parsedErrors.length === 0) {
-					toast.error('Something went wrong, please try again');
-				} else {
-					for (let parsedError of parsedErrors) {
-						if (parsedError.error === 'not_unique') {
-							toast.error(
-								`Category '${parsedError.value}' already exists, please type another category name`
-							);
-						} else {
-							toast.error('Something went wrong, please try again');
-						}
-					}
-				}
+				showCategoryError(errors as APIError);
 			} finally {
 				setLoading(false);
 			}
