@@ -79,8 +79,8 @@ export default class ProductService {
 			.model('products')
 			.lookup({ field: 'color' })
 			.lookup({ field: 'size' })
-			.object(_id)
-			.get();
+			.filter(`_id == '${_id}'`)
+			.getSingle();
 
 		if (errors) throw errors;
 
