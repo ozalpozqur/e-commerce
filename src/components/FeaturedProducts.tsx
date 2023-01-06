@@ -22,10 +22,13 @@ export default function FeaturedProducts() {
 						<div className="absolute transition-all inset-0 group-hover:bg-white/20" />
 						<Link
 							to={`/product/${product._id}`}
+							style={{
+								backgroundImage: 'linear-gradient(to top, black 0%, rgba(125, 185, 232, 0) 50%)'
+							}}
 							className="absolute inset-0 flex flex-col items-start justify-end p-6"
 						>
-							<h3 className="text-xl font-medium text-white">{product.name}</h3>
-							<span className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">
+							<h3 className="text-xl font-medium text-white text-shs">{product.name}</h3>
+							<span className="mt-1.5 inline-block bg-gradient-to-r from-purple-800 via-violet-900 to-purple-800 px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">
 								View Product
 							</span>
 						</Link>
