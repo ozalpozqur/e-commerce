@@ -115,12 +115,17 @@ export default class OrderService {
 	}
 
 	static async searchOrder(query: string) {
+		let filter = [`INCLUDES(user.email, '${query}')`, `INCLUDES(user.name, '${query}')`];
+
+		if (!isNaN(Number(query))) {
+			query = query.replace(/^0+/g, '');
+			filter = [`INCLUDES(TOTEXT(orderNumber), '${query}')`];
+		}
+
 		const { data, errors } = await altogic.db
 			.model('orders')
 			.lookup({ field: 'user' })
-			.filter(
-				`INCLUDES(user.email, '${query}') || INCLUDES(user.name, '${query}') || INCLUDES(orderNumber, '${query}')`
-			)
+			.filter(filter.join(' || '))
 			.get();
 		if (errors) throw errors;
 
