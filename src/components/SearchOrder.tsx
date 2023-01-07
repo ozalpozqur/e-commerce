@@ -1,11 +1,10 @@
-import { FaSearch } from 'react-icons/all';
-import Button from './ui/Button';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { OrderService } from '../services';
 import { motion, AnimatePresence } from 'framer-motion';
 import Input from './ui/Input';
 import { Order } from '../types/altogic';
 import { Link } from 'react-router-dom';
+import { moneyFormat } from '../helpers';
 let timeout: number;
 
 export default function SearchOrder() {
@@ -63,6 +62,7 @@ export default function SearchOrder() {
 													<strong>#{order.orderNumber.toString().padStart(6, '0')}</strong>
 													<span>-</span>
 													<span>{order.user.name}</span>
+													<span className="ml-auto">{moneyFormat(order.totalPrice)}</span>
 												</Link>
 											</li>
 										))
