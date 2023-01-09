@@ -52,17 +52,8 @@ export default function Orders() {
 		createdAt: format(new Date(order.createdAt), 'P p'),
 		tracking: (
 			<span className="flex justify-center">
-				<Tooltip anchorId={order._id} />
 				{order.trackingURL ? (
-					<a
-						data-tooltip-content="Click to track the order"
-						data-tooltip-place="top"
-						id={order._id}
-						title="Track"
-						target="_blank"
-						rel="noreferrer"
-						href={order.trackingURL}
-					>
+					<a title="Click to track the order" target="_blank" rel="noreferrer" href={order.trackingURL}>
 						<FaShippingFast className="hover:text-indigo-700 transition-all" size={25} />
 					</a>
 				) : (
