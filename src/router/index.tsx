@@ -25,6 +25,7 @@ import {
 	rootLoader,
 	statsLoader
 } from '../loaders';
+import AuthRedirect from '../pages/AuthRedirect';
 
 export const router = createBrowserRouter([
 	{
@@ -62,6 +63,10 @@ export const router = createBrowserRouter([
 						: 1;
 					return getProductByCategoryLoader(slug, page);
 				}
+			},
+			{
+				path: '/auth-redirect',
+				element: <AuthRedirect />
 			},
 			{
 				path: '/cart',
