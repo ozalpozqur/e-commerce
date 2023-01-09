@@ -45,17 +45,19 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 	const navigate = useNavigate();
 
 	const addProductSchema = Yup.object().shape({
-		name: Yup.string().required('This field is required'),
-		qtyInStock: Yup.number().min(0, 'Stock quantity must be greater than 0').required('This field is required'),
-		category: Yup.string().required('This field is required'),
-		description: Yup.string().required('This field is required'),
+		name: Yup.string().required('Product name is required'),
+		qtyInStock: Yup.number()
+			.min(0, 'Product stock must be greater than and equal to 0.')
+			.required('Product stock is required'),
+		category: Yup.string().required('Product category is required'),
+		description: Yup.string().required('Product description is required'),
 		price: Yup.number()
 			.min(0, 'Product price cannot be negative value')
 			.max(999999, 'Product price cannot be greater than 999.999')
-			.required('This field is required'),
+			.required('Product price is required'),
 		image: Yup.mixed().required('Product cover is required'),
-		color: isEditMode && product.color?._id ? Yup.string().required('This field is required') : Yup.string(),
-		size: isEditMode && product.size?._id ? Yup.string().required('This field is required') : Yup.string(),
+		color: Yup.string().required('Product color is required'),
+		size: Yup.string().required('Product size is required'),
 		variantId: Yup.string()
 	});
 
@@ -235,8 +237,7 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 								</div>
 								<div className="grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5 sm:border-t sm:border-gray-200">
 									<p className="block text-sm font-medium text-gray-700 sm:pt-2">
-										Product size{' '}
-										{isEditMode && product.size?._id && <span className="text-red-500">*</span>}
+										Product size <span className="text-red-500">*</span>
 									</p>
 									<SelectBox
 										showError={!!formik.errors.size && !!formik.touched.size}
@@ -251,8 +252,7 @@ export default function AddOrUpdateProduct({ type = 'add' }: AddOrUpdateProductP
 								</div>
 								<div className="grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5 sm:border-t sm:border-gray-200">
 									<p className="block text-sm font-medium text-gray-700 sm:pt-2">
-										Product color{' '}
-										{isEditMode && product.color?._id && <span className="text-red-500">*</span>}
+										Product color <span className="text-red-500">*</span>
 									</p>
 									<SelectBox
 										showError={!!formik.errors.color && !!formik.touched.color}
