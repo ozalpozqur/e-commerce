@@ -1,7 +1,7 @@
 import AdminLayout from '../../layouts/AdminLayout';
 import Button from '../../components/ui/Button';
 import Table from '../../components/ui/Table';
-import { useLoaderData, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useLoaderData, useParams, useSearchParams } from 'react-router-dom';
 import { OrderItem, OrderStatus } from '../../types/altogic';
 import { moneyFormat } from '../../helpers';
 import SelectBox from '../../components/ui/SelectBox';
@@ -31,11 +31,13 @@ export default function OrderDetails() {
 	];
 	const rows = orderDetails.map(item => ({
 		cover: (
-			<img
-				className="object-cover w-16 h-24 rounded"
-				src={item?.product?.coverURL ?? '/no-image.png'}
-				alt={item.productName}
-			/>
+			<Link to={`/product/${item?.product?._id}`}>
+				<img
+					className="object-cover w-16 h-24 rounded"
+					src={item?.product?.coverURL ?? '/no-image.png'}
+					alt={item.productName}
+				/>
+			</Link>
 		),
 		productName: item.productName,
 		quantity: item.quantity,
@@ -68,7 +70,7 @@ export default function OrderDetails() {
 	return (
 		<AdminLayout title="Order Details">
 			<div className="px-4 sm:p-0 space-y-2">
-				<div className="flex items-end justify-between gap-2">
+				<div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
 					<h1 className="font-semibold text-2xl">
 						Order #{searchParams.get('orderNumber')?.padStart(6, '0')}
 					</h1>
@@ -80,7 +82,11 @@ export default function OrderDetails() {
 							name="status"
 							fields={status.map(value => ({ id: value, value: value.toUpperCase() }))}
 						/>
-						<Button loading={updating} className="py-2 sm:py-1.5" onClick={updateStatusHandler}>
+						<Button
+							loading={updating}
+							className="py-2 sm:py-1.5 whitespace-nowrap"
+							onClick={updateStatusHandler}
+						>
 							Save Status
 						</Button>
 					</div>
