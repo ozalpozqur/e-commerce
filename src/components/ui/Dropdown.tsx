@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Fragment, useState, MouseEvent, useEffect } from 'react';
+import { Fragment, useState, MouseEvent, useEffect, useRef, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Button from './Button';
 
@@ -50,18 +50,18 @@ export default function Dropdown({ items, children, className, buttonVariant, bu
 					<>
 						<div onClick={() => setOpen(false)} className="fixed z-40 inset-0 bg-gray-900/10" />
 						<motion.div
-							initial={{ opacity: 0, scale: 0 }}
-							animate={{ opacity: 1, scale: 1 }}
-							exit={{ opacity: 0, scale: 0 }}
+							initial={{ opacity: 0, height: 0 }}
+							animate={{ opacity: 1, height: 'auto' }}
+							exit={{ opacity: 0, height: 0 }}
 							style={{
 								position: 'absolute',
 								top: rect?.bottom,
 								left
 							}}
-							className="z-50 mt-2 w-fit origin-top rounded-md border border-gray-100 bg-white shadow-lg"
+							className="z-50 mt-2 w-fit overflow-hidden origin-top rounded-md border border-gray-100 bg-white shadow-lg"
 							role="menu"
 						>
-							<div className="flow-root py-2">
+							<div className="flow-root py-2 ">
 								<div className="-my-2 divide-y divide-gray-100">
 									<div className="p-2">
 										{items.map((item, index) => (
