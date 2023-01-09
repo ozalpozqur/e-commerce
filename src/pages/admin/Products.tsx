@@ -20,7 +20,7 @@ interface ProductsLoader {
 }
 export default function Products() {
 	const { items: productsFromDB, paginateData: paginateDataFromDB } = useLoaderData() as ProductsLoader;
-
+	console.log(paginateDataFromDB);
 	const [products, setProducts] = useState(productsFromDB);
 	const [paginateData, setPaginateData] = useState(paginateDataFromDB);
 
@@ -166,20 +166,32 @@ export default function Products() {
 					onConfirm={deleteProduct}
 				/>
 				<div className="space-y-2 px-4 sm:p-0">
-					<div className="flex justify-end">
-						<Button
-							as="link"
-							href="/admin/products/new"
-							className="flex gap-1"
-							size="small"
-							variant="secondary"
-						>
-							<FaPlus size={10} />
-							Add new product
-						</Button>
-					</div>
-					<Table cols={cols} rows={rows} />
-					<Pagination paginateData={paginateData} onPageChange={getPaginateProducts} />
+					{products.length > 0 ? (
+						<>
+							<div className="flex justify-end">
+								<Button
+									as="link"
+									href="/admin/products/new"
+									className="flex gap-1"
+									size="small"
+									variant="secondary"
+								>
+									<FaPlus size={10} />
+									Add a new product
+								</Button>
+							</div>
+							<Table cols={cols} rows={rows} />
+							<Pagination paginateData={paginateData} onPageChange={getPaginateProducts} />
+						</>
+					) : (
+						<div className="flex flex-col justify-center items-center gap-4">
+							<p className="text-center font-bold text-2xl">You haven't added any products yet</p>
+							<Button as="link" href="/admin/products/new" className="flex gap-1" variant="secondary">
+								<FaPlus size={10} />
+								Add a new product
+							</Button>
+						</div>
+					)}
 				</div>
 			</>
 		</AdminLayout>
