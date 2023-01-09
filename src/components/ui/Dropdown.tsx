@@ -37,6 +37,9 @@ export default function Dropdown({ items, children, className, buttonVariant, bu
 		setOpen(false);
 	}
 
+	let left = Number(rect?.left) - Number(rect?.width) / 2;
+	if (left < 10) left = 10;
+
 	return (
 		<div className={className}>
 			<Button variant={buttonVariant} size={buttonSize} onClick={clickHandler}>
@@ -53,7 +56,7 @@ export default function Dropdown({ items, children, className, buttonVariant, bu
 							style={{
 								position: 'absolute',
 								top: rect?.bottom,
-								left: Number(rect?.left) - Number(rect?.width) / 2
+								left
 							}}
 							className="z-50 mt-2 w-fit origin-top rounded-md border border-gray-100 bg-white shadow-lg"
 							role="menu"
