@@ -126,6 +126,7 @@ export default class OrderService {
 			.model('orders')
 			.lookup({ field: 'user' })
 			.filter(filter.join(' || '))
+			.limit(100)
 			.get();
 		if (errors) throw errors;
 
