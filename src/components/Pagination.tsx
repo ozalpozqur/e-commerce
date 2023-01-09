@@ -33,7 +33,7 @@ export default function Pagination({ onPageChange, paginateData }: PaginationPro
 		return page + amount;
 	}
 
-	if (paginateData?.totalPages && paginateData?.totalPages === 1) return null;
+	if (paginateData?.totalPages! <= 1) return null;
 
 	return (
 		<section className="flex justify-center gap-1">
@@ -46,11 +46,9 @@ export default function Pagination({ onPageChange, paginateData }: PaginationPro
 			>
 				<MdKeyboardArrowLeft size={15} />
 			</Button>
-
 			<div className="h-8 w-12 flex items-center justify-center text-center tabular-nums rounded border border-gray-100 p-0 text-center text-xs font-medium">
 				{searchParams.get('page') ?? 1}
 			</div>
-
 			<Button
 				size="small"
 				variant="white"
