@@ -46,7 +46,13 @@ export default function ProductList({
 	return (
 		<section className="container mx-auto px-4">
 			{_products.length === 0 ? (
-				noProductsInfoMessage ?? <div className="p-2">No products found</div>
+				noProductsInfoMessage ?? (
+					<div className="p-2 text-center text-2xl">
+						SORRY!
+						<br />
+						We don't have any products yet.
+					</div>
+				)
 			) : (
 				<div className="pb-10 space-y-4">
 					<div className="mt-6 grid grid-cols-2 gap-y-6 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
