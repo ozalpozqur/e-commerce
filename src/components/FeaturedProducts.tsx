@@ -9,7 +9,7 @@ export default function FeaturedProducts() {
 	if (product.length < 3) return null;
 	return (
 		<div className="container mx-auto px-4 mt-5">
-			<ul className="grid grid-cols-1 gap-4 h-[70vh] [&>li_img] lg:grid-cols-3 [&>li]:rounded-md [&>li]:overflow-hidden">
+			<ul className="grid grid-cols-1 gap-4 h-[600px] [&>li_img] lg:grid-cols-3 [&>li]:rounded-md [&>li]:overflow-hidden">
 				{products.slice(0, 3).map((product, index) => (
 					<li
 						key={index}
