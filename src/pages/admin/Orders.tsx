@@ -47,7 +47,7 @@ export default function Orders() {
 		orderNumber: '#' + order.orderNumber.toString().padStart(6, '0'),
 		customer: order.user?.name || '-',
 		total: moneyFormat(order.totalPrice),
-		status: order.status.toUpperCase(),
+		status: order.status,
 		createdAt: format(new Date(order.createdAt), 'P p'),
 		tracking: (
 			<span className="flex justify-center">
