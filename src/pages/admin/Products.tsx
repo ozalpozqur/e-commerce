@@ -11,7 +11,7 @@ import ProductService, { PRODUCT_LIMIT } from '../../services/ProductService';
 import ConfirmModal from '../../components/ConfirmModal';
 import CartService from '../../services/CartService';
 import { useLoaderData, useNavigate, useSearchParams } from 'react-router-dom';
-import { PaginateData, Product } from '../../types/altogic';
+import { Color, PaginateData, Product } from '../../types/altogic';
 import Pagination from '../../components/Pagination';
 
 interface ProductsLoader {
@@ -20,7 +20,6 @@ interface ProductsLoader {
 }
 export default function Products() {
 	const { items: productsFromDB, paginateData: paginateDataFromDB } = useLoaderData() as ProductsLoader;
-	console.log(paginateDataFromDB);
 	const [products, setProducts] = useState(productsFromDB);
 	const [paginateData, setPaginateData] = useState(paginateDataFromDB);
 
@@ -73,11 +72,11 @@ export default function Products() {
 					<span
 						className={cn(
 							'tabular-nums',
-							product.color && product.color.name === 'mixed'
+							product.color && product.color.name.toLowerCase() === 'mixed'
 								? 'bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-blue-600 to-green-700'
 								: ''
 						)}
-						style={product.color && product.color.name !== 'mixed' ? { color: product.color.name } : {}}
+						style={generateColorStyle(product.color)}
 					>
 						{product.color?.name ?? '-'}
 					</span>
@@ -101,6 +100,19 @@ export default function Products() {
 			</div>
 		)
 	}));
+
+	function generateColorStyle(color?: Color) {
+		const style: { color?: string; backgroundColor?: string; textShadow?: string } = {};
+		if (!color) return style;
+		if (color.name.toLowerCase() !== 'mixed') {
+			style.color = color.name;
+		}
+		if (['yellow', 'white'].includes(color.name.toLowerCase())) {
+			style.textShadow = '1px 1px #000';
+			style.color = color.name;
+		}
+		return style;
+	}
 
 	async function getPaginateProducts() {
 		const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1;
